@@ -1,0 +1,8133 @@
+--- Page 1 ---
+STRINGS 
+SUPPLEMENT 
+(8008/8080) 
+'1«:ll.ml «:OMIlIJIHI 
+«:ONIU.DMi INC:. 
+
+--- Page 2 ---
+SCELBAL STRINGS SUPPLEMENT (8008/8080) 
+.\\lthor: 
+Mark Arnold 
+© 
+COPYRIGHT 1977 
+Scelbi Computer Consulting, Inc. 
+1322 Rear - Boston Post Road 
+Milford, CT 06460 
+- ALL RIGHTS RESERVED-
+IMPORTANT NOTICE 
+Other than using the information detailed herein on the purchaser's individual 
+computer system, no part of this publication may be reproduced, transmitted, 
+stored in a retrieval system, or otherwise duplicated in any form, or by any 
+means, electronic, mechanical, photocopying, recording, or otherwise, without 
+the prior express written consent of the copyright owner. 
+The information in this publication has been carefully reviewed and is believed 
+to be entirely reliable. However, no responsibility is assumed for inaccuracies 
+or for the success or failure of various applications to which the information 
+herein might be applied. 
+
+--- Page 3 ---
+ACKNOWLEDGEMENT 
+Typesetting of this manual accomplished through the dedicated efforts of: 
+Miss Gabrielle Tingley 
+Program proofing and testing by: 
+Raymond Edwards 
+
+--- Page 4 ---
+SCELBAL STRINGS SUPPLEMENT 
+STRING CAPABILITIES FOR SCELBAL 
+The STRINGS supplement to SCELBAL 
+presented 
+in 
+this 
+pUblication 
+adds 
+the 
+following character string manipUlating capa-
+bilities to the language. 
+1. Up to 64 strings and/or string arrays. 
+(Up to 80 characters long. ) 
+2. Substring capabilities as follows: 
+a. The right part of a string 
+b. The middle of a string 
+c. The left part using b. 
+d. A string array can be substringed 
+in the same expression 
+3. Two additional numeric functions: 
+a. LEN--returns the length of a string 
+b. ASC--returns the decimal ASCII 
+value of 1 'st character of string 
+4. One additional string function: 
+CHR$ 
+(Which replaces CHR) 
+5. String arrays do not require dimensions. 
+6. Concatenation of string expressions. 
+7. Input and output of strings. 
+8. Comparison of string expressions. 
+STRING VARIABLES 
+A string variable may be any letter fol-
+lowed by a dollar sign. For example, A$ 
+would be a legal string variable. A string 
+variable may be subscripted in the normal 
+fashion: B$(3) would yield the third element 
+of the string array B$. The difference between 
+numeric arrays and string arrays is that unsub-
+scripted string variables are treated the same 
+as one with a subscript of one, so A$ and 
+A$(l) reference the same string. String arrays 
+do not require or allow a dimension to be 
+specified in a DIM statement. This feature 
+- 1 -
+allows the full string capability to be imple-
+mented in a system without the array option 
+installed. 
+SUBSTRINGS 
+It is often desirable to access certain char-
+acters within a string by specifying the 
+starting and stopping positions in that string. 
+This capability is known as accessing a sub-
+string. To access J characters starting with the 
+N'th character in a string A$, the format 
+would be: A$(:N ;J), where N and J could be 
+any expression. For example, if A$ con-
+tained "ABCDE," then A$(: 2;3) would yield 
+the result "BCD," and A$(: 1;4) would yeild 
+"ABCD." A string array could also be sub-
+stringed: B$( 4: 2;3) would yield the second 
+through fourth characters of the fourth ele-
+ment of B$. If the semicolon and expression 
+following it are omitted, the result will be all 
+characters to the right of and including the 
+N'th character. For example: 
+A$( :3) will 
+result in "CD E." Subscripted strings are 
+handled in a similar fashion: B$(5:3) would 
+result in all characters to the right of the 
+second character of the fifth element of B$. 
+CHR$ FUNCTION 
+The CHR$ function is used to generate a 
+single character string by converting the deci-
+mal value of its argument to ASCII. For 
+example, CHR$(193) would result in the 
+string "A." This string function replaces the 
+old CHR function. 
+STRING LITERALS 
+The string literal is just like the old text in 
+a PRINT statement: either single or dOUble 
+quotes enclOSing the characters that form the 
+string. For example, "THIS STRING" or 
+'ABCD $ 44.' 
+
+--- Page 5 ---
+LLI 277 
+DCB 
+L"MB 
+CAL EVALS 
+CAL FPFTX 
+LLI 124 
+LAM 
+LLI 020 
+LHI045 
+CAL CONCT1 
+LLI017 
+LMI001 
+CAL CLESYM 
+LLI277 
+LBM 
+INB 
+LLI371 
+LMB 
+JMP FSEVAL 
+SEVAL6, 
+CPI250 
+JFZ SEVA13 
+LLI371 
+LDM 
+IND 
+LLI377 
+LEM 
+CAL PARNB 
+LLI 372 
+LMB 
+DCL 
+LBM 
+INB 
+LLB 
+LAM 
+CPI272 
+JFZ SEVA16 
+LLI 373 
+LMB 
+JMP SEVA10 
+SEVA16, 
+LLI 373 
+LMB 
+SEVAL7, 
+LLI 373 
+CAL GETCHR 
+CPl 272 
+,TFZ SEVAL8 
+LLI371 
+LBM 
+INB 
+Load L with address of end of EV AL pointer 
+Subtract 1 from pointer to balance parenthesis 
+Put pointer just before to halance parenthesis end pntr 
+Evaluate numeric expression he tween parenthesis 
+Convert the FP ACC to fixed point 
+Load L with address of FPACC LSW 
+Get fixed byte 
+Load L with address of STRACC 
+$$ Load H with STRING PAGE 
+Concat new fixed hyte to STRACC 
+Load L with address of ~OCANCAT flag 
+Set NOCANCAT flag so SEV AL does not concat 
+Clear the symbol 
+Load L with addrpss of EV AL end pointer 
+Add one to it 
+Load L with address of SEV AL pointer 
+Store 1 + end of EV AL pointer there 
+Continue with string evaluation 
+Is character a "(" ? 
+If not, keep looking 
+Load L with address of SEV AL pointer 
+Load D with pointer to "(" 
+Add 1 to skip over "( ,. 
+Load L with address of end of SEV AL pointer 
+Load E with end of SEVAL pointer 
+Balance paren thesis 
+Load L with address of end of PARENTHESIS pointer 
+Store pointer to balancing parenthesis there 
+Point to SEVAL pointer 
+Add 1 to SE\' AL pointer 
+Point to SEVAL pointer +1 after "(" 
+Get character just after" (" 
+Test if it is a colon":" 
+If not colon, keep looking 
+Load L with address of COLON pointer 
+Store pointer to ":" in COLON pointer 
+Continue to test for substring 
+Load L with address of COLON pointer 
+Store pointer to just after "(" in COLON pointer 
+Load L with address of COLON pointer 
+Get character pointed to hy COLON pointer 
+Is character a colon":" ? 
+If not, keep looking 
+Load L with address of SEV AL pointer 
+Add 1 to SEVAL pointer 
+- 10 -
+
+--- Page 6 ---
+LLI 276 
+LMB 
+LLI373 
+LBM 
+DCB 
+LLI 277 
+Ll\TR 
+CAL EVALS 
+CAL FpJ.'TX 
+LLI 121 
+LAM 
+LLIOOJ 
+LHI04;1 
+LMA 
+JMP SEVA10 
+SEVAL8, 
+LL1373 
+SEVAL9, 
+SEVA10, 
+CAL S2LOOP 
+,JFZ SEVAL7 
+LLI 371 
+LBl\I 
+I.l\B 
+INT. 
+LCi\T 
+DeC 
+LLI 276 
+LMB 
+INL 
+LMC 
+CAL EVALS 
+CAL FPFIX 
+LLI 124 
+LAM 
+LLTOOl 
+U-1I 0,t5 
+LMA 
+LLT ;172 
+LHI026 
+i ,Rl\l 
+LLI 371 
+L;\lB 
+,IMP FSEVAL 
+LLI 373 
+Lf-Il 026 
+LBM 
+INB 
+INL 
+Ll\1B 
+Load L with address of st<Jrt of EVAL pointer 
+Store SEV AL pointer in start of EV AL pointer 
+Load L with address of COLON pointer 
+Subtract 1 from COLON p(jinter 
+Load L with address of ('nd of EV AL pointer 
+Store pointer to just bdore " :" in end EV AL 
+Evaluate expression bpt wpcn H(" and ":" 
+Fix floating point value of expression 
+Load L with address of LSW of FPACC 
+Get fixed byte 
+Load L with address of SV A R SUBSCRIPT 
+$$ Load H with STRING pa['f' 
+Store subscript in SV AR 
+Continup subscripted suhstringing 
+Load L with address of COLO~ pointer 
+Loop until before "(" 
+Continueifnotdone 
+Load L with address of SEV,\L pointer 
+Add 1 to SEV AL pointpr 
+Pointer to balance PARENTHESIS pointer 
+Suhtract 1 from PARENTHESIS pointer 
+Load L with address of start of EV AL pointer 
+Start EV AL after "(" 
+Finish EV AL pointer 
+Finish EV AL before ")" 
+Evaluatp subscript bf'twpen "(" and ")" 
+Convprt subscript to fixed hytf' 
+Load 1, with addrpss of fixed hvte 
+Get it 
+Load L with address of SV A R Sl TBSCRIPT 
+$$ Load H with ;;;ring page 
+Put subscript there 
+Load L with address of BAL PARN pntr 
+** Load H with pointer page 
+Get pointer to BAL P ARN 
+Load L with address of SEV AL pointer 
+But BAL PARN pointer there to skip over subscript 
+Continue with string evaluation 
+Load L with address of COLON pointer 
+* * Load H with pointer page 
+Add 1 to COLON pointer 
+SEMICOLON pointer 
+Start looking for ";" aftPr ":" 
+. 11 . 
+
+--- Page 7 ---
+--------~=-=-,-------., 
+FV,\ J.UATE EXPRESSION AFTER 
+( AND BEFORE: (THIS IS SUB-
+SCRIPT ON STRING ARRA Y WITH 
+SUBSCRIPTING) STORE IN SVAR 
+INITIALIZE SEMICOLON 
+POINTER TO FIRST CHARACTER 
+AFTER COLON 
+YES 
+NO 
+EVALUATE NUMERIC 
+EXPRESSION BETWEEN":" AND 
+";" CONVERT TO FIXED POINT 
+AND STORE IN SUBSTRING PNTR 
+EVALUATE EXPRESSION 
+BETWEEN ";" AND ")" CONVERT 
+TO FIXED, STORE IN 
+SUBSTRING LENGTH 
+---T 
+SET STRING SCAN POINTER TO I 
+SKIP OVER PARENTHESIS 
+- 12 -
+
+--- Page 8 ---
+SEVAll, 
+LLI374 
+CALGETCHR 
+CPI273 
+JFZ SEVA12 
+LLI 373 
+LBM 
+INB 
+INL 
+LCM 
+DCC 
+LLI276 
+LMB 
+INL 
+LMC 
+CAL EVALS 
+CAL FPFIX 
+LLI 124 
+LAM 
+LLI 002 
+LHI045 
+LMA 
+LLI374 
+LHI026 
+LBM 
+INB 
+LLI 372 
+LCM 
+DCC 
+LLI 276 
+LMB 
+INL 
+LMC 
+CAL EVALS 
+CAL FPFIX 
+LLI 124 
+LMI 
+LLI003 
+LHI045 
+LMA 
+LLI372 
+LHI026 
+LBM 
+DCL 
+LMB 
+JMP FSEVAL 
+SEVA12, 
+LLI 374 
+CAL S2LOOP 
+JFZ SEVAll 
+LLI 373 
+LBM 
+Load L with address of SEMICOLON pointer 
+Get character pointed to by SEMICOLON pointer 
+Is character a semicolon CO;" ? 
+If not, keep looking 
+Load L with address of COLON pointer 
+Add 1 to COLON pointer 
+Point to SEMICOLON pointer 
+Subtract 1 from SEMICOLON pointer 
+Load L address at start of EVAL pointer 
+Start EV AL after":" 
+End of EV AL pointer 
+End EV AL before";" 
+Evaluate SUBSTR pointer between ":" and ";" 
+Convert it to fixed 
+Load L address of fixed byte 
+Get it 
+Load L with address of SUBSTR pointer 
+$$ Load H with string page 
+Put SUBSTR pointer there 
+Load L with address of SEMICOLON pointer 
+* * Load H with pointer page 
+Add 1 to SEMICOLON pointer 
+Load L address to BAL P ARN pointer 
+Subtract 1 from BAL P ARN pointer 
+Load L with start of EV AL pointer 
+Start EV AL just after";" 
+Finish EV AL pointer 
+Finish EV AL before ")" 
+Evaluate substring length 
+Convert it to fixed byte 
+Load L with address of FIXED byte 
+Get it 
+Load L with address of SUBSTR length 
+$$ Load H with STRING p~ge 
+Put SUBSTR length there 
+Load L with address of BAL P ARN pointer 
+** Load H with pointer page 
+Get BAL P ARN pointer 
+SEV AL pointer 
+Put BAL PARN pointer there to skip over ( .. ) 
+Continue to evaluate string expression 
+Load L with address of SEMICOLON pointer 
+Loop until just before ")" 
+If not done, continue 
+Load L with address of COLON pointer 
+Add 1 to COLON pointer 
+- 13 -
+
+--- Page 9 ---
+EV ALUATE EXPRESSION 
+BETWEEN ":" AND ")." CONVERT 
+TO FIXED AND STORE IN 
+SUBSTRING POINTER 
+PUT -1 IN SUBSTRING LENGTH 
+TO INDICATE ENTIRE STRING 
+SET STR [NO SCAN POINTER TO 
+SKIP OVER PARENTHESIS 
+YES 
+IS 
+NO 
+.--__ E'=----< CHARACTER "+" 
+CALL CONC\T SUBROUTINE TO 
+CON(;ATENATE STRING 
+REFERENCED IN SVAR, 
+SUBSTRING IN SUBSTRING 
+POINTER ONTO STR ACC 
+- 14 -
+
+--- Page 10 ---
+INB 
+DCL 
+LCM 
+pee 
+LLI 276 
+T,l\IB 
+1:\i L 
+UvlC 
+CAL EVALS 
+CAL FPFIX 
+LLI 124 
+LAM 
+LLI 002 
+LHI045 
+Ll\IA 
+TNL 
+LMI377 
+LLI372 
+LHI026 
+LBM 
+DCL 
+LMB 
+JMP FSEVAL 
+SEV A13. 
+cpr 253 
+JFZ SEVA14 
+LLI 017 
+LHI045 
+LAM 
+LMIOOO 
+NDA 
+CTZ CONCAT 
+JMP FSEVAL 
+SEVA14, 
+LLI 371 
+LBl\1 
+LLI 200 
+LMB 
+CAL LTEQGT 
+LLJ 176 
+LBM 
+INB 
+DCB 
+JTZ SEVA15 
+LAB 
+SUI 010 
+LLI 004 
+LHI045 
+Ll\lA 
+LLI 017 
+LAI\I 
+BAL P ARN pointer 
+Su btract 1 from BAL P ARN pointer 
+Load L with start of EV AL pointer 
+Start EVAL after":" 
+Finish EV AL pointer 
+Finish EV AL before 'T' 
+Evaluate between":" and")" 
+Fix SUBSTR pointer to byte 
+Load L with address of fixed hyte 
+Gpt it 
+Load L with address of SUBSTR pointer 
+$$ Load H with STRING page 
+Pu t SUBSTR pointer there 
+SUBSTR length 
+Put -1 in SUBSTR jpngth for whole string 
+Load L with address of BA L PARN pointer 
+** Load H with pointer page 
+Get BAL P ARN pointer 
+SEV AL pointer 
+Put BAL PARN pointer in SEV AL pointer, skip ( .. ) 
+Continue with string evaluation 
+Is character a "+" (concatenate operation)? 
+If not, keep looking 
+Load L with address of NOCANCAT flag 
+$$ Load H with STRING page 
+Get NOCONCAT flag 
+Reset NOCONCAT flag 
+Is NOCONCAT flag set? 
+If not, concatenate latest string 
+Continue with string evnluation 
+Load L v\lith address of SEV AL pointer 
+Get SEV AL pointer 
+Load L with address of EV AL pointer 
+Put SEV AL pointer there 
+Test for comparison operations 
+Load L with address of PARSE pointer 
+Get token to tell if found comparison operation 
+Exercise B to see if found operation 
+If no operation found. concatenate scan character 
+Get TOKEN into A 
+Subtract 8 from TOKEN 
+Load L with address of 8TH I;\.'G TOKEN 
+$$ Load H with STRING page 
+Put STRING TOKEN there 
+Load L with address of NOCANCAT flag 
+Get NOCANCAT flag 
+- 15 -
+
+--- Page 11 ---
+(0 
+CALL SPECIAL LTEQGT 
+SUBROUTINE TO TEST FOR 
+<, = ,> , <. =, "> =, <. "> 
+YES 
+NO 
+c--_ 
+SUBTRACT 10 (OCTAL) FROM 
+NORMAL TOKEN VALUE AND 
+STORE IN STRTOKEN 
+NO 
+WAS 
+IT SET 
+YES 
+CALL CONCAT SUBROUTINE TO 
+CONCATENATE LAST STRING 
+ONTO STR ACCUMULATOR 
+SA VE STRING ACC IN STRING 
+COMPARISON STRING AND 
+CLEAR STRING ACC 
+TEST TI' ,\ T END OF STRING 
+EVAL END POINTER 
+- 16 -
+
+--- Page 12 ---
+LMIOOO 
+NDA 
+CTZ CONCAT 
+LHI045 
+LLI 020 
+LDH 
+LEI 140 
+CAL MOVEC 
+LLI 020 
+L1VII 000 
+LLI 200 
+LHI026 
+LBM 
+LLI 371 
+L]\IB 
+JMP FSEVAL 
+SEVA15, 
+CAL CONCTS 
+FSEVAL, 
+LLI 371 
+LHI026 
+CAL SELOOP 
+JFZ SEVALI 
+LLI 017 
+LHI045 
+LAM 
+NDA 
+CTZ CONCAT 
+LLI 376 
+LHI026 
+LBM 
+INL 
+LCM 
+LLI27G 
+LMB 
+INL 
+LMC 
+LLI 004 
+UII 045 
+LAM 
+NDA 
+RTZ 
+LLI375 
+LHI02G 
+LM1000 
+LU 140 
+Ll-II 045 
+LDH 
+LEI 020 
+CPIOOl 
+JFZ 81'C1 
+Reset NOCANCAT flag 
+Test NOCANCAT flag 
+If not set, concatenate last string on STRACC 
+$$ Load H with STRING page 
+Load L with address of STRACC 
+Load H with STRING page 
+Load L with address of string compare string 
+Save STRACC for later comparison 
+Load L with address of STRACC 
+Clear the STRACC 
+Load L with address of EV AI. pointer 
+* * Load H with pointer page 
+Get EVAL pointer 
+Load L with address of SEV AL pointer 
+Put EV AL pointer there 
+Continue with string evaluation 
+Concatenate character onto symbol 
+Load L with address of SEV AL pointer 
+* * Load H with pointer page 
+Loop until end of string expression 
+If not done, continue 
+Load L with address of NOCANCAT flag 
+$$ Load H with STRING page 
+Get NOCANCAT flag 
+Test NOCANCAT flag 
+If not set, concatenate last string 
+Load L with address of TEMP SEV AL start pointers 
+** Load H with pointer page 
+Get start of EV AL pointer 
+End of SEV AI. pointer 
+Get end of SEV AI. pointer 
+Load L with address of start of EVAL pointer 
+Restore start and end of EVAL pointers 
+Load L with address of STHING TOKEN 
+$$ Load H with STRING page 
+Get STIU:\G TOKEN 
+Is STRING TOKEN O? 
+Return if it is 
+Load L with address of SMODE 
+** Load H with pointer page 
+Set SMODE back to numeric 
+Load L with address of string comparison string 
+$$ Load Hwith STRING page 
+Load D with STRING page 
+Load E with address of STRACC 
+Is STRING TOKEN for LT? 
+If not, try something else 
+- 17 -
+
+--- Page 13 ---
+NO 
+YES 
+SET? 
+CALL CONCAT SUBROUTINE TO 
+CONCATENATE LAST STRING 
+ONTO STRACC 
+RESTORE OLD START AND END 
+OF EV AL POINTERS 
+PERFORM COMPARISON 
+BETWEEN STR ACC AND STR 
+COMPARISON STRING AND 
+RETURN 1.0 OR O. WHICH 
+COMPARISON IS INDICATED 
+BY STRTOKEN 
+- 18 -
+
+--- Page 14 ---
+8TCl, 
+8TC2, 
+STC3. 
+8TC4, 
+8TC5, 
+SELOOP, 
+S2LOOP, 
+CAL SSTRCP 
+LHI 001 
+JIvlP LTI 
+ePI002 
+,JFZ S1'C2 
+CAL 88TRCP 
+LHI 001 
+JMP EQI 
+CPT t103 
+JFZ 3TC3 
+CAL 8STRCP 
+LHIOO1 
+lMP GTJ 
+CPI004 
+JFZ 8TC4 
+CAL SSTRCP 
+un 001 
+J"YIP LEI 
+cpr 005 
+JFZ 8TC5 
+CAL SSTRCP 
+LHIOOI 
+J1VIP GEl 
+CAL 8STRCP 
+LHIOOI 
+JMP NEI 
+LBM 
+INB 
+LMB 
+DeB 
+LLI 377 
+LAM 
+CPE 
+RET 
+LBM 
+INB 
+LMB 
+DCB 
+LLI 3'72 
+LAM 
+SUI 001 
+CPB 
+RET 
+Compare string companson string with STRACC 
+** Load H with floating point page 
+Go to special less than entry point for test 
+Other token matching routines similar to above 
+Add 1 to pointer, test against 
+End of 8EV AL pointer 
+Add :1 to pointer, test against 
+BAL PARN pointer-I 
+·19 -
+
+--- Page 15 ---
+STRING CONCATENATIO'\jS 
+Strings can be concatenated w;:ing the + 
+operator. Concatenation is the joming to-
+gether of two or more strings. For example, 
+"AB" 
++ 
+'CD' 
+forms 
+"ABCD," 
+and 
+A$+R$( 8: 4 )+,,~, forms a string of A$ joined 
+with the fourth character through the end of 
+the eighth elf'ment of B$ and the literal 'Q.' 
+STRING EXPRESSION 
+A string expression is any string variable, 
+string array, string literal, Uf:f' of CHR$ func-
+tion, or any concatenation of these. For 
+example: 
+A$+'THIS' or CHR$(N)+'T'+ 
+W$(D+E :6:J). String expressions are legal in 
+PRINT statements (whf'n they replace the 
+old text strings) and on the right of an = in a 
+LET. 
+STRING LET 
+The string LET statement is similar to the 
+regular LET, and may take two forms: 
+string = string pXTHession 
+or 
+string array = string array expression 
+For example: 
+A$='EXAMPLE' or C$(N)= 
+A$+D$( :3) or 30 LET A$=A$+C$. 
+STRING OUTrUT 
+A string may be output in a PRINT state-
+ment subject to the normal rules for spacing 
+and tabhing along with numeric data. For 
+eXflmple: 
+PRINT 'AB'J'CD' WOllkl 
+print 
+ABCD, or PRINT A$;2*2,B$ would print. A$, 
+then immediately print 4, then tah to the 
+next column and print B$. 
+STRING INPUT 
+Strings or string arrays can be input using 
+the INPUT statemf'nt in the normal fashion. 
+For example: INPUTA$,B$(3),N would print 
+- 2 -
+a ? and ask for the string value of A$, then 
+when the eR was entered, would print 
+another? and ask for B$( 3), and then would 
+finally input N in the normal fashion. Note 
+that this feature replaces the old automatic 
+conversion of A scn input using the $. 
+STR.ING COMPARISON 
+String exprpssions can be compared using 
+the normal comparison operations, such as 
+=, >-, <:, <=,::> =, or <>. If the condition is 
+satisfied, a value of 1.0 is returned as a 
+numeric rp.sult. and 0 is returned otherwise. 
+The comnarison goes character by character 
+until unpqual characters are found, or until all 
+of the characters in the shortest string have 
+been tested. In the former case. the test com-
+parison is made hetween the two unequal 
+characters, and in the latter, the length is uSf'd 
+as the df'ciding factor. 
+ADDITIONAL FUNCTIONS 
+Thrf'e new functions add additional power 
+to the language: 
+LEN( A$): This function rp.turns the length 
+of a string or string array as a dpcimal num-
+ber. For example, if A$ has the value as in the 
+previous example, LEN(A$) returns 5. 
+ASC( A$): This function returns the deci-
+mal value of the first character of the string or 
+string array specified in ASCII. For example, 
+ASC(A$) would return 193, bf'cause A$(:l;l) 
+has a value of "A." 
+v AU AS): This function converts the char-
+acters in the string from an ASCII representa-
+tion of a decimal nUmhf'T to its numeric value. 
+For example, V AL('2') rl'turns 2. 
+These functions should he used only at the 
+beginning of an expression. The arguments of 
+these functions should be either a plain string, 
+such as A$, or a string array subscripted by a 
+regular variable, i.e., B$(J). So LEN(A$) and 
+ASC(C$(N6» would be legal, but LEN(C$(6» 
+and ASC(A$( :2» would not be legal. (The 
+
+--- Page 16 ---
+YES 
+IS 
+NO 
+SUBSTR PNTR 
+=0 ? 
+TEST IF SUBSTRING LENGTH 
+IS EQUAL TO 0 
+NO 
+YES 
+IS IT? 
+CLEAR THE SYMBOL AND 
+LOOK UP THE SVAR BY CALLING 
+SLOOK (RETURNS SPNTR WHICH 
+POINTS TO STRING) 
+=1 ? 
+MOVE STRING LENGTH 
+:>-----IWILL BE STRING LENGTH -
+SUBSTR POINTER + 1 
+MOVE STRING LENGTH WILL 
+BE SUBSTRING LENGTH 
+ADD MOVE STRING LENGTH 
+TO STR ACC CHARACTER COUNT 
+NO 
+- 20 -
+\ 
+BIGERR 
+
+--- Page 17 ---
+SSTRCP, 
+CAL SAVEHL 
+LAM 
+CAL SWITCH 
+LBM 
+CAL S\VITCH 
+CPB 
+JTZ SSTRZ 
+JFS SSTRCL 
+LBA 
+SSTRCL, 
+CAL ADV 
+LAM 
+CAL SWITCH 
+CAL ADV 
+SSTRCE, 
+CPT\1 
+RFZ 
+DCB 
+JFZ SSTRCL 
+CAL RESTHL 
+LA:Vl 
+CAL SWITCH 
+CPM 
+RET 
+SSTRZ, 
+NDA 
+RTZ 
+JMP SSTRCL 
+CON CAT , 
+LHI 045 
+LL1002 
+LAlVl 
+NDA 
+JFZ CO~CTO 
+LM1001 
+CONCTO, 
+LLI 003 
+LAM 
+NDA 
+JTZ CONSAJ 
+CAL CLESY\l 
+CAL SLOOK 
+LLl 005 
+LHI045 
+LDM 
+INL 
+LEM 
+LHD 
+LLE 
+LBM 
+LI-1I 04;) 
+Save H, L, and D, E 
+Get (CC) of first string 
+Point to other string 
+Get (CC) for second string 
+Point to first string 
+Compare lengths 
+If equal, tpst for (") 
+Second is shortest 
+First is shorter 
+:.Jext character 
+Get it 
+Second string 
+Next character 
+Compare eharacters 
+Return if less than or greater than 
+Decrement (CC) 
+Contlnue if not () 
+Originate strings 
+FiN (ee) 
+Second string 
+Compare lengths 
+Is length =-' 0'1 
+Return if it is 
+OtlWl"WiSe, as normal 
+s:~ .Load H with STRING page 
+Load L with address of SUBSTR pointer 
+Gee SUBSTR pointer 
+Is SlTBSTR pointer C~ O? 
+If not. continue 
+Replace 0 with 1 
+Load L with address of SUBSTR length 
+Get SUBSTR length 
+Is SLTBSTR length == O? 
+If so, don't concatenate 
+Clear 
+Look:p SV AR in STRTAB 
+Load L wjth address of SPNTR 
+$$ Luad H with STRI:\G page 
+Load SPI\TR in D and E 
+Put SPSTR in If ,md L 
+To po~nt to (CC) of string 
+Get uL~.lial1ength of string from (CC) 
+$S L';;:Hi d \",ith STRING page 
+- 21 . 
+
+--- Page 18 ---
+LLI003 
+LAM 
+CPI377 
+JFZ CONCA1 
+LLI 002 
+LAB 
+SUM 
+LBA 
+INB 
+JMP CON SAC 
+CONCA1, 
+LLI 003 
+LBM 
+CONSAC, 
+LLI 020 
+LHI045 
+LAM 
+ADB 
+CPI121 
+JFS BIGERR 
+Load L with address of SUBSTR length 
+Get SUBSTR length 
+Is SUBSTR length = -I? 
+If not, have move length 
+Load L with address of SUBSTR pointer 
+Get string length in accumulator 
+Subtract SUBSTR pointer from string length 
+Put difference in B 
+Subtract 1 to form move string length 
+Continue to concatenate string onto STRACC 
+Load L with address of SUBSTR length 
+The SUBSTR length is move string length 
+Load L with address of STRACC 
+$$ Load H with STRING page 
+Get (CC) of STRACC 
+Add move string length to it 
+Compare new length with 81 decimal 
+If new length greater than 80, BG error 
+SET UP POINTERS FOR MOVE 
+NO 
+IS MOVE 
+YES 
+STRLENGTH 
+=0 ? 
+MOVE STRING FROM STRING 
+STORAGE TO CONCATENATE 
+ONTO THE STRING Ace 
+r----------~~----r------~E(~-~~----~ 
+SET THE SUBSTRING POINTER 
+TO 1 AND SUBSTRING LENGTH 
+TO -1 FOR NEXT STRING 
+8 
+- 22 -
+
+--- Page 19 ---
+LCA 
+LAM 
+LMC 
+ADI021 
+LCA 
+LLI005 
+LDM 
+INL 
+LAM 
+LLI 002 
+ADM 
+LEA 
+LAD 
+ACIOOO 
+LDA 
+LHD 
+LLE 
+LDI045 
+LEC 
+INB 
+DCB 
+LAA 
+CFZ MOVEPG 
+CONSAl, 
+LLI 002 
+LHI045 
+LMIOOI 
+INL 
+LMI377 
+RET 
+SLOOK, 
+LLI 013 
+LHI045 
+LCM 
+LLI 260 
+LDM 
+LEI 000 
+INC 
+DCC 
+JTZ SLOOK3 
+SLOOKl, 
+LLE 
+LHD 
+LAM 
+LLI 000 
+LHI045 
+CPM 
+JFZ SLOOK2 
+LLE 
+LHD 
+INL 
+Save new lpngth in C 
+Get old lendh in A 
+Put new length back in STRACC (CC) 
+Add address to STRACC+ 1 to get new address 
+Store addrpss for move in C temporarily 
+Load L with address of SPNTR 
+Get high part of SPNTR in D 
+Low part of SPNTR 
+Get low part of SPNTR in A 
+Load L with address of SUBSTR pointer 
+Add SUBSTR length to SPNTR low byte 
+Save sum in E 
+Get high part SPNTR in A 
+Add carry to high SPNTR 
+Save it in D 
+Put sum in Hand L to point to character string 
+First character after string (CC) 
+$$ Load D with STRING page 
+Put address of end of STRACC in E 
+Exercise B, test to see if zero 
+If len grtr or less than 0, wncat SUBSTR onto STRACC 
+Load L with address of Sl:BSTR pointer 
+$$ Load H with STRI~G page 
+Re-initialize SUBSTR pointer to 1. next string 
+SUBSTR length 
+Re-initialize SUBSTR length to -1, hold next string· 
+Return to caller 
+Load L with address of NUMSTR 
+$$ Load H with STRING page 
+Put NUMSTR in C 
+Load L with address of pointer to STRT AB 
+Load D page of STRTAB 
+Load E with address of start of STRT AB 
+Exercise C to test if zero 
+If equal, no strings exist. create new 
+Put pointer to STRT AB in Hand L 
+Get string name in STRTAB 
+Load L with address of SV AR name 
+$$ Load H with STRING page 
+Compare SV AR name to STR TAB 
+If not equal, keep looking for SV AR 
+Put pointer in Hand L 
+Point to STRTAB subscript 
+- 23 -
+
+--- Page 20 ---
+LOOK FOR SVAR NAME, 
+SUBSCRIPT COMBINATION IN 
+STRING TABLE 
+NO 
+NO 
+YES 
+FOUND IT? 
+INCREMENT NUMSTR 
+I 
+G REA TER THAN 
+64 (DECIMAL) 
+YES 
+PUT NAME AND SUBSCRIPT 
+IN STRING TABLE 
+PUT END 0 F STR POINTER IN 
+STRING TABLE CORRESPONDING 
+NEWEST ENTRY (ALSO PUT IN 
+SPNTR) 
+INCREMENT ENDSTR POINTER 
+AND PUT 0 THERE 
+FOR NULL STRING 
+- 24 -
+PUT POINTER FROM 
+STRING TABLE 
+IN SPNTR 
+
+--- Page 21 ---
+LAM 
+LLIOO] 
+LHI045 
+CPM 
+,JFZ SLOt IK2 
+LLE 
+LHD 
+INL 
+LIU 045 
+LMB 
+INL 
+LMC 
+LHB 
+LLC 
+LMI (lOa 
+LCIOOO 
+RET 
+PARNB, 
+L~I 001 
+un 02 1) 
+LLD 
+INE 
+PARNB1, 
+LAM 
+CPT 250 
+JFZ PARNB2 
+INC 
+JMP PARNB3 
+PARNB2, 
+cpr 251 
+,IF?: PARNB3 
+Dec 
+PARNB3, 
+INC 
+DCC 
+LBL 
+RTZ 
+INL 
+LAL 
+ePE 
+JFZ PARNB1 
+JMPPARNER 
+EVALPC, 
+LLI 375 
+LHI 026 
+LMIOOO 
+EVALS, 
+ILI227 
+LHI001 
+JMP EVAJ,Q 
+Gf't STRTAB subscript 
+Load L with address of SV AR subscript 
+$$ Load H with STRING page 
+Compare STRT AB subscript with SV AR subscript 
+If not equal, keep looking 
+Put pointer in Hand T. 
+Add two to L to point '-n high part of pointer 
+$$ Load H with STRINn pFlge 
+Store new end of strin!! lwclc 
+Put new ENDSTR in Hand L 
+Put 0 at location pointed to hy end of string 
+a in C indicates new strin(; 
+Return to caller 
+Initialize C to first PARENTHESIS 
+* * Load H with pointer page 
+Pu t start location in L 
+Add 1 to finish location 
+Get character 
+Is it "(" ? 
+If not, keep looking 
+Increase PAREN counter 
+Continue 
+Is ch aracter ")" ? 
+If not, keep looking 
+Decrement P AREN co un ter 
+Exercise C to test if a 
+Put pointer in B 
+Return if parentheses balanced 
+Point to next character 
+Get new pointer 
+Test if limit 
+If not, keep trying 
+If no balance, "1(" error 
+I,oFld L with address of SMODE 
+'" * Load H with pointer page 
+Initialize SMODE to numeric 
+LO;ld L with address of ARTH SP 
+** Load H with FP page 
+Continue evaluation 
+- 25-
+
+--- Page 22 ---
+SET STRING MODE FLAG 
+TO INDICATE NUMERIC (0) 
+~VALS~------------------~ 
+EVAL AS NORMAL EXCEPT 
+FOR FOLLOWING CHANGES 
+CONTINUE WITH EV AL EXCEPT 
+TEST FOR EQUALITY OR 
+INEQUALITIES USING 
+LTEQGT SUBROUTINE 
+NO 
+IS CHAR 
+YES 
+<,=, > ETC. 
+NO 
+IS CHAR 
+YES 
+PROCESS 
+AS 
+NORMAL 
+$ OR 'OR" 
+>-------------~SEVAL 
+- 26 -
+
+--- Page 23 ---
+SCANCP, 
+CPT 244 
+JTZ SEVAL 
+CPI247 
+JTZ SEVAL 
+CPI242 
+JTZ SEVAL 
+CAL LTEQGT 
+LLl176 
+LBM 
+INB 
+DCB 
+JFZ SCANFN 
+JMP SCAN16 
+LTEQGT, 
+LLI 176 
+LMIOOO 
+JMP SCAN9 
+INL 
+LDM 
+INL 
+LEM 
+LLI 005 
+LHI045 
+LMD 
+INL 
+LME 
+RET 
+SLOOK2, 
+LAE 
+ADIOU4 
+LEA 
+DCC 
+JFZ SLOOK1 
+SLOOK3, 
+LLI013 
+LHI045 
+LBM 
+INB 
+LMB 
+LAB 
+CPl101 
+JFS BIGERR 
+LLI noo 
+LAM 
+LHD 
+LLE 
+LMA 
+LLI 001 
+LHI045 
+LA\f 
+LHD 
+Is character "$" ? 
+Must he string 
+Is character single quote (') ? 
+Must be string 
+Is character double quote (") ? 
+Must be string 
+Test for inequalities 
+Load L with address of TOKEN 
+Get TOKEN 
+Exercise B to test if a 
+If token 0, no comparison operation found 
+Found a comparison operation 
+Load L with address of TOKEN 
+Initialize TOKEN to a for LTEQGT subroutine 
+Use modified part of old EV AL to check 
+To string corresponding to this name 
+Get STRING pointer in D and E 
+Load L with address of SPNTR 
+$$ Load H with STRING page 
+Store D and E in SPNTR 
+Return to caller 
+Get low part of pointer in accumulator 
+Add 4 to pointer to point to next string 
+Restore pointer in E 
+Decrement counter 
+Continue if more strings to go 
+Load L with address of NUMSTR 
+$$ Load H with STRING page 
+Add 1 to NUMSTR for new string 
+Get new NUMSTR in accumulator 
+Compare with limit of number of strings 
+If too many, BG 
+Load L with address of BV AR name 
+Get SV AR name in accumulator 
+Put pointer in Hand L 
+Put SV AR name in string name for new string 
+Load L with address of SV AR subscript 
+$$ Load H with STRING page 
+Get SV AR subscript 
+Put pointer to STRTAB in Hand L 
+- 27 -
+
+--- Page 24 ---
+LLE 
+INL 
+LMA 
+LLI015 
+LHI045 
+LBM 
+INL 
+LCM 
+LLI 005 
+LMB 
+INL 
+LMC 
+LHD 
+LLE 
+INL 
+INL 
+LMB 
+INL 
+LMC 
+LAC 
+ADI001 
+LCA 
+LAB 
+ACIOOO 
+LBA 
+LLI015 
+STERR, 
+LAI 323 
+LCI324 
+JMP ERROR 
+IQERR, 
+LAI311 
+LCI321 
+JMP ERROR 
+STORP, 
+LLI375 
+LHI026 
+LAM 
+NDA 
+LLI201 
+LHI027 
+JTZ STORP1 
+Next byte for STRTAB subscript 
+Store SV AR subscript in STR TAB 
+Load L with address of ENDSTR 
+$$ Load H with STRING page 
+Get ENDSTR in Band C 
+Load L with address of SPNTR 
+Store ENDSTR in SPNTR since this new string 
+Put pointer to STRTAB in Hand L 
+Add 2 to H and L to point to STRING pointer 
+Store ENDSTR in pointer in STRTAB 
+Get low part ENDSTR in C 
+Add 1 to it 
+Restore 
+Get high part 
+Add carry 
+Restore 
+Load L with address of ENDSTR 
+Load L with address of SMODE 
+* * Load H with pointer page 
+Get SMODE flag into accumulator 
+Test SMODE flag 
+Load L with address of ARRAY flag 
+* * Load H with page of ARRAY flag 
+If SMODE flag is numeric, regular store 
+- 28-
+
+--- Page 25 ---
+NO 
+IS 
+YES 
+~--~~----~ SMODESETTO 
+STR? 
+e 
+rCONTINUE WITH STOSYM 
+L 
+AS NORMAL 
+NO 
+WAS 
+IT SET 
+IS IT? 
+YES 
+PUT THE STRING NAME IN 
+TSV AR NAME AND 1 IN 
+SV AR SUBSCRIPT 
+MOVE TEMPORARY STRING 
+VARIABLE (TSV AR) NAME AND 
+SUBSCRIPT TO SV AR AND 
+CALL SLOOK 
+- 29 -
+l 
+
+--- Page 26 ---
+reason for this restriction is that on an 8008 
+system using a function like LEN(A$(6» 
+pushes the PC stack down more than 8 levels. 
+An 8080 system would not have this probl-
+lem.) 
+TRANSLATION FROM OTHER BASIC'S 
+Programs written for other BASIC's can 
+probably be translated to SCELBAL with 
+strings as follows: 
+RIGHT$(A$,N) becomes A$( :N) 
+LEFT$(A$,N) becomes A$(:l;N) 
+MID$( A$,N ,J) becomes A$( :N ;J) 
+The reason this format was chosen over the 
+normal 
+"function 
+format" 
+is 
+that 
+the 
+SCELBAL notation is more concise and re-
+quires less memory to implement. 
+IMPLEMENTING STRING HANDLING 
+CAP ABILITIES 
+In order to implement the string extension 
+to SCELBAL, the EV AL routine has to be 
+modified to recognize a string expression and 
+evaluate it. A flag, SMODE, tells if the result 
+of an expression is string or numeric. Also, 
+the STOSYM and ARRAY routines have to 
+be modified in order to store string values 
+properly. Additionally, the SCR command 
+must initialize the strings properly, and the 
+PRINT and INPUT statements have to be 
+changed slightly to accommodate strings. 
+If EV AL encounters a ' or " or $, it 
+assumes the expression is a string expression, 
+so it starts over at a routine called SEV AL. 
+The SEVAL routine must save some of the in-
+formation used in the EV AL routine (such as 
+the starting and stopping positions of the 
+evaluation) since the SEVAL routine is a 
+recursive routine, i.e., it calls itself. The 
+reason it must do this is because a string 
+expression may contain a numeric expression 
+that must be evaluated, as in A$(N+3*J:N;J). 
+- 3 -
+This section of SEV AL also initializes a 
+special STRing ACCumulator where strings 
+are built up. 
+The SEV AL routine concatenates the text 
+literals as they appear, and sets a no-con-
+catenate flag to inform other routines that 
+nothing else has to be done at that point. 
+Strings and string arrays require four bytes 
+of information before they can be con-
+catenated onto the STRACC by the CON CAT 
+routine. First is the name of the string, a 
+single letter. Next is the subscript (remember 
+that if no subscript is present, 1 is assumed). 
+Then the pointer to the starting dlaracter in 
+the substring, known as the SUBSTR PNTR. 
+This is originally initialized to 1 so if no 
+SUBSTR PNTR is present in a string, the first 
+character is assumed. 
+The last byte needed is the substring length 
+(SUBSTR LEN) which tells how long the sub-
+string should be. If the entire substring is 
+desired, as in the case of A$( :N) or just A$, 
+SUBSTR LEN is set to -I. This information is 
+found when SEV AL encounters the $ and the 
+(. 
+When the + sign is encountered in a string 
+expression, the no-concatenate flag is tested 
+to find out if anything needs to be done. If a 
+string literal or CHR$ function has not 
+already concatenated something onto the 
+STRACC, the CONCAT routine is called to 
+concatenate the appropriate string as indi-
+cated by the name, subscript, substring 
+pointer, and substring length. It starts by 
+looking up the string in a table of string 
+names and subscripts using a routine labeled 
+SLOCK. The SLOOK routine finds the String 
+Variable (SVAR) name and subscript com-
+bination and returns a corresponding pointer 
+indicating where the string is stored to a loca-
+tion known as SPNTR. The CONCAT routine 
+then uses the information in the SUBSTR 
+PNTR and SUBSTR LEN to concatenate the 
+appropriate substring onto the string accumu-
+lator. The OONCAT routine is also called at 
+the end of the SEV AL routine to concatenate 
+the last string onto the STRACC. 
+
+--- Page 27 ---
+SSTOR, 
+LAM 
+Get ARRAY flag into accumulator 
+LMIOOO 
+Reset ARRAY flag 
+NDA 
+Test ARRAY flag 
+JFZ SSTOR1 
+If ARRAY flag set, already have TSV AR 
+LLI 120 
+Load L with address of SYMBOL 
+LHI026 
+* * Load H with pointer page 
+LAM 
+Get length of SYMBOL 
+CPI002 
+Is length 2 for letter-$ combination? 
+JFZ STERR 
+If not, have string error 
+ADL 
+Add address to point to last character 
+LLA 
+Point to last character in SYMBOL 
+LAM 
+Get last character of SYMBOL into accumulator 
+CP1244 
+Is last character a dollar sign ($) ? 
+JFZ STERR 
+If not, STring ERRor 
+DCL 
+Point to string name in SYl\IBOL 
+LAM 
+Get string name 
+LLI 261 
+Load L with address of TSV AR name 
+LH1045 
+$$ Load H with STRING page 
+LMA 
+Put string name in TSVAR name 
+INL 
+Point to TSVAR subscript 
+LM1001 
+Put 1 in TSV AR subscript 
+SSTOR1, 
+LLI 261 
+Load L with address of TSVAR name 
+LHI045 
+$$ Load H with STRING page 
+LDM 
+Load TSV AR name and subscript in D and E 
+INL 
+LEM 
+LLI 000 
+Load L with address of SV AR name 
+LMD 
+Store TSV AR in SV AR 
+INL 
+LME 
+CAL SLOOK 
+Look up string to be stored 
+LAC 
+Get accumulator into C to tell if string is new 
+NDA 
+Test if C was 0, meaning string is new 
+JFZ SSTOR8 
+If string is not new, continue below 
+LLI 016 
+Load L with address of low part of ENDSTR 
+LH1045 
+$$ Load H with STRING page 
+LAM 
+Get low part of ENDSTR in accumulator 
+SUI 001 
+Subtract 1 from low part of ENDSTR 
+LMA 
+Restore to ENDSTR 
+DCL 
+Point to high part of ENDSTR 
+LAM 
+Get high part of ENDSTR in accumulator 
+SBIOOO 
+Subtract carry from high part of ENDSTR 
+LMA 
+Restore in ENDSTR 
+JMP SSTOR3 
+Avoid modifying pointers since new string 
+SSTOR8, 
+LLI 005 
+Load L with address of SPNTR 
+LHI045 
+$$ Load H with STRING page 
+LDM 
+Get SPNTR into D and E 
+INL 
+LEM 
+- 30 -
+
+--- Page 28 ---
+I~ 
+I 
+REPLACE POINTER IN STRING 
+T ABLE WITH ENDSTR 
+NO 
+IS 
+YES 
+THE STRING 
+NEW? 
+-----::L--::-::-::-----:::----, 
+SUBTRACT LENGTH OF OLD 
+STRING + 1 FROM ENDSTR 
+~---
+.--,------~ 
+MOVE BYTE FROM SPNTR AND 
+LENGTH OF OLD STRING +1 
+TO SPNTR 
+NO 
+IS 
+YES 
+SPNTR ~ ENDSTR '>-________ 
+~ 
+~EMENTPOINTE!D 
+~ 
+SET UP POINTER & CO UNTER 
+TO STRING TABLE & NUMSTR 
+TEST IF POINTER VALUE IN 
+STRING TABLE IS 
+LESS THAN SPNTR 
+NO 
+YES 
+IS IT? 
+NO 
+SUBTRACT STRING LENGTH +1 
+FROM POINTER IN TABLE 
+---- -----------
+ADD 4 TO POINTER TO POINT 
+TO NEXT ENTRY IN STRING TBL 
+I 
+[DECRE~-COUNTERl 
+___ _... 
+YES 
+IS rOUNTER ~O?,,->-·-------< 
+---
+------
+~------
+- 31 -
+
+--- Page 29 ---
+LHD 
+LLE 
+LCM 
+LLI 007 
+LHI045 
+LMC 
+IT\C 
+LLI uI6 
+L,\1\1 
+sIre 
+L\IA 
+Del. 
+LAM 
+SRI 000 
+L0.IA 
+SSTOR2, 
+LAE 
+ADC 
+L1,A 
+LAD 
+ACIOOO 
+LHA 
+LBM 
+LLE 
+LHD 
+LMB 
+LLI 015 
+LHI045 
+LAD 
+CPM 
+JFZ SSTOR9 
+INL 
+LAE 
+CPM 
+JTZ SSTORO 
+SSTOR9, 
+CAL ADVDE 
+JMP SSTOR2 
+SSTORO, 
+LLI 005 
+LHI045 
+LDM 
+INL 
+LEM 
+LLI 013 
+LBM 
+LLI 260 
+LHM 
+LLI 002 
+SSTOR4, 
+LAM 
+CPD 
+Put SPNTR into Hand L to point to (CC) of 
+Old string value 
+Get old length into register C 
+Load L with address of string length 
+$$ Load H with STRING page 
+Store string length there 
+Add 1 to length of old string 
+Load L with address of low part of ENDSTR 
+Get low part of ENDSTR 
+Subtract string length +1 from ENDSTR 
+Restore low byte to ENDSTR 
+Point to high byte of ENDSTR 
+Get high byte into accumulator 
+Subtract carry from high byte of ENDSTR 
+Restore high byte to ENDSTR 
+Get low part of SPNTR into accumulator 
+Add string length +1 to SPNTR 
+Point to SPNTR + length + 1 
+Get high part of SPNTR into accumulator 
+Add carry to it 
+Point to high part 
+Get byte of other string to be moved 
+Put SPl\TR in Hand L 
+Store byte at new location 
+Load L with address of ENDSTR 
+$$ Load H with STRING page 
+Get high part of SPNTR into accumulator 
+Compare with high part of ENDSTR 
+If not same, keep moving bytes 
+Point to low part of ENDSTR 
+Get low part of SPNTR into accumulator 
+Compare low part of SPNTR with ENDSTR 
+If SPNTR = ENDSTR, done moving strings 
+Add 1 to SPNTR in D and E 
+Keep moving strings 
+Load L with address of original SPNTR 
+$$ Load H with STRING page 
+Get original SPNTR in D and E 
+Load L with address of NUMSTR 
+Load B with NUMSTR for counter 
+Load L with address of pointer to STR T AB 
+Get page of STRTAB 
+Load L with address of pointers in STRTAB 
+Get high part of pointer in STRTAB 
+Compare with high part of SPNTR 
+32 -
+
+--- Page 30 ---
+JTZ SSTOR5 
+JTS SSTOR7 
+JMP SSTOR6 
+SSTOR5, 
+INL 
+LAM 
+DCL 
+ePE 
+,fTC SSTOR7 
+,IFZ SSTOR6 
+LAL 
+LLI 263 
+LHI045 
+LMB 
+INL 
+LMC 
+LLI015 
+LBM 
+INL 
+LCM 
+LLI 260 
+LHM 
+LI,A 
+LMB 
+INL 
+LMC 
+LLI 263 
+un 045 
+LBM 
+INL 
+LCM 
+LLI 260 
+LHM 
+LLA 
+JMP SSTOR 7 
+. SSTOR6, 
+INL 
+LAM 
+SllC 
+LMA 
+DCL 
+LAM 
+SEl 000 
+LMA 
+SSTOR7, 
+LAL 
+ADI004 
+LLA 
+DCB 
+JFZ SSTOR4 
+If same, have same string - must change pointer 
+If pointer less than SPNTR, don't modify pointer 
+Otherwise, mayor may not he same 
+Point to low part of pointer 
+Get low part of pointer in STRT AB into accumulator 
+Rf'store pointer hack to high part 
+Compare low part of pointer with low part of SPNTR 
+If pointer less than SPNTR, don't modify pointer 
+If pointer (!Teater than SPNTR, modify the pointer 
+Save L register in accumulator temporarily 
+Load L with address of temporary register storage 
+$$ Load H with STRING page 
+Save registers Band C there 
+Load L with address of ENDSTR 
+Load Band C with ENDSTR pointer 
+Load L with address of pointer to STRTAB 
+Point to STRT AB page 
+Restore L to former value 
+Replace STRT AB pointer with ENDSTR 
+Load L with address of temporary register storage 
+$$ Load H with STRING page 
+Restore B and C to former values 
+Load L with address of pointer to STRTAB 
+Point to STRTAB page 
+Restore L to original value 
+Continue to modify STRT AB pointers 
+Point to low part of pointer in STRT AB 
+Get low part of pointer 
+Subtract number of bytes destroyed (length +1) 
+Restore modified pointer in STRTAB 
+Point to high part of pointer in STRT AB 
+Get high part of pointer 
+Subtract carry from high part 
+Restore high part of pointer to STRT AB 
+Get L into accumulator 
+Add 4 to arrive at next pointer in STRTAB 
+Restore pointer with new value 
+Decrement counter of number of strings 
+If not done, go back and modify more 
+- 33 -
+
+--- Page 31 ---
+SSTOR3 
+r---------~-~------~ 
+ADD LENGTH OF STRING 
+ACCUMULATOR +1 TO ENDSTR 
+NO 
+HAS THE 
+YES 
+STRING AREA 
+OVERFLOWED? 
+MOVE STRING ACCUMULATOR 
+TO END OF STRING STORAGE 
+POINTED TO BY OLD ENDSTR 
+PUT A ZERO AT NEW LOCATION 
+POINTED TO BY ENDSTR TO 
+MARK NEW END OF STRING 
+AREA AFTER MOVE 
+RESET SMODE TO NUMERIC (0) 
+SSTOR3, 
+LLI 015 
+LIII 045 
+LDM 
+INL 
+LEM 
+LLI 020 
+LAM 
+ADI001 
+ADE 
+LEA 
+LAD 
+ACIOOO 
+LDA 
+EXIT 
+Load L with address of ENDSTR 
+$$ Load H with STRING page 
+Loan D and E with ENDSTR pointer 
+Load L with address of STRACC 
+Get (CC) of STRACC into accumulator 
+Add 1 to (CC) 
+Add low part of ENDSTR 
+Restore sum in E 
+Get high part of ENDSTR in A 
+Add carlY to high part of ENDSTR 
+Restore value in D 
+- 34 -
+
+--- Page 32 ---
+CPT 045 
+,TTZ BIGERR 
+LLT 015 
+LDM 
+LMA 
+INL 
+LAM 
+Li\TE 
+LEA 
+LLI 020 
+CAL l\10VEC 
+LLI015 
+LHI045 
+LDM 
+INL 
+LEM 
+LHD 
+LLE 
+LMIOOO 
+LLI375 
+LHI026 
+LMIOOO 
+RET 
+PPRINT, 
+LLI 203 
+CAL LOOP 
+JFZ PRINT2 
+JMP PRINT3 
+PPRIN7, 
+LLI 203 
+LDM 
+IND 
+LLI 000 
+LEM 
+CALPARNB 
+LLI 203 
+LMB 
+,JMP PPRINT 
+POtrTSF, 
+LLI 375 
+LHI026 
+LAM 
+NDA 
+JTZ PFPOUT 
+LLi 020 
+LHl 045 
+JMP TEXTC 
+$$ Test against maximum page of string area 
+I [ would cause string to overflow, BG error 
+Load L with address of ENDSTR pointer 
+Get old ENDSTR value in D 
+Store new ENDSTR value back (high) 
+Point to low byte of E~DSTR 
+Get low byte of old ENDSTR 
+Store low byte of new ENDSTR hack 
+Pu t low byte of old ENDSTR in E 
+Load L with address of STRACC 
+,'dove STRACC to end of string area 
+L08d L with address of ENDSTR 
+$$ Load H with STRING page 
+Get ENDSTR pointer into D and E 
+Put ENDSTR pointer into Hand L 
+Put 0 at new location pointed to by ENDSTR 
+Load L with address of SMODE flag 
+"' * Load II with pointer page 
+Reset SMODE to numeric 
+Return to caller 
+Load L with address of PRINT pointer 
+Loop until end of statement 
+If not done, go back 
+Continue as normal with PRINT 
+Load L with address of PRINT pointer 
+Get PRINT pointer in D 
+Add 1 to skip over parentheses 
+Load L with address of (CC) 
+Lao k for parentheses to end of statement 
+Find balancing parentheses to skip unwanted; 
+Load L with address of PRINT pointer 
+Put pointer to balance parentheses there 
+Continue to loop as normal 
+Load L with address of SMODE 
+** Load H with pointer page 
+Get SMODE flag into accumulator 
+Test if S]\TODE is numeric (0) 
+If so, print FP number as normal 
+Load L with address of STRACC 
+$S Load H with STRING page 
+Print STRING ACC and return 
+- 35 -
+
+--- Page 33 ---
+SET UP POINTERS, ETC. AS 
+NORMAL ALMOST UP TO 
+LABELARRAY6 
+NO 
+IS LAST CHAR 
+YES 
+OF SYMBOL A '$' 
+CONTINUE WITH NUMERIC 
+ARRAY SUBROUTINE AS USUAL 
+PUT STRING NAME IN 
+TEMPORARY STRING VARIABLE 
+(TSVAR) NAME 
+EV ALUATE SUBSCRIPT AND 
+CONVERT TO FIXED BYTE 
+PUT FIXED VALUE IN 
+TSV AR SUBSCRIPT 
+SET ARRAY FLAG AND ALSO 
+SET SMODE TO STRING (1) 
+- 36 -
+
+--- Page 34 ---
+ARRAYP, 
+LLI 120 
+LAM 
+ADL 
+LLA 
+LAM 
+CPI244 
+,JTZ SARRAY 
+LLI 207 
+LMIOOO 
+.TMP ARRAY6 
+SARRAY, 
+DeL 
+I,AM 
+LLI 261 
+LHI045 
+LMA 
+CAL EVAL 
+CAL FPFIX 
+LLI 124 
+LHI 001 
+LAM 
+LLl 262 
+LHI 045 
+LMA 
+LLI 375 
+LHI026 
+LMI001 
+LHI 027 
+LLI201 
+LMIOO1 
+RET 
+SCRPCH, 
+LLI 260 
+LHI 045 
+LBM 
+INB 
+LLI 013 
+LMIOOO 
+LLI 015 
+L\IB 
+INL 
+LMT 000 
+LHB 
+LLI ()OO 
+LMIOOO 
+JMP EXEC 
+Load L with address of SYMBOL 
+Get (CC) of SYMBOL into accumulator 
+Add I, to (CC) to get last character 
+Put sum in L to point to last character 
+Get last character of SYMBO L 
+Is last character dollar sign ($)? 
+If so, have string array 
+Load I, with addrpss of ARRAY LOOP counter 
+Initialize loop counter to 0 
+Continue with numeric array as normal 
+Get first character of SYMBOL 
+Get string name into ACC 
+Load I, with address of TSV AR name 
+$$ Load H with STRING page 
+Put name of string in TSVAR name 
+Evaluate subscript expression 
+ConvPl't value of fixed point 
+Load L with address of FP ACC LSW 
+** Load H with address of FP page 
+Get subscript into ACC 
+Load L with address of TSV AR subscript 
+$$ Load H with STRING page 
+Put suhscript in TSV AR subscript 
+Load L with address of SMODE 
+* * LO<id H with pointer page 
+Set Sl\IODE flag to indicate string array 
+** Load H with address of pointer page 
+Load I, with address of ARRA Y FLAG 
+Set ARRA Y FLAG to indicate string array 
+Rpturn to caller 
+Load L \\lith address of pointer to STR T AB 
+$$ Loan I r with STRING page 
+Get pointPI' to STRTAB in B 
+Increment to point to string storage area 
+Load L with addrp~s of NUMSTR 
+Initialize to 0 to clear strings 
+Load L with address of ENDSTR pointer 
+Initialize ENDSTR to bpginning of string area 
+Starts at location 0 
+Point to beginning of string afl'a 
+Starts at location 0 
+Initialize to 0 for npw string 
+Print READY, etc. 
+PINPUT, 
+CAL CLESYM 
+Clear symbol 
+LLI 37;:; 
+Load L with address of Sl\TODE flag 
+r ,Mi 000 
+Hl'~T 
+Set it to numeric mode 
+Return from this patch 
+- 37 -
+
+--- Page 35 ---
+INPUTS, 
+LLI 375 
+LH1026 
+1.1\11 001 
+L\1277 
+CAL ECHO 
+LLT 020 
+UTI 045 
+JMP STRIN 
+INSTRP, 
+CALSAVEHT. 
+CAL SWITCH 
+LAM 
+CPT 247 
+JTZ INSTRQ 
+CPI242 
+JFZ SWITCH 
+INSTRQ, 
+INL 
+CPM 
+JTZ SWITCH 
+LBH 
+LCL 
+LLI 000 
+LHI026 
+LAM 
+CPE 
+LHB 
+LLC 
+JTZ TQERR 
+JMP l~STRQ 
+SFAPCH, 
+LLI012 
+LHI045 
+LMI001 
+LLI 360 
+SFAPC1, 
+LDI026 
+LEI 120 
+CAL STRCP 
+JTZ SFAPC3 
+LLE 
+LHD 
+SFAPC2, 
+INL 
+LAM 
+NDI 300 
+,JFZ SFAPC2 
+LDH 
+LEI, 
+LLI 012 
+LHI045 
+Load L with address of SMODE flag 
+* * Load H with pointer page 
+Set mode to string 
+Load accumulator with ASCII value for question mark 
+Print question mark 
+Load L with address of STRACC 
+$$ Load H with STRT~G page 
+Input STRACC and return 
+Load L with address of STring FUNction TOKEN 
+$$ Load H with STRING page 
+Initialize STring FUNction TOKEN to 1 
+Load L w / address of 1st string function name (length) 
+** Load D with pointer page 
+Load L with address of SYMBOL 
+Compare SYMBOL with string functions 
+If have match, process string function 
+Restore Hand L to point to string function names 
+Skip over last byte 
+Get next character in string function name table 
+Is it a charrwter (parity marking)? 
+Yes, go bac k 'll1d t.ry again 
+Save pointf'r to new string function in D and E 
+Load L with address of string function token 
+$$ Load H with STRING page 
+- 38 -
+
+--- Page 36 ---
+CONVERT STRACC TO FP 
+BY CALLING DIN PUT 
+-(}) 
+TEST IF SYMBOL IS LEN, ASC, 
+OR VAL WHILE INCREMENTING 
+STRING FUNCTION TOKEN 
+NO 
+YES 
+IS IT? 
+EV ALUATE EXPRESSION 
+IN PARENTHESIS 
+RESTORE START AND END 
+OF EVAL POINTERS 
+YES 
+WAS 
+NO 
+YES 
+RESULT STRING 
+WAS 
+NO 
+STR FUNC TOKEN =~ 
+(VAL)? ~ 
+~~ 
+- 39 -
+
+--- Page 37 ---
+If a comparison operator, such as =, is 
+found during string evaluation, a token value 
+for that operator is saved, and the CONCAT 
+routine is called, if necessary, to concatenate 
+the last string. Next, the STRACC is saved in 
+a special STRING COMPARISON huffer so 
+that it may be tested against the contents of 
+the string accumulator when SEV AL is 
+finished. 
+finisherl. The validity of the condition indi-
+cated hy the string token will be shown as a 
+numeric result of 1.0 or O. 
+The STOSYM routine must be modified to 
+realize when it should store the STRACC in 
+the string storage area. If the SMODE flag is 
+set, a patch directs control to a routine 
+labeled SSTORE which checks to see if the 
+array flag is set. If it is, the name and sub-
+script of the string variable have already been 
+calculated and placed in a special temporary 
+string variable area (T SV A R) by a patch to 
+the ARRAY routine. If the array flag is not 
+set, the SSTORE routine puts the name and 
+a subscript of 1 in TSV AR. The name and 
+subscript are then transferred to SV AR and 
+looked up by the SLOOK routine. If the 
+string is new, the store operation is relatively 
+trivial since all that has to be done is to move 
+the STRACC to the end of the string storage 
+area (indicated by the ENDSTR pointer), 
+modify the ENDSTR pointer to the new end 
+of string storage area and the pointer in the 
+STRTAB to point to that location. If, how-
+ever, the string already existed, all strings 
+below the old value of the string must be 
+moved over that string to save storage. Then 
+the pointers in the STR TAB must be modi-
+fied so that the pointers correspond to the 
+revised addresses where the strings are now 
+located. Finally, the routine can continue as 
+- 4 -
+if it had processed a new string. 
+There is another modification that must be 
+made to the EV AL routine: the three func-
+tions that return a numeric result, but have 
+string arguments (LEN, ASC, VAL) must be 
+recognized. When these functions are used, 
+the string value must be evaluated by the 
+SEV AL routine, which may in turn call the 
+EV AL routine. Again the recursive problem 
+occurs, but is more serious since it may cause 
+the PC staf'k of an 8008 to be pushed down 
+more than 7 levels. The programmer must 
+guard against this possibility by limiting the 
+argument portion of a string function when 
+using an 8008 system as discussed elsewhere. 
+When the string result is returned to the 
+SF APCH routine, the appropriate action is 
+taken according to the string function token. 
+The modifications to the PRINT and IN-
+PUT statements are fairly simple. The patches 
+to the PRINT statement allow the routine to 
+ignore semicolons that occur inside parenthe-
+sises, such as A$( :2;3), and ignore all charac-
+ters inside quotes, rather than print them out. 
+The main purpose of the INPUT patch is to 
+recognize when a string should be input into 
+the STRACC instead of a number into the 
+FPACC. 
+Another patch worth mentioning is the 
+modification that causes part of the EV AL 
+routine to function as an independent subrou-
+tine to look for the comparison operators. 
+This routine, labeled LTEQGT, is called by 
+both the old EV AL routine, and the new 
+SEV AL routine. 
+The reader can glean more information 
+about the exact nature of the modifications 
+by studying the accompanying flowcharts and 
+source listings. 
+
+--- Page 38 ---
+LBM 
+INB 
+Li\TB 
+LEn 
+LLF 
+L\R 
+(PI ()04 
+JFZ SFAPCl 
+CAL FUNARR 
+,11\TP SCAN61 
+SF APC3, 
+LLI 276 
+LHI 026 
+LBM 
+INL 
+LCM 
+LLI 010 
+LHI045 
+LMB 
+INL 
+Ll\IC 
+LLI 200 
+LJ-II 026 
+LBM 
+INB 
+LLI276 
+LMB 
+INL 
+LDB 
+LEM 
+CALPARNB 
+LLl277 
+nCB 
+LMB 
+CAL EVAL 
+LLI 375 
+LHI02f) 
+LAM 
+NDA 
+,JTZ STERR 
+LLT 010 
+LHI04fi 
+LDl\! 
+TNL 
+LEM 
+LLI277 
+LHI 026 
+LBM 
+INB 
+LLI 200 
+LMB 
+Increment string function token 
+Restore Hand L with address of 
+Next string function name 
+Get STring FUNction TOKEN (counter) into accumulator 
+Is it at limit of functions? 
+No, keep looking 
+Yes, must he numeric function or array 
+Continu(' with normal evalu;ltinn 
+Load L with address of start of EV AL pointer 
+*", Load H with POINTER page 
+Gpt start and end EV AL pointers in Band C 
+Load L with address of temporary start/stop storage 
+$~ Load H with STRING page 
+Storp start and stop pointers there because 
+Of recursive calling 
+Load L with address of EV A L pointer 
+* * Load H with pointer page 
+Get it and add 1 to it 
+Load L with arldress of start of EV AL pointer 
+Start evaluation just after "(" 
+Point to old stop e\'aluation pointer 
+Load D with pointer to just after "(" 
+Load E with pointer to enrl of original evaluation 
+Balance parentheses between "(" and end EV AL 
+Load L with address of end of EV AL pointer 
+Subtract 1 to point just before ")" 
+Evaluate to just before ")" 
+Evaluate string argument of function 
+Load L with address of SMODE flag 
+** Load H with pointer page 
+Get Si\fODE flag 
+Test if flag is set 
+If it is numeric argument, error 
+Load L with addr of temporary start/stop EV AL pntrs 
+$$ Load H with STRING page 
+Get start and stop pointers in D and E 
+Load L \vlth address of end of EVAL pointer 
+* * Loan H with pointer pag!' 
+Gpt end EVAL pointf'r in B 
+Adrl 1 to end EVAL rointpf 
+LO>lcl L with arldress of EVAL pointer 
+Put EV AL 2nd pointpr +1 there to skip C .) 
+- 40· 
+
+--- Page 39 ---
+A 
+YES 
+ffi 
+NO 
+STR FUNC TOKEN =1 
+? 
+FLOAT THE BYTE TO CONVERT 
+IT TO FLOATING POINT 
+SET STRING MODE TO NUMERIC 
+PUT TOP OF STACK ADDRESS 
+IN ARITHMETIC STACK POINTER 
+LLI 276 
+LMD 
+INL 
+LME 
+LLI 012 
+LHI045 
+LAM 
+CPI003 
+JFZ SFAPC7 
+LLI 020 
+CALDINPUT 
+JMP SFAPC8 
+Load L with address of start of EV AL pointer 
+Restore original start and stop pointers there' 
+Load L with address of STring FUNction TOKEN 
+$$ Load H with STRING page 
+Get STring FUNction TOKEN into accumulator 
+Is it token for value? 
+No, must be other function 
+Load L with address of STRACC 
+Convert STRACC ASCn to FP ACe floating point 
+Continue to prof'Pss string function 
+- 41 -
+
+--- Page 40 ---
+SFAPC7, 
+SFAP(,!, 
+SFAPC5, 
+SFAPC8, 
+CAL FPO 
+LLI 012 
+LHI045 
+LAM 
+CPI001 
+LLI 020 
+LHI045 
+,JFZ SFAPC4 
+LBM 
+JMP SFAPC5 
+INL 
+LBM 
+LLI124 
+LHI001 
+LMB 
+CAL FPFLT 
+LLI 375 
+LHI026 
+LMIOOO 
+LLI 227 
+LHI001 
+LMI230 
+JMP SCAN10 
+Put 0 in FPACC 
+LOlld L with address of STring FUNction TOKEN 
+$$ Load H with STRING page 
+Get STring FUNction TOKEN 
+Is it token for length? 
+Set up address of STRACC in L 
+$$ Load H with address of STRING page 
+Not length, must he ASCII 
+Get (CC) of STRACC 
+Continue to process length function 
+Point to first character of STRACC 
+Get first character of STRACC into B 
+Load L with address of FP ACC LSW 
+** Load H with floating point page 
+Store byte to be converted (length or ASCII) 
+Convert result to floating point 
+Load L with address of SMODE flag 
+** Load H with pointer page 
+Reset SMODE to numeric 
+Load L with address of arithmetic SP 
+* * Load H with floating point page 
+Reinitialize arithmetic SP to beginning 
+Continue to evaluate expression 
+STRINGS SUPPLEMENT MEMORY ALLOCATION 
+FOR BUFFERS. TABLES, AND TEMPORARY DATA 
+The 
+STRINGS 
+SUPPLEMENT utilizes 
+various locations in memory for the storage of 
+counters, pointers, temporary data registers, 
+etc. Additional memory is required for the 
+storage of the strings themselves, to serve as 
+string buffers, and for the strings symbolic 
+table. The following list shows the areas used 
+for these purposes in the assembled version of 
+the STRINGS, SUPPLEMENT routines pre-
+sented herein. 
+On page 26 the following locations: 
+LOC 
+367 
+371 
+372 
+373 
+374 
+375 
+376 
+377 
+QUOTE Indicator 
+SEVAL Scan Pointer 
+Literal Pointer and Right Parenthesis Pointer 
+Colon Pointer 
+Semicolon Pointer 
+String Mode Indicator (SMODE) 
+Start of String Evaluation 
+End of String Evaluation 
+- 42 -
+
+--- Page 41 ---
+On page 45 (strings pointer page): 
+000 
+001 
+002 
+003 
+004 
+005 
+006 
+007 
+010 
+011 
+012 
+013 
+014 
+015 
+016 
+017 
+020 
+021 
+140 
+260 
+261 
+262 
+263 
+264 
+360 
+361 
+362 
+363 
+364 
+365 
+366 
+367 
+370 
+371 
+372 
+373 
+003 
+314 
+305 
+316 
+003 
+301 
+323 
+303 
+003 
+326 
+301 
+314 
+String Variable (SV AR) name 
+String Variable (SVAR) subscript 
+Su hstring Pointer 
+Stl hstring Length 
+String Token 
+High Part of String Pointer (SPNTR) 
+Low Part of SPNTR 
+Length of String 
+Temporary storage of Start of Eva! Pointer 
+Temporary storage of End of Eva! Pointer 
+String Function Token 
+Number of Strings (NUMSTR) 
+Free 
+High Part of End of Strings Pointer (ENDSTR) 
+Low Part of ENDSTR 
+No-Concatenate Flag (NOCONCAT) 
+cc for String Accumulator (STRACC) 
+String Comparison String 
+Indirect Pointer to page of String Table (STRTAB) 
+At page indicated by contents of this location, and to 
+String Storage Area starting on page following STR T AB 
+(must be initialized to proper page, 42 in this version). 
+Temporary String Variable (TSV AR) name 
+(Used by SSTORE) 
+TSV AR Subscript 
+Temporary Storage for Register B 
+Temporary Storage for Register C 
+cc for LEN 
+cc for ASC 
+cc for VAL 
+- 43 -
+
+--- Page 42 ---
+374 
+003 
+375 
+303 
+376 
+310 
+377 
+322 
+cc for CHR 
+The page of the String Tahle is pointed to by location 260 on page 45. 
+The STRT AB is organized as follows: 
+000 
+001 
+xxx 
+xxx 
+Name of first string (ASCII alphabetic character) 
+Subscript of first string 
+002 
+00:1 
+xxx 
+xxx 
+High part of pointer to starting address of string 
+Low part of pointer to string 
+004 
+xxx 
+Name of second string 
+005 
+006 
+007 
+xxx 
+xxx 
+xxx 
+Su bscript of second string 
+High part of pointer to string 
+Low part of point.PT to string 
+etc. 
+The actual string storage is on the next page. The strings are stored in 
+standard string format: 
+000 
+xxx 
+001 
+YYY 
+cc for string (not necessarily first string in table) 
+First character of string 
+aaa 
+zzz 
+Last character of string 
+etc. 
+ENDSTR points to the end of this area, where a zero byte is located. 
+ASSEMBLED LISTINGS OF STRINGS SUPPLF1MENT 
+The following pages contain assembled 
+listings 
+of the STRINGS SUPPLEMENT 
+routines just described in source form. Two 
+sets of listings are provided side-by-side. One 
+for the 8008, the other for the 8080. The 
+listing starts with the various patches that 
+must be made to the main portion of the 
+original SCELBAL program. It then con-
+tinues with the routines descrihed herein as 
+they would appear when assembled to reside 
+in pages 46 through 54 of memory. The 
+assembled version shown a<ssumes that page 
+45 in the computer system is available as a 
+temporary 
+buffer/pointer/counter 
+storage 
+- 44-
+area etc. (as indicated above). Additionally, 
+page 42 is assumed to be available for use as 
+the strings symbol table, and pages 43 and 44 
+for storage of strings. If the user desires to 
+change the memory area used for the latter 
+two purposes, then the value stored at loca-
+tion 260 on page 45 in the assembled listing 
+must be altered. If such is the case, then the 
+upper limit of the strings storage area should 
+be redefined (see location 060 on page 53 of 
+the listing that follows). Additionally, the 
+upper limit of the program buffer storage area 
+would need to be redefined (see location 222 
+on page 12 of the main portion of SCELBAL 
+
+--- Page 43 ---
+which is patcherl to contain 041 in the follow-
+ing listing). 
+NOTE: If the user intends to take full ad-
+vantage of the capabilities of manipUlating 
+strings, then the user will undoubtably desire 
+to allocate much more than the two pages of 
+memory assigned in the assemhled listing. The 
+two pages allocated in the Vf'rsion herein pro-
+viele" for storage of only 7 to R long 80 char-
+art "T st.rings. Providing enough room for up to 
+(H such strings dictates assigning about 16 
+rages (4K) of memory. Space for sllch storage 
+may he ohtained by reducing the size of the 
+8008 
+03224 104370051 
+EVAL, JMP EVALPC 
+03227 300 
+EVALQ, LAA 
+04021 104015054 
+JMPSFAPCH 
+04024 066 176 
+SCAN61, LLI176 
+04066 110005 052 
+JFZ SCANCP 
+04140 007 
+RET 
+04203 007 
+RET 
+04210 013 
+RFZ 
+04211 300 
+LAA 
+04212 300 
+LAA 
+04246 007 
+RET 
+04255 007 
+RET 
+04264 007 
+RET 
+04273 007 
+RET 
+10055 104070052 
+JMP STORP 
+10060 300 
+STORP1, LAA 
+11 066 104 265 053 
+,TMP SCRPCH 
+12 22] 
+074 (H1 
+CPI041 
+13021 106 347 053 
+CAL INSTRP 
+14033 074 250 
+cpr 250 
+14085 150137053 
+JTZ PPRIN7 
+14 040 104 124 053 
+JMP PPRINT 
+14 061 1040750]4 
+,JMP PRINT4 
+- 45 -
+user program buffer area or assigning it to 
+memory addresses above page 54 (or page 57 
+if DIMension capability is utilized). 
+A double dollar sign indication ($$) in the 
+following listing indicates values that would 
+need to be changed if the supplement was re-
+assembled in another area of memory and the 
+temporary 
+huffer/pointer /counter 
+storage 
+area was changed. Similarly, the double 
+asterisk indicator (**) has the same meaning 
+that it was given in the original SeE LBAL 
+pUblication. 
+8080 
+03224 303 370 051 
+EVAL, JMPEVALPC 
+03227 177 
+EVALQ, LAA 
+04021 303015054 
+JMP SFAPCH 
+04024 056 176 
+SCAN61, LLI 176 
+04066 302005052 
+JFZ SCANCP 
+04140 311 
+RET 
+04203 31] 
+RET 
+04210 300 
+RFZ 
+04211 177 
+LAA 
+04212 177 
+LAA 
+04246 311 
+RET 
+04255 311 
+RET 
+04264 311 
+RET 
+04273 311 
+RET 
+10055 303070052 
+JMPSTORP 
+10060 177 
+STORP1, LAA 
+11066 303265053 
+JMP SCRPCH 
+] 2 221 376041 
+cpr 041 
+13021 315347053 
+CALINSTRP 
+14033 376 250 
+cpr 250 
+14035 312137053 
+JTZ PPRIN7 
+14040 303124053 
+JMP PPRINT 
+14061 303075014 
+JMP PRINT4 
+
+--- Page 44 ---
+8008 
+8080 
+14114 152157053 
+PRINT5, crz POUTSF 
+14114 314 157 053 
+PRINT5, CTZ POUTSF 
+14206 300 
+LAA 
+14206 177 
+LAA 
+14207 300 
+LAA 
+14207 177 
+LAA 
+14210 300 
+LAA 
+14210 177 
+LAA 
+] 4215 300 
+LAA 
+14215 177 
+LAA 
+14216 300 
+LAA 
+14216 177 
+LAA 
+14220 066203 
+LLI 203 
+14220 056203 
+LLI203 
+]4230 150 124053 
+JTZ PPRINT 
+14230 312 124053 
+JTZ PPRINT 
+14233 300 
+LAA 
+14233 177 
+LAA 
+14234 300 
+LAA 
+14234 177 
+LAA 
+14 235 300 
+LAA 
+14 235 177 
+LAA 
+14236 066203 
+LLI203 
+14236 056203 
+LLI203 
+16365 106315053 
+CAL PINPUT 
+16365 315 315 053 
+CALPINPUT 
+17114 150325 053 
+JTZ INPUTS 
+17114 312 325 053 
+.rrZ INPUTS 
+17117 066375 
+LLI 375 
+17117 056375 
+LLI 375 
+17 121 307 
+LAM 
+17 121 176 
+LAM 
+17 122 240 
+NDA 
+17122 247 
+NDA 
+17 123 110 325 053 
+JFZ INPUTS 
+17 123 302 325 053 
+JFZ INPUTS 
+17 126 076000 
+LMIOOO 
+17126 066000 
+LMI 000 
+17130 104140017 
+JMP INPUTN 
+17130 303140017 
+JMP INPUTN 
+45260 042 
+$$ 
+042 
+45260 042 
+$$ 
+042 
+45360 003 
+003/LEN 
+45360 003 
+003/LEN 
+45361 314 
+314 
+45361 314 
+314 
+45362 305 
+305 
+45362 305 
+305 
+45363 316 
+316 
+45363. 316 
+316 
+45364 003 
+003/ASC 
+45364 003 
+003/ASC 
+45365 301 
+301 
+45365 301 
+301 
+45366 323 
+323 
+45366 323 
+323 
+45367 303 
+303 
+45367 303 
+303 
+45370 003 
+003/VAL 
+45370 003 
+003/VAL 
+45371 326 
+326 
+45371 326 
+326 
+45372 301 
+301 
+45372 301 
+301 
+45373 314 
+314 
+45373 314 
+314 
+45374 003 
+003/CHR 
+45374 003 
+003/CHR 
+45375 303 
+303 
+45375 303 
+303 
+45376 310 
+310 
+45376 310 
+310 
+45377 322 
+322 
+45377 322 
+322 
+55234 104177053 
+JMPARRAYP 
+55234 303177 053 
+JMPARRAYP 
+55237 300 
+LAA 
+55237 177 
+LAA 
+46000 066017 
+SEVAL, LLI017 
+46000 056017 
+SEVAL, LLI017 
+46002 056045 
+$$ 
+LHI 045 
+46002 046045 
+$$ 
+LHI 045 
+46004 076000 
+LMIOOO 
+46004 066000 
+LMIOOO 
+46006 060 
+INL 
+46006 054 
+INL 
+46007 076000 
+LMIOOO 
+46007 066000 
+LMIOOO 
+46011 066002 
+LLI002 
+46011 056002 
+LLI002 
+- 46-
+
+--- Page 45 ---
+8008 
+8080 
+46013 076001 
+LMIOOI 
+46013 066001 
+LMI001 
+46015 060 
+INL 
+46015 054 
+INL 
+46016 076377 
+LMI377 
+46016 066377 
+LMI377 
+46020 060 
+INL 
+46020 054 
+INL 
+46021 076000 
+LMIOOO 
+·16021 066000 
+LMIOOO 
+46 023 106 255 002 
+CALCLESYM 
+46023 315 255 002 
+CAL CLESYM 
+46026 066375 
+LLI 375 
+46026 056375 
+LLI375 
+46030 076001 
+LMIOOI 
+46030 066001 
+LMI001 
+46032 066276 
+LLI276 
+46032 056276 
+LLI276 
+46 0:~4 317 
+LBM 
+46034 106 
+LBM 
+46035 060 
+INL 
+413 035 054 
+INL 
+46036 327 
+LCM 
+46 036 116 
+LCM 
+46037 066376 
+LLI 376 
+46037 056376 
+LLI376 
+46041 371 
+LMB 
+46041 160 
+LMB 
+46042 060 
+INL 
+46042 054 
+INL 
+46043 372 
+LMC 
+46043 161 
+LMC 
+46044 066 371 
+LLI371 
+46044 056371 
+LLI371 
+46046 371 
+LMB 
+46046 160 
+k\1B 
+46047 066371 
+SEVAL1, LLI371 
+46 047 056371 
+SEVAL1, LLI371 
+46051 056026 
+** 
+LHI 026 
+46051 046 026 
+** 
+LHI 026 
+46053 106240002 
+CALGETCHR 
+46053 315 240002 
+CALGETCHR 
+46056 150047050 
+JTZ FSEVAL 
+46056 312047050 
+JTZ FSEVAL 
+46061 074247 
+CPI247 
+46061 376247 
+CPI247 
+46063 150073 046 
+JTZ SEVAL2 
+46063 312073 046 
+JrZ SEVAL2 
+46066 074242 
+CPI 242 
+46066 376 242 
+cpr 242 
+46070 110 162 046 
+JFZ SEVAL5 
+46070 302 162046 
+JFZ SEVAL5 
+46073 066367 
+SEVAL2, LLI367 
+46073 056367 
+SEVAL2, LLI367 
+46075 370 
+LMA 
+46075 167 
+LMA 
+46076 066371 
+LLI371 
+46076 056 371 
+LLI371 
+46100 317 
+LBM 
+46100 106 
+LBM 
+46101 010 
+INB 
+46101 004 
+INB 
+46102 060 
+INL 
+46102 054 
+INL 
+46103 371 
+LMB 
+46103 160 
+LMB 
+46104 066 372 
+SEVAL3, LLI372 
+46104 056372 
+SEVAL3, LLI372 
+46106 106240002 
+CALGETCHR 
+46106 315 240002 
+CALGETCHR 
+46111 066367 
+LLI367 
+46111 056 367 
+LLI367 
+46113 277 
+CPM 
+46113 276 
+CPM 
+46114 150143046 
+JTZ SEVAL4 
+46114 312 143046 
+JTZ SEVAL4 
+46117 066020 
+LLI020 
+46117 056020 
+LLI020 
+46121 056045 
+$$ 
+LHI 045 
+46121 046045 
+$$ 
+LHI045 
+46123 106314002 
+CAL CONCT1 
+46123 315314 002 
+CALCONCT1 
+46126 066 372 
+LLI372 
+46126 056372 
+LLI372 
+46130 056 026 
+** 
+LHI 026 
+46130 046026 
+** 
+LHI 026 
+46132 106 243050 
+CAL SELOOP 
+46132 315 243050 
+CAL SEWOP 
+46135 110104046 
+JFZ SEVAL3 
+46135 302104046 
+JFZ SEVAL3 
+46140 104060052 
+JMP IQERR 
+46140 303060052 
+JMP IQERR 
+46143 066372 
+SEVAL4, LLI372 
+46143 056372 
+SEVAL4, LLI372 
+46145 317 
+LBM 
+46145 106 
+LBM 
+46146 066 371 
+LLI 371 
+46146 056 371 
+LLI371 
+46150 371 
+LMB 
+46150 160 
+LMB 
+46 151 066 017 
+LLI017 
+46 151 056017 
+LLI 017 
+46153 056045 
+$$ 
+LHI 045 
+46153 046045 
+$$ 
+LHI 045 
+46155 076001 
+LMIOOI 
+46155 066001 
+LMI001 
+46157 104047050 
+JMP FSEVAL 
+46157 303047050 
+JMP FSEVAL 
+- 47 -
+
+--- Page 46 ---
+8008 
+8080 
+46162 074244 
+SEVAL5, CPI244 
+46162 376244 
+SEVAL5, CPI244 
+46164 110331 046 
+JFZ SEVAL6 
+46164 302 331 046 
+JFZ SEVAL6 
+46167 046374 
+LEI 374 
+46167 036374 
+LEI 374 
+46171 036045 
+$$ 
+LDI 045 
+46171 026045 
+$$ 
+LDI 045 
+46173 066 120 
+LLI120 
+46173 056 120 
+LLI120 
+46175 106332002 
+CAL STRCP 
+46175 315332002 
+CAL STRCP 
+46200 150 23fi 046 
+JTZ CHR 
+46200 312 235 046 
+JTZ CHR 
+4620:1 066120 
+LLI120 
+46203 Ofi6120 
+LLI120 
+4620f) 056026 
+** 
+LHI 026 
+46205 046026 
+** 
+LHI 026 
+46207 307 
+LAM 
+46207 176 
+LAM 
+46 210 074001 
+CPI001 
+46210 376001 
+CPI001 
+46 212 110051 052 
+JFZ STERR 
+46212 302051052 
+JFZ STERR 
+46215 060 
+INL 
+46215 054 
+INL 
+46216 307 
+LAM 
+46216 176 
+LAM 
+46217 066000 
+LLIOOO 
+46217 056000 
+LLIOOO 
+46221 056045 
+$$ 
+LHI 045 
+46221 046045 
+$$ 
+LHI045 
+46223 370 
+LMA 
+46223 167 
+LMA 
+46224 060 
+INL 
+46224 054 
+INL 
+46225 076001 
+LMI001 
+46225 066001 
+LMI001 
+46227 106255002 
+CAL CLESYM 
+46227 315 255 002 
+CALCLESYM 
+46232 104047050 
+JMP FSEVAL 
+46232 303047 050 
+JMP FSEVAL 
+46235 066371 
+CHR, 
+LLI371 
+46235 056371 
+CHR, LLI371 
+46237 317 
+LBM 
+46237 106 
+LBM 
+46240 010 
+INB 
+46240 004 
+INB 
+46241 371 
+LMB 
+46241 160 
+LMB 
+46242 361 
+LLB 
+46242 150 
+LLB 
+46243 307 
+LAM 
+46243 176 
+LAM 
+46244 074250 
+CPI250 
+46244 376250 
+CPI250 
+46246 110235046 
+JFZ CHR 
+46246 302235046 
+JFZ CHR 
+46251 066 276 
+LLI276 
+46251 056276 
+LLI276 
+46253 010 
+INB 
+46253 004 
+INB 
+46254 371 
+LMB 
+46254 160 
+LMB 
+46255 331 
+LDB 
+46255 120 
+LDB 
+46256 066377 
+LLI377 
+46256 056377 
+LLI377 
+46260 347 
+LEM 
+46260 136 
+LEM 
+46261 106 325 051 
+CAL PARNB 
+46261 315 325 051 
+CALPARNB 
+46264 066277 
+LLI277 
+46264 056277 
+LLI277 
+46266 011 
+DCB 
+46266 005 
+DCB 
+46267 371 
+LMB 
+46267 160 
+LMB 
+46270 106376051 
+CAL EVALS 
+46270 315 376 051 
+CAL EVALS 
+46273 106000020 
+CAL FPFIX 
+46273 315000020 
+CAL FPFIX 
+46276 066124 
+LLI124 
+46276 056124 
+LLI124 
+46300 307 
+LAM 
+46300 176 
+LAM 
+46301 066020 
+LLI 020 
+46301 056020 
+LLI020 
+46303 Ofi6045 
+$$ 
+LHI 045 
+46303 046045 
+$$ 
+LHI045 
+46 :105 106314002 
+CAL CONCT1 
+46305 315 314002 
+CAL CONCT1 
+1(1 ::nO 066 017 
+LLI017 
+46310 056017 
+LLI017 
+46 :112 076001 
+LMIOOI 
+46312 066 001 
+LMI001 
+46 :\14 106255002 
+CAL CLESYM 
+46314 315 255 002 
+CAL CLESYM 
+46 :117 066277 
+LLI277 
+46317 056277 
+LLI277 
+46 :121 
+317 
+LBM 
+46321 106 
+LBM 
+46322 010 
+INB 
+46322 004 
+INB 
+46323 066371 
+LLI371 
+46323 056 371 
+LLI 371 
+46325 371 
+LMB 
+46325 160 
+LMB 
+4632G 104047050 
+JMP FSEVAL 
+46326 303047050 
+JMP FSEVAL 
+- 48-
+
+--- Page 47 ---
+8008 
+8080 
+46331 074250 
+SEVAL6, CPI250 
+46331 376 250 
+SEVAL6, CPI250 
+4633:1 110326047 
+JFZ SEVA13 
+46333 302326047 
+JFZ SEVA13 
+46336 066 371 
+LLI371 
+46336 056371 
+LLI371 
+46340 337 
+LDM 
+46340 126 
+LDM 
+46341 
+030 
+IND 
+46341 024 
+IND 
+46342 066 377 
+LLI377 
+46342 056377 
+LLI 377 
+46344 347 
+LEM 
+46344 136 
+LEM 
+46345 106325051 
+CALPARNB 
+46345 315325051 
+CALPARNB 
+46350 Ofi6372 
+LLI372 
+46350 056372 
+LLI372 
+4fi 352 371 
+LMB 
+46352 160 
+LMB 
+46353 Ofi1 
+DCL 
+46353 055 
+DCL 
+46354 317 
+LBM 
+46354 106 
+LBM 
+4635R 010 
+INB 
+46355 004 
+INB 
+46356 361 
+LLB 
+46356 150 
+LLB 
+46357 307 
+LAM 
+46357 176 
+LAM 
+46360 074272 
+CPI272 
+46360 376272 
+CPI272 
+46362 110373 046 
+JFZ SEVA16 
+46362 302373046 
+JFZ SEVA16 
+46365 066373 
+LLI373 
+46365 056373 
+LLI373 
+46367 371 
+LMB 
+46367 160 
+LMB 
+46370 104 124047 
+JMP SEVA10 
+46370 303124 047 
+JMP SEVA10 
+46373 Ofi6373 
+SEVA16, LLI373 
+46373 056373 
+SEVA16, LLI 373 
+46375 371 
+LMB 
+46375 160 
+LMB 
+46376 Ofi6373 
+SEVAL7, LLI373 
+46376 056373 
+SEVAL7, LLI373 
+47000 106 240 002 
+CALGETCHR 
+47000 315 240002 
+CALGETCHR 
+47003 074272 
+CPI272 
+47003 376272 
+CPI272 
+47005 110047047 
+JFZ SEVAL8 
+47005 302047047 
+JFZ SEVAL8 
+47010 066371 
+LLI371 
+47010 056371 
+LLI371 
+47012 317 
+LBM 
+47012 106 
+LBM 
+47013 010 
+INB 
+47013 004 
+INB 
+47014 066276 
+LLI276 
+47014 056276 
+LLI276 
+47016 371 
+LMB 
+47016 160 
+LMB 
+47017 066373 
+LLI373 
+47017 056373 
+LLI373 
+47021 317 
+LBM 
+47021 106 
+LBM 
+47022 011 
+DCB 
+47022 005 
+DCB 
+47023 Ofi6 277 
+LLI 277 
+47023 OR6277 
+LLI 277 
+47025 371 
+LMB 
+47025 160 
+LMB 
+47026 106376051 
+CAL EVALS 
+47026 315376051 
+CAL EVALS 
+47031 106000020 
+CAL FPFIX 
+47031 315000020 
+CAL FPFIX 
+47034 066124 
+LLI124 
+47034 056 124 
+LLI 124 
+47036 307 
+LAM 
+47036 176 
+LAM 
+47037 Ofi6 001 
+LLI001 
+47037 056001 
+LLI001 
+47041 
+01)6045 
+$$ 
+LHI 045 
+47041 046045 
+$$ 
+LHI 045 
+47043 :170 
+LMA 
+47043 167 
+LMA 
+47044 104124047 
+JMP SEVA10 
+47044 303124047 
+JMP SEVA10 
+47047 066373 
+SEVAL8, LLI373 
+47047 056373 
+SEVAL8, LLI 373 
+47051 106254050 
+CAL S2LOOP 
+47051 315254050 
+CALS2LOOP 
+47054 110 376046 
+JFZ SEVAL7 
+47054 302376046 
+JFZ SEVAL7 
+47057 066 371 
+SEVAL9, LLI 371 
+47057 056371 
+SEVAL9, LLI371 
+47061 317 
+LBM 
+47061 106 
+LBM 
+47062 010 
+INB 
+47062 004 
+INB 
+4706:1 060 
+INL 
+47063 054 
+INL 
+470fi4 327 
+LCM 
+47064 116 
+LCM 
+470fi5 021 
+DCC 
+47065 015 
+DCC 
+·49 -
+
+--- Page 48 ---
+SET STRING MODE FLAG 
+TO INDICATE 
+STRING 
+INITIALIZE OTHER FLAGS, 
+POINTERS, ETC. CLEAR THE 
+STRING ACCUMULATOR 
+SAVE OLD EVAL START AND 
+STOP POINTERS. SET STRING 
+SCAN POINTER TO 
+START OF EVAL 
+~--~------~--------~ 
+GET CHARACTER POINTED TO 
+BY STRING SCAN POINTER 
+YES 
+IS CHAR 
+"OR' 
+NO 
+LOOK FOR A CLOSING QUOTE 
+YES 
+NO 
+A 
+FIND 
+IT 
+~--------------~IQERR 
+,/ 
+RESET STRING SCAN POINTER 
+TO SKIP 0e 
+LITERAL! 
+- 5 -
+
+--- Page 49 ---
+8008 
+8080 
+47066 066276 
+LLI276 
+47066 056276 
+LLI 276 
+47070 371 
+LMB 
+47070 160 
+LMB 
+47071 060 
+INL 
+47071 054 
+INL 
+47072 372 
+LMC 
+47072 161 
+LMC 
+47073 106 :376 OBI 
+CAL EVALS 
+47073 315 376051 
+CAL EVALS 
+47076 106000020 
+CAL FPFIX 
+47076 315000020 
+CAL FPFIX 
+47 101 066124 
+LLI124 
+47101 056124 
+LLI 124 
+47 103 307 
+LAM 
+47103 176 
+LAM 
+47104 066001 
+LLIOOI 
+47104 056001 
+LLI001 
+47 106 056045 
+$$ 
+LHI 045 
+47106 046045 
+$$ 
+LHI 045 
+47 110 370 
+LMA 
+47110 167 
+LMA 
+47111 066 372 
+LLI 372 
+47111 056372 
+LLI 372 
+47113 056 026 
+** 
+LHI 026 
+47113 046026 
+** 
+LHI 026 
+47 115 317 
+LBM 
+47115 106 
+LBM 
+47116 066371 
+LLI371 
+47116 056371 
+LLI 371 
+47120 371 
+LMB 
+47120 160 
+LMB 
+47 121 104047050 
+JMP FSEVAL 
+47121 303047050 
+JMP FSEVAL 
+47 124 066373 
+SEVA10, LLI 373 
+47124 056373 
+SEVA10, LLI 373 
+47 126 056026 
+** 
+LHI026 
+47126 046026 
+** 
+LHI 026 
+47 130 317 
+LBM 
+47130 106 
+LBM 
+47131 010 
+INB 
+47131 004 
+INB 
+47 132 060 
+INL 
+47132 054 
+INL 
+47133 371 
+LMB 
+47133 160 
+LMB 
+47 134 066374 
+SEVA11, LLI374 
+47134 056374 
+SEVA11, LLI374 
+47136 106240002 
+CALGETCHR 
+47136 315240002 
+CALGETCHR 
+47141 074273 
+CPI273 
+47141 376273 
+CPI273 
+47 143, 110247047 
+JFZ SEVA12 
+47143 302247047 
+JFZ SEVA12 
+47146 066373 
+LLI373 
+47146 056373 
+LLI373 
+47150 317 
+LBM 
+47 150 106 
+LBM 
+47 151 010 
+INB 
+47151 004 
+INB 
+47152 060 
+INL 
+47152 054 
+INL 
+47 153 327 
+LCM 
+47153 116 
+LCM 
+47 154 021 
+DCC 
+47154 015 
+DCC 
+47 155 066 276 
+LLI276 
+47155 056276 
+LLI 276 
+47157 371 
+LMB 
+47157 160 
+LMB 
+47160 060 
+INL 
+47160 054 
+INL 
+47161 372 
+LMC 
+47161 161 
+LMC 
+47162 106376051 
+CAL EVALS 
+47 162 315376 051 
+CAL EVALS 
+47165 106 000020 
+CAL FPFIX 
+47165 315000020 
+CAL FPFIX 
+47170 066 124 
+LLI124 
+47170 056124 
+LLI124 
+47172 307 
+LAM 
+47172 176 
+LAM 
+47173 066002 
+LLI002 
+47173 056002 
+LLI002 
+47175 056045 
+$$ 
+LHI 045 
+47 175 046045 
+$$ 
+LHI 045 
+47177 370 
+LMA 
+47177 167 
+LMA 
+47200 066 374 
+LLI374 
+47200 056374 
+LLI374 
+47202 056026 
+** 
+LHI 026 
+47202 046026 
+** 
+LHI026 
+47 204 317 
+LBM 
+47204 106 
+LBM 
+47205 010 
+INB 
+47205 004 
+INB 
+47206 066372 
+LLI372 
+47206 056372 
+LLI372 
+47210 327 
+LCM 
+47210 116 
+LCM 
+47 211 021 
+DCC 
+47211 015 
+DCC 
+47 212 066276 
+LLI 276 
+47212 056 276 
+LLI 276 
+47214 371 
+LMB 
+47214 160 
+LMB 
+47215 060 
+INL 
+47215 054 
+INL 
+47216 372 
+LMC 
+47216 161 
+LMC 
+47217 106376051 
+CAL EVALS 
+47217 315376051 
+CAL EVALS 
+- 50 -
+
+--- Page 50 ---
+8008 
+8080 
+47222 106000020 
+CAL FPFIX 
+47222 315000020 
+CAL FPFIX 
+47225 066124 
+LLI124 
+47 225 056124 
+LLI 124 
+47227 307 
+LAM 
+47227 176 
+LAM 
+47230 066003 
+LLI 003 
+47230 056003 
+LLI003 
+47232 056045 
+$$ 
+LHI 045 
+47232 046045 
+$$ 
+LHI045 
+47 234 370 
+LMA 
+47 234 167 
+LMA 
+47235 066372 
+LLI372 
+47235 056372 
+LLI 372 
+47237 056026 
+** 
+LHI026 
+47237 046026 
+** 
+LHI 026 
+47241 317 
+LBM 
+47 241 106 
+LBM 
+47242 061 
+DCL 
+47242 055 
+DCL 
+47 243 371 
+LMB 
+47 243 160 
+LMB 
+47244 104047050 
+JMP FSEVAL 
+47244 303047050 
+JMP FSEVAL 
+47 247 066374 
+SEVA12, LLI374 
+47 2-17 056374 
+SEVA12, LLI 374 
+47251 106 254050 
+CAL S2LOOP 
+47251 315254050 
+CAL S2LOOP 
+47 254 110134047 
+JFZ SEVA11 
+47254 302134047 
+JFZ SEVA11 
+47 257 066373 
+LLI373 
+47257 056373 
+LLI373 
+47261 317 
+LBM 
+47261 106 
+LBM 
+47 262 010 
+INB 
+47 262 004 
+INB 
+47263 061 
+DCL 
+47 263 055 
+DCL 
+47264 327 
+LCM 
+47264 116 
+LCM 
+47265 021 
+DCC 
+47265 015 
+DCC 
+47266 066276 
+LLI276 
+47266 056 276 
+LLI276 
+47 270 371 
+LMB 
+47270 160 
+LMB 
+47 271 060 
+INL 
+47271 054 
+INL 
+47272 372 
+LMC 
+47272 161 
+LMC 
+47273 106376051 
+CAL EVALS 
+47273 315376051 
+CAL EVALS 
+47276 106000020 
+CAL FPFIX 
+47276 315000020 
+CAL FPFIX 
+47301 On6124 
+LLI124 
+47301 056124 
+LLI124 
+47303 307 
+LAM 
+47303 176 
+LAM 
+47304 066002 
+LLI002 
+47304 056002 
+LLI002 
+47306 056045 
+$$ 
+LHI045 
+47306 046 045 
+$$ 
+LHI045 
+47310 370 
+LMA 
+47310 167 
+LMA 
+47311 060 
+INL 
+47 311 054 
+INL 
+47312 076377 
+LMI377 
+47312 066377 
+LMI377 
+47314 066 372 
+LLI 372 
+47314 056372 
+LLI372 
+47 316 056026 
+** 
+LHI 026 
+47316 046026 
+** 
+LHI 026 
+47320 317 
+LBM 
+47320 106 
+LBM 
+47321 061 
+DCL 
+47321 055 
+DCL 
+47322 371 
+LMB 
+47322 160 
+LMB 
+47323 104 047 050 
+JMP FSEVAL 
+47323 303047050 
+JMP FSEVAL 
+47326 074 253 
+SEVA13, cpr 253 
+47326 376 253 
+SEVA13, CPI253 
+47330 110351047 
+JFZ SEVA14 
+47330 302351047 
+JFZ SEVA14 
+47333 On6017 
+LLI017 
+47333 056017 
+LLI017 
+47335 056045 
+$$ 
+LHI 045 
+47335 046 045 
+$$ 
+LHI 045 
+47337 307 
+LAM 
+47337 176 
+LAM 
+47340 076000 
+LMIOOO 
+4, 340 On6000 
+LMIOOO 
+47342 240 
+NDA 
+47342 247 
+NDA 
+47343 152 350050 
+CTZ CONCAT 
+47343 3] 4350 050 
+CTZ CONCAT 
+47346 104047050 
+JMP FSEVAL 
+47346 303047 050 
+JMP FSEVAL 
+47351 06n 371 
+SEVA14, 1,1,1 371 
+47351 056371 
+SEVA14, LLI371 
+47353 317 
+LBM 
+47353 106 
+LBM 
+47354 On6200 
+LLI 200 
+47354 056200 
+LLI200 
+47356 371 
+LMB 
+47356 160 
+LMB 
+47357 106042052 
+CAL LTEQGT 
+47357 315042052 
+CALLTEQGT 
+47362 066 176 
+LLI176 
+47362 056176 
+LLI 176 
+47364 317 
+LBM 
+47364 106 
+LBM 
+- 51 -
+
+--- Page 51 ---
+8008 
+8080 
+47365 010 
+INB 
+47365 004 
+INB 
+47366 011 
+DCB 
+47366 005 
+DCB 
+47367 150044050 
+JTZ SEVA15 
+47367 312044050 
+JTZ SEVA15 
+47372 301 
+LAB 
+47372 170 
+LAB 
+47373 024010 
+SUI 010 
+47373 326 010 
+SUI 010 
+47375 066004 
+LLI004 
+47375 056004 
+LLI004 
+47377 056045 
+$$ 
+LHI 045 
+47377 046045 
+$$ 
+LHI 045 
+50001 370 
+LMA 
+50001 167 
+LMA 
+50002 066 017 
+LLI017 
+50002 056017 
+LLI017 
+50004 307 
+LAM 
+50004 176 
+LAM 
+50005 076000 
+LMIOOO 
+50005 066000 
+LMI 000 
+50007 240 
+NDA 
+50007 247 
+NDA 
+50010 152350050 
+CTZ CON CAT 
+50010 314350050 
+CTZ CONCAT 
+50013 056045 
+$$ 
+LHI045 
+50013 046045 
+$$ 
+LHI 045 
+50015 066020 
+LLI020 
+50015 056020 
+LLI020 
+50017 335 
+LDH 
+50017 124 
+LDH 
+50020 046140 
+LEI 140 
+50020 036140 
+LEI 140 
+50022 106046012 
+CAL MOVEC 
+50022 315046012 
+CAL MOVEC 
+50025 066020 
+LLI020 
+50025 056020 
+LLI020 
+50027 076000 
+LMIOOO 
+50027 066000 
+LMIOOO 
+50031 066200 
+LLI200 
+50031 056200 
+LLI200 
+50033 056026 
+** 
+LHI026 
+50033 046026 
+** 
+LHI026 
+50035 317 
+LBM 
+50035 106 
+LBM 
+50036 066 371 
+LLI 371 
+50036 056371 
+LLI371 
+50040 371 
+LMB 
+50040 160 
+LMB 
+50041 104047 050 
+JMPFSEVAL 
+50041 303 047 050 
+JMP FSEVAL 
+50044 106310002 
+SEVA15, CAL CONCTS 
+50044 315 310002 
+SEVA15, CAL CONCTS 
+50047 066371 
+FSEVAL, LLI371 
+50047 056371 
+FSEVAL, LLI371 
+50051 056026 
+** 
+LHI026 
+50051 046026 
+** 
+LHI026 
+50053 106243050 
+CAL SELOOP 
+50053 315243050 
+CAL SELOOP 
+50056 110047046 
+JFZ SEVAL1 
+50056 302047 046 
+JFZ SEVAL1 
+50061 066017 
+LLI017 
+50061 056017 
+LLI017 
+50063 056045 
+$$ 
+LHI 045 
+50063 046045 
+$$ 
+LHI 045 
+50065 307 
+LAM 
+50065 176 
+LAM 
+50066 240 
+NDA 
+50066 247 
+NDA 
+50067 152350050 
+CTZCONCAT 
+50067 314 350050 
+CTZ CONCAT 
+50072 066376 
+LLI 376 
+50072 056376 
+LLI 376 
+50074 056026 
+** 
+LHI 026 
+50074 046026 
+** 
+LHI026 
+50076 317 
+LBM 
+50076 106 
+LBM 
+50077 060 
+INL 
+50077 054 
+INL 
+50100 327 
+LCM 
+50100 116 
+LCM 
+50101 066276 
+LLI276 
+50101 056276 
+LLI 276 
+50103 371 
+LMB 
+50103 160 
+LMB 
+50104 060 
+INL 
+50104 054 
+INL 
+50105 372 
+LMC 
+50105 161 
+LMC 
+50106 066004 
+LLI004 
+50106 056004 
+LLI004 
+50110 056045 
+$$ 
+LHI045 
+50110 046045 
+$$ 
+LHI045 
+50112 307 
+LAM 
+50112 176 
+LAM 
+50113 240 
+NDA 
+50113 247 
+NDA 
+50114 053 
+RTZ 
+50114 310 
+RTZ 
+50115 066375 
+LLI375 
+50115 056375 
+LLI375 
+50117 056026 
+** 
+LHI 026 
+50117 046026 
+** 
+LHI 026 
+50121 076000 
+LMIOOO 
+50121 066000 
+LMIOOO 
+50123 066140 
+LLI140 
+50123 056 140 
+LLI140 
+50125 056045 
+$$ 
+LHI 045 
+50125 046045 
+$$ 
+LHI 045 
+50127 335 
+LDH 
+50127 124 
+LDH 
+- 52 -
+
+--- Page 52 ---
+8008 
+8080 
+50130 046020 
+LEI 020 
+50130 036 020 
+LEI 020 
+50132 074001 
+CPI001 
+50132 376001 
+CPI001 
+50134 110 147 050 
+JFZ STCI 
+50134 302147050 
+JFZ STC1 
+50137 106267050 
+CAL SSTRCP 
+50137 315 267050 
+CAL SSTRCP 
+50142 056001 
+** 
+LHI 001 
+50142 046001 
+** 
+LHI001 
+50144 104 130 006 
+JMP LT1 
+50144 303 130006 
+JMP LT1 
+50147 074002 
+STC1, CPI002 
+50147 376002 
+STC1, CPI002 
+50151 110 164050 
+JFZ STC2 
+50151 302 164 050 
+JFZ STC2 
+50154 106267050 
+CALSSTRCP 
+50154 315267050 
+CAL SSTRCP 
+50157 056001 
+** 
+LHI 001 
+50157 046001 
+** 
+LHI 001 
+50161 104 145 006 
+JMP EQ1 
+50161 303 145006 
+JMP EQ1 
+50164 074003 
+STC2, CPI003 
+50164 376003 
+STC2, CPI003 
+50166 110 201 050 
+JFZ STC3 
+50166 302201 050 
+JFZ STC3 
+50171 106267050 
+CAL SSTRCP 
+50171 315267050 
+CAL SSTRCP 
+50174 056001 
+** 
+LHI 001 
+50174 046001 
+** 
+LHI001 
+50176 104 162006 
+JMP GT1 
+50176 303 162006 
+JMPGT1 
+50201 074004 
+STC3, CPI004 
+50201 376004 
+STC3, cpr 004 
+50203 110 216 050 
+JFZ STC4 
+50203 302 216 050 
+JFZ STC4 
+50206 106267 050 
+CAL SSTRCP 
+50206 315267050 
+CAL SSTRCP 
+5021l 056001 
+** 
+LHI001 
+5021l 046001 
+** 
+LHI 001 
+50213 104 202006 
+JMP LEI 
+50213 303202006 
+JMP LEI 
+50216 074005 
+STC4, CPI005 
+50216 376 005 
+STC4, CPI005 
+50220 110 233050 
+JFZ STC5 
+50220 302 233 050 
+JFZ STC5 
+50223 106 267 050 
+CALSSTRCP 
+50223 315267050 
+CAL SSTRCP 
+50226 056001 
+** 
+LHI 001 
+50226 046001 
+** 
+LHI 001 
+50230 104 222006 
+JMP GEl 
+50230 303222006 
+JMP GEl 
+50233 106267050 
+STC5, CAL SSTRCP 
+50233 315267050 
+STC5, CAL SSTRCP 
+50236 056001 
+** 
+LHI001 
+50236 046001 
+** 
+LHI001 
+50240 104237006 
+JMP NE1 
+50240 303237006 
+-JMP NE1 
+50243 317 
+SELOOP, LBM 
+50243 106 
+SELOOP, LBM 
+50244 010 
+INB 
+50244 004 
+INB 
+50245 371 
+LMB 
+50245 160 
+LMB 
+50246 01l 
+DCB 
+50246 005 
+DCB 
+50247 066377 
+LLI377 
+50247 056 377 
+LLI377 
+50251 307 
+LAM 
+50251 176 
+LAM 
+50252 271 
+CPB 
+50252 270 
+CPB 
+50253 007 
+RET 
+50253 311 
+RET 
+50254 317 
+S2LOOP, LBM 
+50254 106 
+S2WOP, LBM 
+50255 010 
+INB 
+50255 004 
+INB 
+50256 371 
+LMB 
+50256 160 
+LMB 
+50257 011 
+DCB 
+50257 005 
+DCB 
+50260 066372 
+LLI372 
+50260 056372 
+LLI372 
+50262 307 
+LAM 
+50262 176 
+LAM 
+50263 024001 
+SUI 001 
+50263 326001 
+SUI 001 
+50265 271 
+CPB 
+50265 270 
+CPB 
+50266 007 
+RET 
+50266 311 
+RET 
+50267 106317022 
+SSTRCP, CALSAVEHL 
+50267 315317 022 
+SSTRCP, CALSAVEHL 
+50272 307 
+LAM 
+50272 176 
+LAM 
+50273 106356 022 
+CAL SWITCH 
+50273 315356022 
+CAL SWITCH 
+50276 317 
+LBM 
+50276 106 
+LBM 
+- 53 -
+
+--- Page 53 ---
+8008 
+8080 
+50277 106 a56 022 
+CAL SWITCH 
+50277 a15 356 022 
+CAL SWITCH 
+50302 271 
+CPB 
+50302 270 
+CPB 
+50303 150 343050 
+JTZ SSTRZ 
+50303 312343050 
+JTZ SSTRZ 
+50306 120312050 
+JFS SSTRCL 
+50306 362312050 
+JFS SSTRCL 
+50311 3]0 
+LBA 
+50311 107 
+LBA 
+50312 106 377 002 
+SSTRCL, CALADV 
+50312 315377 002 
+SSTRCL, CALADV 
+50315 307 
+LAM 
+50315 176 
+LAM 
+50316 1 ()fj 356 022 
+CAL SWITCH 
+50316 315 356022 
+CAL SWITCH 
+50 a21 
+lOR 377 002 
+CALADV 
+50321 3Ui 377 002 
+CALADV 
+50324 277 
+SSTRCE, CPM 
+50324 276 
+SSTRCE, CPM 
+50325 013 
+RFZ 
+50325 aoo 
+RFZ 
+50326 011 
+DCB 
+50326 005 
+DCB 
+50327 110312050 
+JFZ SSTRCL 
+50327 302312050 
+JFZ SSTRCL 
+50332 106337 022 
+CAL RESTHL 
+50332 315337022 
+CAL RESTHL 
+50335 307 
+LAM 
+50335 176 
+LAM 
+50336 106356022 
+CAL SWITCH 
+50336 315 356 022 
+CAL SWITCH 
+50341 277 
+CPM 
+50341 276 
+CPM 
+50342 007 
+RET 
+50342 311 
+RET 
+50343 240 
+SSTRZ, NDA 
+50343 247 
+SSTRZ, NDA 
+50344 053 
+RTZ 
+50344 310 
+RTZ 
+50345 104312050 
+JMP SSTRCL 
+50345 303312050 
+JMP SSTRCL 
+50350 056045 
+$$ 
+CONCAT, LHI 045 
+50350 046045 
+$$ 
+CONCAT, LHI 045 
+50352 066002 
+LLI002 
+50352 056002 
+LLI002 
+50354 307 
+LAM 
+50354 176 
+LAM 
+50355 240 
+NDA 
+50355 247 
+NDA 
+50356 110363050 
+JFZ CONCTO 
+50356 302363050 
+JFZ CONCTO 
+50361 076001 
+LMI001 
+50361 066001 
+LMI001 
+50363 066003 
+CONCTO, LLI003 
+50363 056003 
+CONCTO, LLI003 
+50365 307 
+LAM 
+50365 176 
+LAM 
+50366 24'0 
+NDA 
+50366 247 
+NDA 
+50367 150111051 
+JTZ CONSA1 
+50367 312111 051 
+JTZ CONSA1 
+50372 106255002 
+CALCLESYM 
+50372 315255002 
+CALCLESYM 
+50375 106 123 051 
+CAL SLOOK 
+50375 315123051 
+CAL SLOOK 
+51000 066005 
+LLI005 
+51000 056005 
+LLI005 
+51002 056045 
+$$ 
+LHI045 
+51002 046045 
+$$ 
+LHI045 
+51004 337 
+LDM 
+51004 126 
+LDM 
+51005 060 
+INL 
+51005 054 
+INL 
+51006 347 
+LEM 
+51006 136 
+LEM 
+51007 353 
+LHD 
+51007 142 
+LHD 
+51 010 364 
+LLE 
+51010 153 
+LLE 
+51011 317 
+LBM 
+51011 106 
+LBM 
+51012 056045 
+$$ 
+LHI045 
+51012 046045 
+$$ 
+LHI045 
+51014 066003 
+LLI003 
+51014 056003 
+LLI003 
+51016 307 
+LAM 
+51016 176 
+LAM 
+51017 074377 
+CPI377 
+51017 376377 
+CPI377 
+51021 110035051 
+JFZ CONCA1 
+51021 302035051 
+JFZ CONCA1 
+51024 066002 
+LLI002 
+51024 056002 
+LLI002 
+51026 301 
+LAB 
+51026 170 
+LAB 
+51027 227 
+SUM 
+51027 226 
+SUM 
+51030 310 
+LBA 
+51030 107 
+LBA 
+51031 010 
+INB 
+51031 004 
+INB 
+51032 104040051 
+JMF CONSAC 
+51032 303040 051 
+JMP CONSAC 
+- 54-
+
+--- Page 54 ---
+8008 
+8080 
+51035 066003 
+CONCA1, LLI003 
+51035 056003 
+CONCA1, LLI 003 
+51037 317 
+LBM 
+51037 106 
+LBM 
+51040 066020 
+CONSAC, LLI020 
+51040 056020 
+CON SAC, LLI020 
+51042 056045 
+$$ 
+LHI 045 
+51042 046045 
+$$ 
+LHI 045 
+51044 307 
+LAM 
+51044 176 
+LAM 
+51045 201 
+ADB 
+51045 200 
+ADB 
+51046 074121 
+CPI 121 
+51046 376 121 
+CPI121 
+51050 120 222002 
+JFS BIGERR 
+51050 362222002 
+JFS BIGERR 
+51053 320 
+LCA 
+51053 117 
+LCA 
+51054 307 
+LAM 
+51054 176 
+LAM 
+51055 372 
+LMC 
+51055 161 
+LMC 
+51056 004021 
+AD! 021 
+51056 306021 
+AD! 021 
+51060 320 
+LCA 
+51060 117 
+LCA 
+51061 066005 
+LLI005 
+51061 056005 
+LLI005 
+51063 337 
+LDM 
+51063 126 
+LDM 
+51064 060 
+INL 
+51064 054 
+INL 
+51 065 307 
+LAM 
+51065 176 
+LAM 
+51066 066002 
+LLI002 
+51066 056002 
+LLI 002 
+51 070 207 
+ADM 
+51070 206 
+ADM 
+5) 071 340 
+LEA 
+51071 137 
+LEA 
+51 072 303 
+LAD 
+51072 172 
+LAD 
+51 073 014000 
+ACIOOO 
+51073 316000 
+ACT 000 
+51075 330 
+LDA 
+51075 127 
+LDA 
+51076 353 
+LHD 
+51076 142 
+LHD 
+51077 364 
+LLE 
+51077 153 
+LLE 
+51100 036045 
+$$ 
+LD! 045 
+51100 026045 
+$$ 
+LDI 045 
+51 102 342 
+LEC 
+51102 131 
+LEC 
+51103 010 
+INB 
+51103 004 
+INB 
+51104 011 
+DCB 
+51104 005 
+DCB 
+51105 300 
+LAA 
+51105 177 
+LAA 
+51106 112050012 
+CFZMOVEPG 
+51106 304050012 
+CFZMOVEPG 
+51111 066002 
+CONSA1, LLI002 
+51111 056002 
+CONSA1, LLI002 
+51113 056045 
+$$ 
+LHI045 
+51113 046045 
+$$ 
+LHI045 
+51 115 076001 
+LMI001 
+51 115 066001 
+LMI001 
+51 117 060 
+INL 
+51117 054 
+INL 
+51120 076377 
+LMI377 
+51120 066377 
+LMI377 
+51122 007 
+RET 
+51122 311 
+RET 
+51123 066013 
+SLOOK, LLI013 
+51 123 056 013 
+SLOOK, LLI013 
+51125 056045 
+$$ 
+LHI045 
+51 125 046045 
+$$ 
+LHI 045 
+51 127 327 
+LCM 
+51 127 116 
+LCM 
+51130 066 260 
+LLI260 
+51130 056260 
+LLI 260 
+51 132 337 
+LDM 
+51 132 126 
+LDM 
+51133 046000 
+LEI 000 
+51 133 036000 
+LEI 000 
+51135 020 
+INC 
+51 135 014 
+INC 
+51136 021 
+DCC 
+51136 015 
+DCC 
+51137 150220051 
+JTZ SLOOK3 
+51 137 312220051 
+JTZ SLOOK3 
+51142 364 
+SLOOKl, LLE 
+51142 153 
+SLOOKl, LLE 
+51 143 353 
+LHD 
+51143 142 
+LHD 
+51 144 307 
+LAM 
+51144 176 
+LAM 
+51145 066000 
+LLIOOO 
+51 145 056000 
+LLIOOO 
+51 147 056045 
+$$ 
+LHI 045 
+51 147 046 045 
+$$ 
+LHI045 
+51 151 277 
+CPM 
+51 151 276 
+CPM 
+51 152 110210051 
+JFZ SLOOK2 
+51152 302 210051 
+JFZ SLOOK2 
+51155 364 
+LLE 
+51155 153 
+LLE 
+51 156 353 
+LHD 
+51156 142 
+LHD 
+- 55 -
+
+--- Page 55 ---
+8008 
+8080 
+51 157 060 
+INL 
+51 157 054 
+INL 
+51 160 307 
+LAM 
+51160 176 
+LAM 
+51 161 066001 
+LLI001 
+51161 056001 
+LLI001 
+51163 056045 
+$$ 
+LHI 045 
+51163 046045 
+$$ 
+LHI 045 
+51 165 277 
+CPM 
+51165 276 
+CPM 
+51 166 110210051 
+JFZ SLOOK2 
+51 166 302 210 051 
+JFZ SLOOK2 
+51 171 
+364 
+LLE 
+51 171 153 
+LLE 
+51172 353 
+LHD 
+51 172 142 
+LHD 
+51173 060 
+INL 
+51173 054 
+INL 
+51 174 060 
+INL 
+51174 054 
+INL 
+51 175 337 
+LDM 
+51 175 126 
+LDM 
+51 17f1 060 
+INL 
+51176 054 
+INL 
+51 177 347 
+LEM 
+51 177 136 
+LEM 
+51 200 066005 
+LLI005 
+51200 056005 
+LLIOOS 
+51202 056045 
+$$ 
+LHI 045 
+51202 046045 
+$$ 
+LHI 045 
+51 204 373 
+LMD 
+51204 162 
+LMD 
+51 205 060 
+INL 
+51205 054 
+INL 
+51206 374 
+LME 
+51206 163 
+LME 
+51 207 007 
+RET 
+51207 311 
+RET 
+51210 304 
+SLOOK2, LAE 
+51 210 173 
+SWOK2, LAE 
+51211 004004 
+AD! 004 
+51211 306004 
+AD! 004 
+51 213 340 
+LEA 
+51213 137 
+LEA 
+51214 021 
+DCC 
+51214 015 
+DCC 
+51 215 110142051 
+JFZ SLOOK1 
+51215 302 142051 
+JFZ SLOOK1 
+51 220 066013 
+SLOOK3, LLI013 
+51220 056013 
+SLOOK3, LLI013 
+51 222 056045 
+$$ 
+LHI 045 
+51222 046045 
+$$ 
+LHI045 
+51224 317 
+LBM 
+51224 106 
+LBM 
+51225 010 
+INB 
+51225 004 
+INB 
+51226 371 
+LMB 
+51226 160 
+LMB 
+51227 .301 
+LAB 
+51 227 170 
+LAB 
+51230 074101 
+CPI 101 
+51230 376 101 
+CPI101 
+51 232 120222002 
+JFS BIG ERR 
+51 232 362222002 
+JFS BIGERR 
+51 235 066000 
+LLI 000 
+51235 056000 
+LLIOOO 
+51237 307 
+LAM 
+51237 176 
+LAM 
+51240 3n3 
+LHD 
+51240 142 
+LHD 
+51241 364 
+LLE 
+51241 153 
+LLE 
+51 242 370 
+LMA 
+51242 167 
+LMA 
+51 248 066 001 
+LLI001 
+51243 056001 
+LLI001 
+5124n On6045 
+$$ 
+LHI 045 
+51 245 046045 
+$$ 
+LHI 045 
+51247 307 
+LAM 
+51247 176 
+LAM 
+51 250 353 
+LHD 
+51250 142 
+LHD 
+51 251 364 
+LLE 
+51251 153 
+LLE 
+51252 060 
+INL 
+51252 054 
+INL 
+51 253 370 
+LMA 
+51253 167 
+LMA 
+51254 0660]5 
+LLI015 
+51 254 056015 
+LLI 015 
+51256 056 045 
+$$ 
+LHI 045 
+51256 046045 
+$$ 
+LHI 045 
+51260 317 
+LBM 
+51260 106 
+LBM 
+51261 060 
+INL 
+51261 054 
+INL 
+51262 327 
+LCM 
+51262 116 
+LCM 
+51263 066005 
+LLI005 
+51263 056005 
+LLI005 
+51 265 371 
+LMB 
+51265 160 
+LMB 
+51266 060 
+INL 
+51266 054 
+INL 
+51267 372 
+LMC 
+51267 161 
+LMC 
+51270 353 
+LHD 
+51270 142 
+LHD 
+51 271 364 
+LLF. 
+51271 153 
+LLE 
+51 272 060 
+INL 
+51272 054 
+INL 
+51273 060 
+INL 
+51273 054 
+INL 
+- 56 -
+
+--- Page 56 ---
+8008 
+8080 
+51 274 371 
+LMB 
+51274 160 
+LMB 
+51 275 060 
+INL 
+51275 054 
+INL 
+51 27n 372 
+LMC 
+51 276 161 
+LMC 
+51 277 302 
+LAC 
+51277 171 
+LAC 
+51 ~oo 004 001 
+AD! 001 
+51300 306001 
+AD! 001 
+51 302 320 
+LCA 
+51 302 117 
+LCA 
+51308 301 
+LAB 
+51303 170 
+LAB 
+51304 014000 
+ACIOOO 
+51304 316000 
+ACIOOO 
+5130n 310 
+LBA 
+51306 107 
+LBA 
+51307 066015 
+LLI015 
+51307 056015 
+LLI 015 
+51311 05n 045 
+$$ 
+LHI 045 
+51311 046045 
+$$ 
+LHI045 
+51 313 871 
+LMB 
+51313 160 
+LMB 
+51 ~ 14 OnO 
+INL 
+51 314 054 
+INL 
+51 315 372 
+LMC 
+51315 161 
+LMC 
+51 316 351 
+LHB 
+51 316 140 
+LHB 
+51317 362 
+LLC 
+51317 151 
+LLC 
+[)1320 076 000 
+LMIOOO 
+51320 066000 
+LMIOOO 
+[)1 322 026 000 
+LCIOOO 
+51322 016000 
+LCIOOO 
+51 324 007 
+RET 
+51324 311 
+RET 
+51 :125 026 001 
+PARNB, LCI001 
+51 325 016001 
+PARNB, LCI001 
+51 327 056026 
+** 
+LHI 026 
+51 327 046026 
+** 
+LHI 026 
+51 331 363 
+LLD 
+51331 152 
+LLD 
+51 832 040 
+INE 
+51332 034 
+INE 
+51333 307 
+PARNB1, LAM 
+51333 176 
+PARNB1, LAM 
+51334 074250 
+CPI250 
+51334 376250 
+CPI250 
+51 336 110345051 
+JFZ PARNB2 
+51336 302345051 
+JFZ PARNB2 
+51 341 020 
+INC 
+51341 014 
+INC 
+51342 104353051 
+JMP PARNB3 
+51342 303353 051 
+JMP PARNB3 
+51345 074251 
+PARNB2, CPI251 
+51345 376 251 
+PARNB2, cpr 251 
+51 347 110353051 
+JFZ PARNB3 
+51347 302353051 
+JFZ PARNB3 
+51 352 02] 
+DCC 
+51352 015 
+DCC 
+51353 020 
+PARNB3, INC 
+51353 014 
+PARNB3, INC 
+51354 021 
+DCC 
+51354 015 
+DCC 
+51355 316 
+LBL 
+51355 105 
+LBL 
+51356 053 
+RTZ 
+51356 310 
+RTZ 
+51357 060 
+INL 
+51357 054 
+INL 
+51360 306 
+LAL 
+51360 175 
+LAL 
+513n1 274 
+CPE 
+51361 273 
+CPE 
+51362 110333051 
+JFZ PARNB1 
+51362 302333051 
+JFZ PARNB1 
+51 365 104104006 
+JMPPARNER 
+51365 303104006 
+JMPPARNER 
+51370 066375 
+EVALPC, LLI375 
+51370 056375 
+EVALPC, LLI:175 
+51372 056026 
+** 
+LHI026 
+51372 046026 
+** 
+LHI026 
+51374 076000 
+LMIOOO 
+51 374 066000 
+LMIOOO 
+51376 066227 
+EVALS, LLI 227 
+51 ~76 056227 
+EVALS, LLI 227 
+52000 056001 
+** 
+LHI 001 
+52000 04n 001 
+** 
+LHIOOI 
+52002 104227003 
+JMP EVALQ 
+52002 303227003 
+JMPEVALQ 
+52005 074244 
+SCANCP, cpr 244 
+52005 376 244 
+SCANCP, CPI244 
+52007 150000046 
+JTZ SEVAL 
+52007 312000046 
+JTZ SEVAL 
+52012 074247 
+CPI247 
+52012 376 247 
+cpr 247 
+52014 150 000 046 
+JTZ SEVAL 
+52014 312000046 
+JTZ SEVAL 
+52017 074 242 
+CPI242 
+52017 376242 
+cpr 242 
+52021 150000046 
+JTZ SEVAL 
+52021 312000046 
+JTZ SEVAL 
+- 57 -
+
+--- Page 57 ---
+8008 
+8080 
+52024 106042052 
+CAL LTEQGT 
+52024 315 042 052 
+CAL LTEQGT 
+52027 066 176 
+LLI 176 
+52027 056176 
+LLI176 
+52031 317 
+LBM 
+52031 106 
+LBM 
+52032 010 
+INB 
+52032 004 
+INB 
+52033 011 
+DCB 
+52033 005 
+DCB 
+52034 110351 003 
+JFZ SCANFN 
+52034 302351003 
+JFZ SCANFN 
+52037 104276004 
+JMP SCAN16 
+52037 303 276004 
+JMP SCAN16 
+52042 066 176 
+LTEQGT, LLI176 
+52042 056176 
+LTEQGT, LLI 176 
+52044 076000 
+LMIOOO 
+52044 066000 
+LMIOOO 
+52046 104100004 
+JMP SCAN9 
+52046 303 100004 
+JMPSCAN9 
+52051 006323 
+STERR, LAI323 
+52051 076 323 
+STERR, LAI323 
+52053 026 324 
+LCI324 
+52053 016324 
+LCI324 
+52055 104 226002 
+JMPERROR 
+52055 303226002 
+JMPERROR 
+52060 006311 
+IQERR, LAI311 
+52060 076311 
+IQERR, LAI311 
+52062 026321 
+LCI321 
+52062 016 321 
+LCI321 
+52064 104 226 002 
+JMPERROR 
+52064 303226002 
+JMPERROR 
+52070 066375 
+STORP, LLI375 
+52070 056375 
+STORP, LLI375 
+52072 056026 
+** 
+LHI 026 
+52072 04fi 026 
+** 
+LHI 026 
+52074 307 
+LAM 
+52074 176 
+LAM 
+52075 240 
+NDA 
+52075 247 
+NDA 
+52076 066201 
+LLI201 
+52076 056 201 
+LLI201 
+52100 056027 
+** 
+LHI 027 
+52100 046027 
+** 
+LHI027 
+52102 150060010 
+JTZ STORP1 
+52102 312060010 
+JTZ STORP1 
+52105 307 
+SSTOR, LAM 
+52105 176 
+SSTOR, LAM 
+52106 076 000 
+LMIOOO 
+52106 066000 
+LMIOOO 
+52110 240 
+NDA 
+52110 247 
+NDA 
+52111 
+110 150 052 
+JFZ SSTOR1 
+52111 
+302 150052 
+JFZ SSTOR1 
+52114 06fi 120 
+LLI120 
+52114 056 120 
+LLI 120 
+52116 056026 
+** 
+LHI026 
+I 52 116 046026 
+** 
+LHI 026 
+52120 307 
+LAM 
+52120 176 
+LAM 
+52121 074 002 
+CPI002 
+52 121 376 002 
+CPI002 
+52123 110 051 052 
+JFZ STERR 
+52123 302051052 
+JFZ STERR 
+52126 206 
+ADL 
+52126 205 
+ADL 
+52127 360 
+LLA 
+52127 157 
+LLA 
+52130 307 
+LAM 
+52130 176 
+LAM 
+52131 074244 
+CPT 244 
+52131 376 244 
+CPI244 
+52133 110051 052 
+JFZ STERR 
+52133 302051 052 
+JFZ STERR 
+52136 061 
+DCL 
+52136 055 
+DCL 
+52137 307 
+LAM 
+52137 176 
+LAM 
+52140 066261 
+LLI261 
+52140 056 261 
+LLI261 
+52142 056045 
+$$ 
+LHI045 
+52142 046045 
+$$ 
+LHI045 
+52144 370 
+LMA 
+52144 167 
+LMA 
+52145 060 
+INL 
+52145 054 
+INL 
+52146 076001 
+LMI001 
+52146 066001 
+LMIOOI 
+52150 066261 
+SSTOR1, LLI261 
+52150 056 261 
+SSTOR1, LLI 261 
+52152 056045 
+$$ 
+LHI 045 
+52152 046045 
+$$ 
+LHI045 
+52154 337 
+LDM 
+52154 126 
+LDM 
+52155 060 
+INL 
+52155 054 
+INL 
+52156 347 
+LEM 
+52156 13fi 
+LEM 
+52157 066000 
+LLIOOO 
+52157 05fi 000 
+LLIOOO 
+52161 373 
+LMD 
+52161 162 
+LMD 
+52162 060 
+INL 
+52162 054 
+INL 
+52163 374 
+LME 
+52163 163 
+LME 
+- 58 -
+
+--- Page 58 ---
+8008 
+8080 
+52164 106 123051 
+CAL SLOOK 
+52164 315 123051 
+CAL8LOOK 
+52167 302 
+LAC 
+52167 171 
+LAC 
+52170 240 
+NDA 
+52170 247 
+NDA 
+52171 110 214 052 
+JFZ SSTOR8 
+52171 302 214052 
+JFZ SSTOR8 
+52 174 066016 
+LLI 016 
+52174 056 016 
+LLI 016 
+52 176 056045 
+$$ 
+LHI 045 
+52176 046045 
+$$ 
+LHI045 
+52200 307 
+LAM 
+52200 176 
+LAM 
+52201 024001 
+SUI 001 
+52201 326001 
+SUI 001 
+52203 370 
+LMA 
+52203 167 
+LMA 
+52 204 061 
+DCL 
+52204 055 
+DCL 
+52205 307 
+LAM 
+52205 176 
+LAM 
+52206 034000 
+8Br 000 
+52206 336000 
+SBI 000 
+52210 370 
+LMA 
+52210 167 
+LMA 
+52211 104035053 
+JMP 8STOR3 
+52211 303035053 
+JMP SSTOR3 
+52214 066005 
+SSTOR8, LLI005 
+52214 056005 
+SSTOR8, LLI005 
+52216 056045 
+$$ 
+LHI 045 
+52216 046045 
+$$ 
+LHI 045 
+52220 337 
+LDM 
+52220 126 
+LDM 
+52221 060 
+INL 
+52221 054 
+INL 
+52222 347 
+LEM 
+52222 136 
+LEM 
+52223 353 
+LHD 
+52223 142 
+LHD 
+52224 364 
+LLE 
+52224 153 
+LLE 
+52225 327 
+LCM 
+52225 116 
+LCM 
+52226 066007 
+LLI007 
+52226 056007 
+LLI 007 
+52230 056045 
+$$ 
+LHI045 
+52230 046045 
+$$ 
+LHI045 
+52232 372 
+LMC 
+52232 161 
+LMC 
+52233 020 
+INC 
+52233 014 
+INC 
+52234 066016 
+LLI016 
+52234 056016 
+LLI016 
+52236 307 
+LAM 
+52236 176 
+LAM 
+52237 222 
+SUC 
+52237 221 
+SUC 
+52240 370 
+LMA 
+52240 167 
+LMA 
+52241 .061 
+DCL 
+52241 055 
+DCL 
+52242 307 
+LAM 
+52242 176 
+LAM 
+52243 034000 
+8BI 000 
+52243 336000 
+SBIOOO 
+52245 370 
+LMA 
+52245 167 
+LMA 
+52246 304 
+SSTOR2, LAE 
+52246 173 
+SSTOR2, LAE 
+52247 202 
+ADC 
+52247 201 
+ADC 
+52250 360 
+LLA 
+52250 157 
+LLA 
+52251 303 
+LAD 
+52251 172 
+LAD 
+52252 014000 
+ACIOOO 
+52252 316000 
+ACIOOO 
+52254 350 
+LHA 
+52254 147 
+LHA 
+- 52255 317 
+LBM 
+52255 106 
+LBM 
+52256 364 
+LLE 
+52256 153 
+LLE 
+52257 353 
+LHD 
+52257 142 
+LHD 
+52260 371 
+LMB 
+52260 160 
+LMB 
+52261 066015 
+LLI015 
+52261 056015 
+LLI015 
+52263 056 045 
+$$ 
+LHI 045 
+52263 046045 
+$$ 
+LHI 045 
+52265 303 
+LAD 
+52265 172 
+LAD 
+52266 277 
+CPM 
+52266 276 
+CPM 
+52267 110300052 
+JFZ SSTOR9 
+52267 302300052 
+JFZ SSTOR9 
+52272 060 
+INL 
+52272 054 
+INL 
+52273 304 
+LAE 
+52273 173 
+LAE 
+52274 277 
+CPM 
+52274 276 
+CPM 
+52275 150 306052 
+JTZ SSTORO 
+52275 312306052 
+JTZ SSTORO 
+52300 106064013 
+SSTOR9, CAL ADVDE 
+52300 315064013 
+SSTOR9, CALADVDE 
+52303 104 246052 
+JMP SSlOR2 
+52303 303246052 
+JMP SSTOR2 
+- 59 -
+
+--- Page 59 ---
+SEVAL, 
+LLI017 
+Load L with address of NOCONCAT flag 
+LHI045 
+$$ Load H with string page 
+LMIOOO 
+Reset NOCANCAT flag 
+INL 
+Register L points to STRAr;C (CC) 
+LMIOOO 
+Clear STRACC 
+LLI 002 
+Load L with address of STJRSTR pointer 
+LMI001 
+Put 1 in SUBSTR pointAr 
+INL 
+Point to SUBSTR length 
+LMI377 
+Put -1 in SUBSTR length (whole string) 
+INL 
+Point to string FUNCTION TOKEN 
+LMIOOO 
+Initialize to zero 
+CAL CLESYM 
+Clear the symbol table 
+LLI375 
+Load L with address of SMODE 
+LMIOO1 
+Set SMODE to string 
+LLI276 
+Load L with address of EV AL start 
+LBM 
+Load start and stop into Band C 
+INL 
+LCM 
+LLI376 
+Load L with address of TEMP SEV AL start 
+LMB 
+And stop pointers and put old eval pointers 
+INL 
+There from Band C 
+LMC 
+LLI371 
+Load L with address of SEV AL SCAN pointer 
+LMB 
+Put start of EV AL pointer in SEV AL SCAN pointer 
+SEVAL1, 
+LLI371 
+Load L with address of SEV AL SCAN pointer 
+LHI026 
+** Load H with pointer page 
+CALGETCHR 
+Get character pointed to be SEV AL pointer 
+JTZ FSEVAL 
+Ignore space 
+CPI247 
+Is character a single quote (') ? 
+JTZ SEVAL2 
+If so, have text literal 
+CPI242 
+Is character a double quote (") ? 
+JFZ SEVAL5 
+If not, test for other characters 
+SEVAL2, 
+LLI 367 
+Load L with address of quote type 
+LMA 
+Store opening quote there 
+LLI371 
+Load L with address of SEV AL pointer 
+LBM 
+Add 1 to SEVAL pointer 
+INB 
+INL 
+Load L with address of text pointer 
+LMB 
+Store SEV AL POINTER +1 there 
+SEVAL3, 
+LLI 372 
+Load L with address of LITERAL pointer 
+CALGETCHR 
+Get character pointed to by LITERAL pointer 
+LLI367 
+Load L with address of quote type 
+CPM 
+Is charactAr the closing quote? 
+JTZ SEVAL4 
+If so, finish up 
+LLI020 
+Load L with address of STRACC 
+LHI045 
+$$ Load H with string page 
+CAL CONCTI 
+Concatenate character onto STRACC 
+LLI 372 
+Load L with address of LITERAL pointer 
+- 6 -
+
+--- Page 60 ---
+8008 
+8080 
+52306 066005 
+SSTORO, LLI005 
+52306 056005 
+SSTORO, LLI005 
+52310 056045 
+$$ 
+LHI045 
+52310 046045 
+$$ 
+LHI045 
+52312 337 
+LDM 
+52312 126 
+LDM 
+52313 060 
+INL 
+52313 054 
+INL 
+52314 347 
+LEM 
+52314 136 
+LEM 
+52315 066013 
+LLI013 
+52315 056013 
+LLI013 
+52317 317 
+LBM 
+52317 106 
+LBM 
+52320 066 260 
+LLI260 
+52320 056260 
+LLI260 
+52322 357 
+LHM 
+52322 146 
+LHM 
+52323 066002 
+LLI002 
+52323 056002 
+LLI002 
+52325 307 
+SSTOR4, LAM 
+52325 176 
+SSTOR4, LAM 
+52326 273 
+CPD 
+52326 272 
+CPD 
+52327 150340052 
+JTZ SSTOR5 
+52327 312 340052 
+JTZ S8TOR5 
+52332 160025053 
+JTS SSTOR7 
+52332 372025 053 
+JTS SSTOR7 
+52335 104 014 053 
+JMP SSTOR6 
+52335 303014053 
+JMP SSTOR6 
+52340 060 
+SSTOR5, INL 
+52340 054 
+SSTOR5, INL 
+52341 307 
+LAM 
+52341 176 
+LAM 
+52342 061 
+DCL 
+52342 055 
+DCL 
+52343 274 
+CPE 
+52343 273 
+CPE 
+52344 140025053 
+JTC SSTOR7 
+52344 332025 053 
+JTC SSTOR7 
+52347 110014053 
+JFZ SSTOR6 
+52347 302014 053 
+JFZ SSTOR6 
+52352 306 
+LAL 
+52352 175 
+LAL 
+52353 066263 
+LLI263 
+52353 056263 
+LLI263 
+52355 056045 
+$$ 
+LHI 045 
+52355 046045 
+$$ 
+LHI 045 
+52357 371 
+LMB 
+52357 160 
+LMB 
+52360 060 
+INL 
+52360 054 
+INL 
+52361 372 
+LMC 
+5236J 
+161 
+LMC 
+52362 066 015 
+LLI015 
+52362 056015 
+LLI015 
+52364 317 
+LBM 
+52364 106 
+LBM 
+52365 060 
+INL 
+52365 054 
+INL 
+52366 327 
+LCM 
+52366 116 
+LCM 
+52367 066260 
+LLI260 
+52367 056260 
+LLI 260 
+52371 357 
+LHM 
+52371 146 
+LHM 
+52372 360 
+LLA 
+52372 157 
+LLA 
+52373 371 
+LMB 
+52373 160 
+LMB 
+52374 060 
+INL 
+52374 054 
+INL 
+52375 372 
+LMC 
+52375 161 
+LMC 
+52376 066263 
+LLI263 
+52376 056263 
+LLI263 
+53000 056045 
+$$ 
+LHI045 
+53000 046 045 
+$$ 
+LHI045 
+53002 317 
+LBM 
+53002 106 
+LBM 
+53003 060 
+INL 
+53003 054 
+INL 
+53004 327 
+LCM 
+53004 116 
+LCM 
+53005 066260 
+LLI260 
+53005 056260 
+LLI260 
+53007 357 
+LHM 
+53007 146 
+LHM 
+53010 360 
+LLA 
+53010 157 
+LLA 
+53011 104025053 
+JMP SSTOR7 
+53011 303025053 
+JMP SSTOR7 
+53014 060 
+SSTOR6, INL 
+53014 054 
+SSTOR6, INL 
+53015 307 
+LAM 
+53015 176 
+LAM 
+53016 222 
+SUC 
+53016 221 
+SUC 
+53017 370 
+LMA 
+53017 167 
+LMA 
+53020 061 
+DCL 
+53020 055 
+DCL 
+53021 307 
+LAM 
+53021 176 
+LAM 
+53022 034000 
+SBIOOO 
+53022 336000 
+SBIOOO 
+53024 370 
+LMA 
+53024 167 
+LMA 
+- 60 -
+
+--- Page 61 ---
+8008 
+8080 
+53025 306 
+SSTOR7, LAL 
+53025 175 
+SSTOR7, LAL 
+53026 004004 
+AD! 004 
+53026 306004 
+AD! 004 
+53030 360 
+LLA 
+53030 157 
+LLA 
+53031 011 
+DCB 
+53031 005 
+DCB 
+53032 110325052 
+JFZ SSTOR4 
+53032 302325052 
+JFZ SSTOR4 
+53035 066015 
+SSTOR3, LLI015 
+53035 056015 
+SSTOR3, LLI015 
+53037 056045 
+$$ 
+LHI045 
+53037 046045 
+$$ 
+LHI 045 
+53041 337 
+LDM 
+53041 126 
+LDM 
+53042 060 
+INL 
+53042 054 
+INL 
+53043 347 
+LEM 
+53043 136 
+LEM 
+53044 066 020 
+LLI020 
+53044 056020 
+LLI020 
+53046 307 
+LAM 
+53046 176 
+LAM 
+53047 004 001 
+AD! 001 
+53047 306001 
+AD! 001 
+53051 204 
+ADE 
+53051 203 
+ADE 
+53052 340 
+LEA 
+53052 137 
+LEA 
+53053 303 
+LAD 
+53053 172 
+LAD 
+53054 014000 
+ACIOOO 
+53054 316000 
+ACIOOO 
+53056 330 
+LDA 
+53056 127 
+LDA 
+53057 074045 
+$$ 
+CPI 045 
+53057 376045 
+$$ 
+CPI045 
+53061 
+150222002 
+JTZ BIGERR 
+53061 312 222 002 
+JTZ BIGERR 
+53064 066015 
+LLI015 
+53064 056015 
+LLI 015 
+5306f) 337 
+LDM 
+53066 126 
+LDM 
+53067 370 
+LMA 
+53067 167 
+LMA 
+53070 060 
+INL 
+53070 054 
+INL 
+53071 307 
+LAM 
+53071 176 
+LAM 
+53072 374 
+LME 
+53072 163 
+LME 
+53073 340 
+LEA 
+53073 137 
+LEA 
+53074 066020 
+LLI020 
+53074 056020 
+LLI 020 
+53076 106046012 
+CAL MOVEC 
+53076 315046 012 
+CAL MOVEC 
+53101 066015 
+LLI015 
+53101 056015 
+LLI015 
+53103 056045 
+$$ 
+LHI045 
+53 103 046045 
+$$ 
+LHI 045 
+53105 337 
+LDM 
+53 105 126 
+LDM 
+53106 060 
+INL 
+53106 054 
+INL 
+53107 347 
+LEM 
+53107 136 
+LEM 
+53110 353 
+LHD 
+53110 142 
+LHD 
+53111 364 
+LLE 
+53111 153 
+LLE 
+53112 076000 
+LMIOOO 
+53112 066000 
+LMIOOO 
+53114 066 375 
+LLI375 
+53114 056375 
+** 
+LLI375 
+53116 056026 
+** 
+LHI026 
+53116 046026 
+LHI026 
+53120 076000 
+LMIOOO 
+53120 066000 
+LMIOOO 
+53122 007 
+RET 
+53122 311 
+RET 
+53124 066 203 
+PPRINT, LLI203 
+53124 056203 
+PPRINT, LLI203 
+53126 106003003 
+CAL LOOP 
+53126 315003003 
+CAL LOOP 
+53131 110002014 
+JFZ PRINT2 
+53131 302002014 
+JFZ PRINT2 
+53 134 104 043 014 
+JMP PRINT3 
+53134 303043014 
+JMP PRINT3 
+53137 066203 
+PPRIN7, LLI203 
+53137 056203 
+PPRIN7, LLI 203 
+53141 337 
+LDM 
+53141 126 
+LDM 
+53142 030 
+IND 
+53142 024 
+IND 
+53143 066000 
+LLIOOO 
+53143 056000 
+LLIOOO 
+53145 347 
+LEM 
+53145 136 
+LEM 
+53146 106325051 
+CALPARNB 
+53146 31532505] 
+CALPARNB 
+53151 066203 
+LLI203 
+53151 056203 
+LLI203 
+53153 371 
+LMB 
+53153 160 
+LMB 
+53154 104124053 
+JMP PPRINT 
+53154 303 124 053 
+JMP PPRINT 
+- 61 -
+
+--- Page 62 ---
+8008 
+8080 
+53157 066375 
+POUTSF, LLI375 
+53157 056375 
+POUTSF, LLI 375 
+53161 056026 
+** 
+LHI 026 
+53161 046026 
+** 
+LHI026 
+53163 307 
+LAM 
+53163 176 
+LAM 
+53164 240 
+NDA 
+53164 247 
+NDA 
+53165 150 314014 
+.rrZ PFPOUT 
+53165 312314014 
+.rrZ PFPOUT 
+53170 066020 
+LLI020 
+53170 056020 
+LLI020 
+53172 056045 
+$$ 
+LHI 045 
+53172 046045 
+$$ 
+LHI045 
+53174 104121003 
+JMPTEXTC 
+53174 303 121 003 
+JMPTEXTC 
+53177 066120 
+ARRAYP, LLI120 
+53177 056 120 
+ARRAYP, LLI120 
+53201 307 
+LAM 
+53201 176 
+LAM 
+53202 206 
+ADL 
+53202 205 
+ADL 
+53203 360 
+LLA 
+53203 157 
+LLA 
+53204 307 
+LAM 
+53204 176 
+LAM 
+53205 074 244 
+CPI244 
+53205 376 244 
+CPI244 
+53207 150 221053 
+.rrZ SARRAY 
+53207 312221 053 
+.rrZ SARRAY 
+53212 066207 
+LLI207 
+53212 056207 
+LLI207 
+53214 076000 
+LMIOOO 
+53214 066000 
+LMIOOO 
+53216 104240055 
+JMPARRAY6 
+53216 303240055 
+JMPARRAY6 
+53221 061 
+SARRAY, DCL 
+53221 055 
+SARRAY, DCL 
+53222 307 
+LAM 
+53222 176 
+LAM 
+53223 066 261 
+LLI261 
+53223 056261 
+LLI261 
+53225 056045 
+$$ 
+LHI 045 
+53225 046045 
+$$ 
+LHI 045 
+53227 370 
+LMA 
+53227 167 
+LMA 
+53230 106224003 
+CAL EVAL 
+53230 315 224 003 
+CAL EVAL 
+53233 106000020 
+CAL FPFIX 
+53233 315000020 
+CAL FPFIX 
+53236 066124 
+LLI 124 
+53236 056 124 
+LLI 124 
+53240 056 001 
+** 
+LHI001 
+53240 046001 
+** 
+LHI 001 
+53242 307 
+LAM 
+53242 176 
+LAM 
+53243 066262 
+LLI262 
+53243 056262 
+LLI262 
+53245 056045 
+$$ 
+LHI 045 
+53245 046045 
+$$ 
+LHI045 
+53247 370 
+LMA 
+53247 167 
+LMA 
+53250 066375 
+LLI375 
+53250 056375 
+LLI375 
+53252 056026 
+** 
+LHI 026 
+53252 046026 
+** 
+LHI 026 
+53254 076001 
+LMI001 
+53254 066001 
+LMI001 
+53 256 056027 
+** 
+LHI 027 
+53256 046027 
+** 
+LHI 027 
+53260 066 201 
+LLI201 
+53260 056201 
+LLI201 
+53262 076001 
+LMI001 
+53262 066 001 
+LMI001 
+53264 007 
+RET 
+53264 311 
+RET 
+53265 066260 
+SCRPCH, LLI260 
+53265 056260 
+SCRPCH, LLI260 
+53267 056045 
+$$ 
+LHI 045 
+53267 046045 
+$$ 
+LHI045 
+53271 317 
+LBM 
+53271 106 
+LBM 
+53272 010 
+INB 
+53272 004 
+INB 
+53273 066013 
+LLI 013 
+53273 056013 
+LLI 013 
+53275 076000 
+LMIOOO 
+53275 066000 
+LMIOOO 
+53277 066015 
+LLI015 
+53277 056015 
+LLI015 
+53301 371 
+LMB 
+53301 160 
+LMB 
+53302 060 
+INL 
+53302 054 
+INL 
+53303 076000 
+LMIOOO 
+53303 066000 
+LMIOOO 
+53305 351 
+LHB 
+53305 140 
+LHB 
+53306 066000 
+LLIOOO 
+53306 056000 
+LLIOOO 
+53310 076000 
+LMIOOO 
+53310 066000 
+LMIOOO 
+53312 104266010 
+JMPEXEC 
+53312 303266010 
+JMPEXEC 
+53315 106255002 
+PINPUT, CALCLESYM 
+53315 315255002 
+PINPUT, CALCLESYM 
+S3320 066375 
+LLI 375 
+53320 056375 
+LLI375 
+- 62 -
+
+--- Page 63 ---
+8008 
+8080 
+53322 076000 
+LMIOOO 
+53322 066000 
+LMIOOO 
+53324 007 
+RET 
+53324 311 
+RET 
+53325 066375 
+INPUTS, LLI 375 
+53325 056375 
+INPUTS, LLI375 
+53327 056026 
+** 
+LHI 026 
+53327 046 026 
+** 
+LHI 026 
+53331 076001 
+LMI001 
+53331 066001 
+LMIOO] 
+53333 006277 
+LA! 277 
+53333 076277 
+LA! 277 
+53335 106 202 003 
+CAL ECHO 
+53335 315202003 
+CAL ECHO 
+53340 Of Hi 020 
+LL! 020 
+53340 056020 
+LLI020 
+53342 056045 
+$$ 
+LHI 045 
+53342 046045 
+$$ 
+LHI045 
+53344 104014003 
+JMP STRIN 
+53344 303014003 
+JMP STRIN 
+53347 106317022 
+INSTRP, CALSAVEHL 
+53347 315 317 022 
+INSTRP, CAL SAVEHL 
+53352 106 356 022 
+CAL SWITCH 
+53352 315 356 022 
+CAL SWITCH 
+53355 307 
+LAM 
+53355 176 
+LA.\1 
+53356 074247 
+CPI247 
+53356 376247 
+cpr 247 
+53360 150370053 
+JTZ INSTRQ 
+53360 312 370 053 
+JTZ INSTRQ 
+53363 074242 
+CPI242 
+53363 376 242 
+CPI242 
+53365 110356022 
+JFZ SWITCH 
+53365 302356022 
+JFZ SWITCH 
+5a 370 060 
+INSTRQ, INL 
+53370 054 
+IN SfRQ, INL 
+53371 277 
+CPM 
+53371 276 
+CPM 
+53372 150356022 
+JTZ SWITCH 
+53372 312 356 022 
+JTZ SWITCH 
+53375 315 
+LBH 
+53375 104 
+LBH 
+53376 326 
+LCL 
+53376 115 
+LCL 
+53377 066000 
+LLIOOO 
+53377 056000 
+LLI 000 
+54001 056026 
+** 
+LHI026 
+54001 046026 
+** 
+LHI 026 
+54003 307 
+LAM 
+54003 176 
+LAM 
+54004 274 
+CPE 
+54004 273 
+ePE 
+54005 351 
+LHB 
+54005 140 
+LHB 
+54006 362 
+LLC 
+54 006 151 
+LLC 
+54007 150060052 
+JTZ IQERR 
+54007 312060052 
+JTZ IQERR 
+54012 104370053 
+JMP INSfRQ 
+54012 303370053 
+JMP INSTRQ 
+54015 066012 
+SFAPCH, LLI012 
+54015 056012 
+SFAPCH, LLI 012 
+54017 056045 
+$$ 
+LHI 045 
+54 017 046045 
+$$ 
+LHI 045 
+54021 076001 
+LMI001 
+54021 066 001 
+LMI001 
+54023 066 360 
+LLI360 
+54023 056360 
+LLI360 
+54025 036026 
+** 
+SFAPC1, LDI026 
+54025 026026 
+** 
+SFAPC1, LDI 026 
+54027 046120 
+LEI 120 
+54027 036 120 
+LEI 120 
+54031 106 332002 
+CAL STRCP 
+54031 315 332002 
+CAL STRCP 
+54034 150077 054 
+JTZ SFAPC3 
+540:.'14 312077054 
+JTZ SFAPC3 
+54037 364 
+LLE 
+54037 153 
+LLE 
+54040 353 
+LHD 
+54040 142 
+LHD 
+54041 060 
+SFAPC2, INL 
+54041 054 
+SFAPC~, INL 
+54042 307 
+LAM 
+54042 176 
+LAM 
+54043 044 300 
+NDI 300 
+54043 346300 
+NDI 300 
+54045 110041054 
+JFZ SFAPC2 
+54045 302041054 
+JFZ SFAPC2 
+54050 335 
+LDH 
+54050 124 
+LDH 
+54051 346 
+LEL 
+54051 135 
+LEL 
+54052 066012 
+LLI012 
+54052 056012 
+LLI012 
+54054 056045 
+$$ 
+LHI 045 
+54054 046045 
+$$ 
+LHI 045 
+54056 317 
+LBM 
+54056 106 
+LBM 
+54057 010 
+INB 
+54057 004 
+INB 
+54060 371 
+LMB 
+54060 160 
+LMB 
+54061 
+a53 
+LHD 
+54061 142 
+LHD 
+·63· 
+
+--- Page 64 ---
+8008 
+8080 
+54062 364 
+LLE 
+54062 153 
+LLE 
+54063 301 
+LAB 
+54063 170 
+LAB 
+54064 074004 
+CPI004 
+54064 376004 
+CPI004 
+54066 11 0025054 
+JFZ SFAPC1 
+54066 302025054 
+JFZ SFAPC1 
+54071 106 100 007 
+CAL FUNARR 
+54071 315 100007 
+CALFUNARR 
+5·1 074 104024004 
+JMP SCAN61 
+54 074 303024004 
+JMP SCAN61 
+54077 066 276 
+SFAPC3, LLI276 
+54077 056 276 
+SFAPC3, LLI276 
+54101 056026 
+** 
+LHI 026 
+54101 046026 
+** 
+LHI 026 
+54103 317 
+LBM 
+54103 106 
+LBM 
+54104 060 
+INL 
+54104 054 
+INL 
+54105 327 
+LCM 
+54105 116 
+LCM 
+54106 066010 
+LLI010 
+54106 056010 
+LLI010 
+54110 056045 
+$$ 
+LHI 045 
+54110 046045 
+$$ 
+LHIOi5 
+54112 371 
+LMB 
+54112 160 
+LMB 
+54113 060 
+INL 
+54113 054 
+INL 
+54114 372 
+LMC 
+54114 161 
+LMC 
+54115 066200 
+LLI200 
+54115 056200 
+LLI200 
+54117 056026 
+** 
+LHI 026 
+54117 046026 
+** 
+LHI026 
+54121 317 
+LBM 
+54121 106 
+LBM 
+54122 010 
+INB 
+54122 004 
+INB 
+54123 066276 
+LLI276 
+54123 056276 
+LLI276 
+54125 371 
+LMB 
+54125 160 
+LMB 
+54126 060 
+INL 
+54126 054 
+INL 
+54127' 331 
+LDB 
+54127 120 
+LDB 
+54130 347 
+LEM 
+54130 136 
+LEM 
+54131 106325051 
+CALPARNB 
+54131 315 325 051 
+CALPARNB 
+54134 066277 
+LLI277 
+54134 056277 
+LLI277 
+54136 011 
+DCB 
+54136 005 
+DCB 
+54137 371 
+LMB 
+54137 160 
+LMB 
+54140 106 224 003 
+CAL EVAL 
+54140 315 224 003 
+CAL EVAL 
+54143 066 375 
+LLI375 
+54143 056 375 
+LLI375 
+54145 056026 
+** 
+LHI026 
+54145 046026 
+** 
+LHI026 
+54147 307 
+LAM 
+54147 176 
+LAM 
+54150 240 
+NDA 
+54150 247 
+NDA 
+54151 150051 052 
+.rrZ STERR 
+54151 312051052 
+.rrZ STERR 
+54154 066 010 
+LLI010 
+54154 056010 
+LLI010 
+54156 056045 
+$$ 
+LHI 045 
+54156 046045 
+$$ 
+LHI045 
+54160 337 
+LDM 
+54160 126 
+LDM 
+54161 060 
+INL 
+54161 054 
+INL 
+54162 347 
+LEM 
+54162 136 
+LEM 
+54163 066277 
+LLI277 
+54163 056 277 
+LU 277 
+54165 056026 
+** 
+LHI 026 
+54165 046026 
+** 
+LHI026 
+54167 317 
+LBM 
+54167 106 
+LBM 
+54170 010 
+INB 
+54170 004 
+INB 
+54171 066200 
+LLI200 
+54171 056200 
+LLI200 
+54173 371 
+LMB 
+54173 160 
+LMB 
+54174 066 276 
+LLI276 
+54174 056276 
+LLI276 
+54176 373 
+LMD 
+54176 162 
+LMD 
+54177 060 
+INL 
+54177 054 
+INL 
+54200 374 
+LME 
+54200 163 
+LME 
+54201 066012 
+LLI012 
+54201 056012 
+LLI012 
+54203 056045 
+$$ 
+LHI 045 
+54203 046045 
+$$ 
+LHI 045 
+54205 307 
+LAM 
+54205 176 
+LAM 
+54206 074003 
+CPI003 
+54206 376003 
+CPI003 
+54210 110223054 
+JFZ SFAPC7 
+54210 302223054 
+JFZ SFAPC7 
+54213 066020 
+LLI020 
+54213 056020 
+LLI020 
+- 64 -
+
+--- Page 65 ---
+8008 
+8080 
+54215 106044023 
+CAL DIN PUT 
+54215 315044023 
+CAL DINPUT 
+54220 104262054 
+JMP SFAPC8 
+54220 303262054 
+JMP SFAPC8 
+114 223 106 157017 
+SFAPC7, CAL FPO 
+54223 315 157 017 
+SFAPC7, CALFPO 
+54226 066 012 
+LLI012 
+54226 056012 
+LLI 012 
+54230 056045 
+$$ 
+LHI 045 
+54230 046045 
+$$ 
+LHI045 
+54232 307 
+LAM 
+54232 176 
+LAM 
+54233 074001 
+CPIOOl 
+54233 376001 
+CPI001 
+54235 066020 
+LLI020 
+54235 056020 
+LLI 020 
+54 237 056045 
+$$ 
+LHI 045 
+54237 046045 
+$$ 
+LHI 045 
+54241 110250054 
+JFZ SFAPC4 
+54241 302250054 
+JFZ SFAPC4 
+54244 317 
+LBM 
+54244 106 
+LBM 
+54245 104252054 
+JMP SFAPC5 
+54245 303252054 
+JMP SFAPC5 
+54250 060 
+SFAPC4, INL 
+54250 054 
+SFAPC4, INL 
+fi4251 317 
+LBM 
+54251 106 
+LBM 
+54252 066124 
+SFAPC5, LLI124 
+54252 056124 
+SFAPC5, LLI124 
+54254 056001 
+** 
+LHI 001 
+54254 046001 
+** 
+LHI 001 
+54256 371 
+LMB 
+54256 160 
+LMB 
+54257 106064020 
+CAL FPFLT 
+54257 315064020 
+CAL FPFLT 
+54262 066375 
+SFAPC8, LLI375 
+54262 056375 
+SFAPC8, LLI375 
+54264 056026 
+** 
+LHI 026 
+54264 046026 
+** 
+LHI 026 
+54266 076000 
+LMIOOO 
+54266 066000 
+LMIOOO 
+54270 066227 
+LLI227 
+54270 056227 
+LLI227 
+54272 056001 
+** 
+LHI001 
+54272 046001 
+** 
+LHI 001 
+54274 076230 
+LMI230 
+54274 066 230 
+LMI230 
+54276 104 301 004 
+JMP SCAN10 
+54276 303 301 004 
+JMP SCAN10 
+EXAMPLE PROGRAMS OF 
+STRINGS SUPPLEMENT OPERATION 
+The two programs shown on the next 
+several pages illustrate some of the new capa-
+bilities when the STRINGS SUPPLEMENT 
+routines are installed. The first example shows 
+how a portion of a character string may be 
+manipulated. The second example illustrates 
+a simple (first character) alphabetical sort 
+operation. 
+10 PRINT 'INPUT STRING'; 
+15 INPUT 1$ 
+30 PRINT 'SEARCH STRING'; 
+40 INPUT S$ 
+50 PRINT 'REPLACE STRING'; 
+55 INPUT R$ 
+60 L=LEN(I$) 
+70 Ll=LEN(S$) 
+- 65 -
+SCELBAL users should have no difficulty 
+applying the new string handling capabilities. 
+The material presented in the first several 
+pages of this pUblication contains information 
+with which the programmer should become 
+well acquainted. Don't forget to take advan-
+tage of the new ASC, LEN, and VAL func-
+tions when the opportunity arises! 
+
+--- Page 66 ---
+80 FOR N=l TO L-L1 +1 
+90 IF 1$( :N;L1)=S$ GOTO 130 
+100 NEXT N 
+110 PRINT 'NOT FOUND' 
+120 GOTO 10 
+130 I$=I$(:1;N-1)+R$+I$(:N+L1) 
+140 PRINT 1$ 
+150 END 
+RUN 
+INPUT STRING?THIS IS A TEST OF SCELBAL. 
+SEARCH STRING?SCELBAL. 
+REPLACE STRING?STRING SCELBAL! 
+THIS IS A TEST OF STRING SCELBAL! 
+10 PRINT 'HOW MANY'; 
+20 INPUT N 
+30 FOR J=l TO N 
+40 INPUT A$(J) 
+50 NEXT J 
+55 PRINT 'THE UNSORTED STRINGS ARE:' 
+60 GOSUB 1000 
+70 FOR J=l TO N-1 
+80 FOR K=J+1 TO N 
+90 IF A$(Jh =A$(K) GOTO 130 
+100 T$=A$(J) 
+110 A$(J)=A$(K) 
+120 A$(K)=T$ 
+130 NEXT K 
+140 NEXT J 
+150 PRINT 'THE SORTED STRINGS ARE:' 
+160 GOSUB 1000 
+170 END 
+1000 FOR J=l TO N 
+1010 PRINT A$(J) 
+1020 NEXT J 
+1030 RETURN 
+RUN 
+HOWMANY?10 
+?TONY 
+?BILL 
+?JANET 
+?ALlCE 
+?STEVE 
+?CHARLIE 
+?MARGARET 
+?VIRGINIA 
+?EUNICE 
+?GEORGE 
+- 66 -
+
+--- Page 67 ---
+THE UNSORTED STRINGS ARE: 
+TONY 
+BILL 
+JANET 
+ALICE 
+STEVE 
+CHARLIE 
+MARGARET 
+VIRGINIA 
+EUNICE 
+GEORGE 
+THE SORTED STRINGS ARE: 
+ALICE 
+BILL 
+CHARLIE 
+EUNICE 
+GEORGE 
+JANET 
+MARGARET 
+STEVE 
+TONY 
+VIRGINIA 
+SYMBOL TA.BLES 
+The following is a list of the labels defined 
+for the STRINGS SUPPLEMENT routines. 
+The list is ordered alphabetically. The second 
+column shows the address of the label in the 
+assembled version of the program presented in 
+this publication. The third column presents 
+the page number where the label occurs in the 
+source listing presented in this publication. 
+ARRAYP 
+53177 
+37 
+CHR 
+46235 
+8 
+CONCAI 
+51035 
+22 
+CONCAT 
+50350 
+21 
+CONCTO 
+50363 
+21 
+CONSAI 
+51111 
+23 
+CONSAC 
+51040 
+22 
+EVALPC 
+51370 
+25 
+EVALS 
+51376 
+25 
+FSEVAL 
+50047 
+17 
+INPUTS 
+53325 
+38 
+INSTRP 
+53347 
+38 
+INSTRQ 
+53370 
+38 
+IQERR 
+52060 
+28 
+- 67 -
+LTEQGT 
+52042 
+27 
+PARNB 
+51325 
+25 
+PARNBI 
+51333 
+25 
+PARNB2 
+51345 
+25 
+PARNB3 
+51353 
+25 
+PINPUT 
+53315 
+37 
+POUTSF 
+53157 
+35 
+PPRIN7 
+53137 
+35 
+PPRINT 
+53124 
+35 
+SARRAY 
+53221 
+37 
+SCANCP 
+52005 
+27 
+SCRPCH 
+53265 
+37 
+SELOOP 
+50243 
+19 
+SEVAI0 
+47124 
+11 
+SEVAll 
+47134 
+13 
+SEVA12 
+47247 
+13 
+SEVA13 
+47326 
+15 
+SEVA14 
+47351 
+15 
+SEVA15 
+50044 
+15 
+SEVA16 
+46373 
+10 
+SEVAL 
+46000 
+6 
+SEVALI 
+46047 
+6 
+SEVAL2 
+46073 
+6 
+SEVAL3 
+46104 
+6 
+
+--- Page 68 ---
+SEVAL4 
+46143 
+8 
+ADV 
+02377 
+5-8 
+SEVAL5 
+46162 
+8 
+ADVDE 
+13064 
+4-12 
+SEVAL6 
+46331 
+10 
+ARRAY6 
+55240 
+9-14 
+SEVAL7 
+46376 
+10 
+BIGERR 
+02222 
+5-6 
+SEVAL8 
+47047 
+11 
+CLESYM 
+02255 
+5-7 
+SEVAL9 
+47057 
+11 
+CONCT1 
+02314 
+5-7 
+SFAPC1 
+54025 
+38 
+CONCTS 
+02310 
+5-7 
+SFAPC2 
+54041 
+38 
+DINPUT 
+23044 
+10-19 
+SFAPC3 
+54077 
+40 
+ECHO 
+03202 
+5-10 
+SFACP4 
+54250 
+41 
+EQ1 
+06145 
+8-14 
+SFAPC5 
+54252 
+41 
+ERROR 
+02226 
+5-6 
+SFAPC7 
+54223 
+41 
+EVAL 
+03224 
+7-2 
+SFAPC8 
+54262 
+41 
+EVALQ 
+03227 
+7-2 
+SFAPCH 
+54015 
+38 
+EXEC 
+10266 
+4-2 
+SLOOK 
+51123 
+23 
+FPO 
+17157 
+6-28 
+SLOOK1 
+51142 
+23 
+FPFIX 
+02000 
+10-3 
+SLOOK2 
+51210 
+27 
+FPFLT 
+20064 
+10-4 
+SLOOK3 
+51220 
+27 
+FUNARR 
+07100 
+9-3 
+SSTOR 
+52105 
+30 
+GEl 
+06222 
+8-14 
+SSTORO 
+52306 
+32 
+GETCHR 
+02240 
+5-6 
+SSTOR1 
+52150 
+30 
+GT1 
+06162 
+8-14 
+SSTOR2 
+52246 
+32 
+INPUTN 
+17140 
+6-28 
+SSTOR3 
+53035 
+34 
+LEI 
+06202 
+8-14 
+SSTOR4 
+52325 
+32 
+LOOP 
+03003 
+5-8 
+SSTOR5 
+52340 
+33 
+LT1 
+06130 
+8-13 
+SSTOR6 
+53014 
+33 
+MOVEC 
+12046 
+4-9 
+SSTOR7 
+53025 
+33 
+MOVEPG 
+12050 
+4-9 
+SSTOR8 
+52214 
+30 
+NE1 
+06237 
+8-14 
+SSTOR9 
+52300 
+32 
+PARNER 
+06104 
+8-13 
+SSTRCE 
+50324 
+21 
+PFPOUT 
+14314 
+6-10 
+SSTRCL 
+50312 
+21 
+PRINT 
+13345 
+6-5 
+SSTRCP 
+50267 
+21 
+PRINT2 
+14002 
+6-5 
+SSTRZ 
+50343 
+21 
+PRINT3 
+14 043 
+6-8 
+STC1 
+50147 
+19 
+PRINT4 
+14075 
+6-8 
+STC2 
+50164 
+19 
+PRINT5 
+14114 
+6-8 
+STC3 
+50201 
+19 
+QUOTE 
+14203 
+6-10 
+STC4 
+50216 
+19 
+RESTHL 
+22337 
+10-17 
+STC5 
+50233 
+19 
+SAVEHL 
+22317 
+10-16 
+STERR 
+52051 
+28 
+SCAN9 
+04100 
+7-6 
+STORP 
+52070 
+28 
+SCAN10 
+04301 
+7-7 
+S2LOOP 
+50254 
+19 
+SCAN16 
+04276 
+7-7 
+SCAN61 
+04024 
+7-5 
+SCANFN 
+03351 
+7-5 
+The following is a list of the labels referred 
+STORP1 
+10060 
+6-49 
+to by the STRINGS SUPPLEMENT that are 
+STRCP 
+02332 
+5-7 
+in the original SCELBAL publication. The list 
+STRIN 
+03014 
+5-8 
+is arranged alphabetically. The second column 
+SWITCH 
+22356 
+10-17 
+shows the address of the label in the original 
+TEXTC 
+03121 
+5-9 
+assembled version of SCELBAL. The third 
+column indicates the chapter and page where 
+the label appearf'd in the source listing section 
+of the book. 
+- 68 -
+
+--- Page 69 ---
+YES 
+NO 
+.-B 
+L< 
+YES 
+IS THE 
+NO 
+<: 
+SYMBOL 
+CHR? 
+1"\ 
+NO 
+IS THE 
+YES 
+lSTERR;~-------< SYMBOL A LEGAL >------] 
+'-/ 
+~" 
+PUT STRING VARIABLE NAME 
+IN SVAR NAME AND ONE IN 
+SV AR SUBSCRIPT 
+FIND A SET OF PARENTHESIS 
+AND EVALUATE THE NUMERIC 
+EXPRESSION INSIDE THEM 
+I 
+I 
+CONVERT FP ACC TO FIXE])l 
+POINT AND CONCATENATE I 
+LSW ONTO STRACC 
+I 
+.----_L __ 
+RESET STRING SCAN POINTER 
+TO SKIP OVER PARENTHESIS 
+- 7 -
+
+--- Page 70 ---
+LHI026 
+CAL SELOOP 
+,JFZ SEVAL3 
+,IMP IQERR 
+SEV AL4, 
+L Ll :172 
+LB~I 
+LLT371 
+T,MB 
+: ,f,f 017 
+LHI045 
+LMJ 001 
+JMP FSEVAL 
+SEV AL5, 
+CPI 244 
+JFZ SEVAL6 
+LEI 374 
+LDI045 
+LLI 120 
+CAL STRCP 
+JTZ CHR 
+LLI 120 
+LHI026 
+JAM 
+CPT 00] 
+,IFZ STERR 
+INL 
+LAM 
+LLIOOO 
+LHI04[) 
+LMA 
+INL 
+LMI001 
+CAL CLESYM 
+JMP FSEVAL 
+CHR, 
+LLI 371 
+LBM 
+INB 
+LMB 
+LLB 
+LAM 
+CPI250 
+JFZ CHR 
+LLI276 
+INB 
+Ll\1B 
+LDB 
+LLI377 
+LEM 
+CALPARNB 
+* * Load H with pointer page 
+Loop until end of SEV AL 
+Done yet? 
+If no closing quote, error 
+Load L with address of T.ITERAL pointer 
+Load LITERAL nnintpr int" R 
+Put LITERAL pOll1t,el' lil SEV AL pointer 
+Load L with addre~~ of "nr;ANCAT flag 
+,~$ Load H with STRJ\1 I,age 
+~~f't NOCANCAT flag t(, prpvent concat 
+Continue with string eval 
+Te character a $ ? 
+If not, keep testing 
+Load E with addrpss of CHR string 
+~$ Load H with STRING page 
+Load L with address of SYMBOL 
+Test if symbol = CHR 
+ff it does, have CI IR function 
+Load L with address of SYMBOL 
+** Load H with page of SYMBOL 
+Get SYMBOL (CC) 
+Is (CC) = I? 
+If not, can't be legal string 
+L points to first rh;u;wter of symbol 
+Get string name 
+Load L with addrp~s of SV AR name 
+$$ Load H with STRIi\G page 
+Put string name in SV AR n8me 
+Point to SV AR SUBSCRIPT 
+Put 1 in SV AR SUBSCRIPT 
+Clear the symbol 
+Continue with string eval 
+Load L with address of SEV AL pointer 
+,\dd 1 to SEVAL pointer 
+Load L with SEV AL pointer 
+Get character pointprl to by SEVAL pointer 
+Is character a parenthpsis "("? 
+If not, keep looking 
+Load L with adrln~ss of start of EV AL pointer 
+Add one to skip over "(" 
+Start numeric evaluation just heyond "(" 
+Pllt pointer to beyond "(" in D 
+Load L with address of end of SEV AL pointer 
+Load E with end of SEVAL pointer 
+Find balancing parenthesis hetween D and E 
+- 8 -
+
+--- Page 71 ---
+YES 
+IS 
+CHAR 
+'('? 
+FIND BALANCING PAREXTIIESIS I 
+BETWEEN CURRENT SCAN 
+POINTER AND END OF EV AL 
+POINTER 
+~ 
+I 
+YES ~ 
+NO 
+CHAR/:~;ER '(>>---------
+I SET COLON POINTER TO I 
+I 
+PO;::~~" 
+~ 
+LOOK FOR COLON POINTED TO 
+BY COLON POINTER INSIDE 
+THE PARENTHESIS 
+NO 
+YES 
+l._---, 
+EVALUATE EXPRESSION INSID~ 
+PARENTHESIS, CONVERT IT TO 
+FIXED POINT & STORE LSW IN 
+SV AR SUBSCRIPT, (THIS IS A 
+STRING ARRAY WITHOUT 
+L-. ____ 
+-=S=-=U~B:;:S:..::TTR::::I=-=N=G ) ______ _ 
+RESET STRING SCAN_POINTER I 
+- 9 -
+<: 
+
