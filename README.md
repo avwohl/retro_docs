@@ -4,7 +4,7 @@ A collection of vintage computer manuals as PDF files and text conversions. It
 covers CP/M, MP/M II, Z80, 8008, MACRO-80, PL/M-80, and Microsoft BASIC, and it
 supplies reference material for the related emulator and compiler projects.
 
-The archive holds 59 files in approximately 307 MB. Each top-level directory has
+The archive holds 55 files in approximately 299 MB. Each top-level directory has
 the name of the project that uses the documents in it. The documents are primary
 sources. They are the manuals that the projects implement. They are not
 documentation of the projects themselves.
@@ -18,7 +18,7 @@ documentation of the projects themselves.
 | `mbasic2025` | [mbasic2025](https://github.com/avwohl/mbasic2025) | Altair BASIC of 1975 and the Altair 8800 BASIC reference manual of July 1977 |
 | `mpm2` | [mpm2](https://github.com/avwohl/mpm2) | The MP/M II System Implementor's Guide of August 1982, the user guide, the programmer's guide, and a summary |
 | `scelbal` | [scelbal](https://github.com/avwohl/scelbal) | The SCELBAL book, the strings supplement, update issues 1 through 6, and the Intel 8008 manual of April 1972 |
-| `uada80` | [uada80](https://github.com/avwohl/uada80) | The Ada reference manuals for Ada 2012 and Ada 2022, and the CP/M 2.2 call lists |
+| `uada80` | [uada80](https://github.com/avwohl/uada80) | The Ada reference manuals for Ada 2012 and Ada 2022. For the CP/M 2.2 call lists, see `cpmemu`. |
 | `um80_and_friends` | [um80_and_friends](https://github.com/avwohl/um80_and_friends) | The Microsoft MACRO-80 manuals: the M80 assembler, the L80 linker, the CREF and LIB utilities, and 8080 assembly language |
 | `uplm80` | [uplm80](https://github.com/avwohl/uplm80) | The Intel PL/M-80 programming manuals and the CP/M source listings. See the section that follows. |
 | `z80cpmw` | [z80cpmw](https://github.com/avwohl/z80cpmw) | The Cromemco Dazzler manual of 1979 |
@@ -65,24 +65,31 @@ The archive has text conversions for these documents:
 - The SCELBAL book and its strings supplement
 - Both PL/M-80 manuals
 
-## Files that occur more than one time
+## Documents that more than one project uses
 
-Five files are in the archive two times. The copies are identical. If you compare
-two of them, you will find no difference.
+Some documents apply to more than one project. Each such document is in the
+archive one time only, in the directory of the project that uses it most. The
+table shows where to find them.
 
-| Same file | Copies |
-|---|---|
-| BASIC-80 reference manual | `cpmemu/AA-P226A-TV_BASIC-80_Reference_Manual_VT180_V5.21_1981.pdf` and `mbasic/basic_ref.pdf` |
-| CP/M 2.2 BDOS calls | `cpmemu/cpm22_bdos_calls.pdf` and `uada80/cpm22_bdos_calls.pdf` |
-| CP/M 2.2 BIOS calls | `cpmemu/cpm22_bios_calls.pdf` and `uada80/cpm22_bios_calls.pdf` |
-| CP/M 2.2 memory layout | `cpmemu/cpm22_memory_layout.pdf` and `uada80/cpm22_memory_layout.pdf` |
-| String garbage collection notes | `mbasic/mbasic_string_garbage_collection.pdf` and `mbasic/mbasic_string_garbage_collection_history.pdf` |
+| Document | Location | Also applies to |
+|---|---|---|
+| CP/M 2.2 BDOS calls | `cpmemu/cpm22_bdos_calls.pdf` | `uada80` |
+| CP/M 2.2 BIOS calls | `cpmemu/cpm22_bios_calls.pdf` | `uada80` |
+| CP/M 2.2 memory layout | `cpmemu/cpm22_memory_layout.pdf` | `uada80` |
+| BASIC-80 Reference Manual v5.21, part number AA-P226A-TV, 1981 | `mbasic/basic_ref.pdf` | `cpmemu`, `mbasicc` |
 
-The first four are intentional. Two projects use the same manual, and each
-directory is complete on its own.
+The archive held five identical pairs until 2026-08-02. Each pair is now one
+file. The copies were byte-identical, thus no content is lost.
 
-The last pair is probably an error. The two names are different, but the contents
-are the same, thus one of the two files is missing its intended content.
+One of the five pairs was an error and not a shared document:
+`mbasic_string_garbage_collection_history.pdf` had a different name from
+`mbasic_string_garbage_collection.pdf` but the same contents. The archive keeps
+`mbasic_string_garbage_collection.pdf`. There is no separate history document.
+
+**A note on the size of a clone:** the delete operations remove the files from
+the current tree, but git keeps them in the history. Thus a fresh clone is
+approximately the same size as before. Only a rewrite of the history can make a
+clone smaller, and that changes every commit ID.
 
 ## Provenance
 
