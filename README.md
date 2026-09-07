@@ -4,10 +4,14 @@ A collection of vintage computer manuals as PDF files and text conversions. It
 covers CP/M, MP/M II, Z80, 8008, MACRO-80, PL/M-80, and Microsoft BASIC, and it
 supplies reference material for the related emulator and compiler projects.
 
-The archive holds 55 files in approximately 299 MB. Each top-level directory has
+The archive holds 64 files in approximately 299 MB. Each top-level directory has
 the name of the project that uses the documents in it. The documents are primary
 sources. They are the manuals that the projects implement. They are not
 documentation of the projects themselves.
+
+`s100_ports` is the one exception to both rules. It is named for a subject, not a
+project, and it holds a compilation rather than a scan. The section on it below
+says what it is and where its facts come from.
 
 ## What is here
 
@@ -17,11 +21,36 @@ documentation of the projects themselves.
 | `mbasic` | [mbasic](https://github.com/avwohl/mbasic) | The Microsoft BASIC Compiler manual of 1980, the BASIC-80 reference manual, and notes on string garbage collection |
 | `mbasic2025` | [mbasic2025](https://github.com/avwohl/mbasic2025) | Altair BASIC of 1975 and the Altair 8800 BASIC reference manual of July 1977 |
 | `mpm2` | [mpm2](https://github.com/avwohl/mpm2) | The MP/M II System Implementor's Guide of August 1982, the user guide, the programmer's guide, and a summary |
+| `s100_ports` | — | A catalogue of Altair and S-100 I/O port assignments, with the scripts that build it. See the section that follows. |
 | `scelbal` | [scelbal](https://github.com/avwohl/scelbal) | The SCELBAL book, the strings supplement, update issues 1 through 6, and the Intel 8008 manual of April 1972 |
 | `uada80` | [uada80](https://github.com/avwohl/uada80) | The Ada reference manuals for Ada 2012 and Ada 2022. For the CP/M 2.2 call lists, see `cpmemu`. |
 | `um80_and_friends` | [um80_and_friends](https://github.com/avwohl/um80_and_friends) | The Microsoft MACRO-80 manuals: the M80 assembler, the L80 linker, the CREF and LIB utilities, and 8080 assembly language |
 | `uplm80` | [uplm80](https://github.com/avwohl/uplm80) | The Intel PL/M-80 programming manuals and the CP/M source listings. See the section that follows. |
 | `z80cpmw` | [z80cpmw](https://github.com/avwohl/z80cpmw) | The Cromemco Dazzler manual of 1979 |
+
+## The `s100_ports` directory
+
+This directory is a compilation, not a scan. It lists the I/O port assignments of
+MITS Altair factory boards and of the third-party S-100 cards that Altair-era
+systems used: serial terminal, printer, floppy, hard disk and support boards.
+
+Read `Altair_S100_Port_Assignments.md`. The same data is in
+`Altair_S100_Port_Assignments.xlsx` for filtering.
+
+Both files are generated. `ports_data.py` is the source of truth, and
+`build.py` rebuilds the two outputs from it. Edit the data file, never the
+outputs, or the two will disagree. The directory `README.md` gives the steps.
+
+Almost nothing on the S-100 bus had a fixed address. Boards decoded their port
+range with jumpers or a DIP switch. Every entry is therefore a documented factory
+default or a de-facto standard, which is the setting that software expected to
+find. It is not a hard-wired fact, and a given machine may differ.
+
+Each entry carries the source it came from and a confidence value. `High` means a
+manufacturer manual, or two independent emulator implementations that agree.
+`Unverified` means the board is listed but no address was confirmed. Those
+entries are left blank on purpose. A plausible wrong address is worse than an
+admitted gap.
 
 ## The `uplm80` directory
 
