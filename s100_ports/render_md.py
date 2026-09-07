@@ -6,7 +6,7 @@ Run `python build.py` to regenerate both deliverables from ports_data.py.
 import pathlib, datetime, collections
 OUT_DIR = pathlib.Path(__file__).resolve().parent
 
-from ports_data import MITS, THIRD, MEMMAP
+from ports_data import MITS, THIRD, MEMMAP, RC2014
 
 def esc(s):
     if s is None:
@@ -56,6 +56,12 @@ w("**Confidence** — `High` = stated in a manufacturer manual, or agreed on by 
 w("implementations. `Medium-High` = one strong source. `Medium` = one source, or a documented conflict between")
 w("sources. `Unverified` = the board is listed for completeness but no address was confirmed; those rows are")
 w("deliberately left blank rather than guessed at.")
+w("")
+w("> [!NOTE]")
+w("> The [RC2014 section](#rc2014--rcbus) at the end is a **different bus**. RC2014 / RCBus is a modern homebrew Z80")
+w("> backplane, 2014 onward. It shares the Z80 and the 8-bit port space with the machines above and nothing else — no")
+w("> board, no address convention and no manufacturer carries across. Do not read an address from it onto an S-100")
+w("> machine.")
 w("")
 w("**Coverage** — this covers the manufacturers whose cards you actually meet in Altair-era systems. Several hundred")
 w("S-100 boards were made in total, and a long tail of them — mostly memory, prototyping and one-off cards — is not")
@@ -192,6 +198,42 @@ for (mfr, board, cat, rng, func, notes, src) in MEMMAP:
         w("- **%s %s** — %s" % (esc(mfr), esc(board), esc(notes)))
 w("")
 
+# ------------------------------------------------------------ rc2014 -------
+w("---")
+w("")
+w("## RC2014 / RCBus")
+w("")
+w("**A different bus from everything above.** RC2014 is a modern homebrew Z80 backplane, 2014 onward. It is here")
+w("because the same question — *what is already using this port?* — has the same shape, not because the two are in")
+w("any way compatible.")
+w("")
+w("Two people compiled this independently. Both are reproduced rather than merged, because **they disagree in")
+w("places**; where they do, the Notes column says so and the row is marked ⚠. Neither is a manufacturer source —")
+w("both are careful community compilations of jumper-selectable defaults.")
+w("")
+for lst, label, blurb in [
+    ("Cousins", "Steve Cousins' module spreadsheet",
+     "Addresses are stored as cell fill colours in the original sheet: green = primary read, red = primary write, "
+     "grey and pink = alternative. They are decoded here into text."),
+    ("Cox", "Alan Cox's `Ports` file",
+     "A plain-text list of known defaults, including several boards absent from the Cousins sheet. Reproduced as written."),
+]:
+    w("### " + label)
+    w("")
+    w(blurb)
+    w("")
+    w("| Origin | Module / Card | Author | Category | Ports | R/W | Alternatives | Notes |")
+    w("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    for (l, origin, module, author, cat, ports, dirn, alts, notes) in RC2014:
+        if l != lst:
+            continue
+        flag = "⚠ " if ("disagree" in notes.lower() or "puts this board" in notes.lower()) else ""
+        w("| %s | %s%s | %s | %s | %s | %s | %s | %s |" % (
+            esc(origin), flag, esc(module), esc(author) or "—", esc(cat),
+            ("`%s`" % ports) if ports else "—", esc(dirn),
+            ("`%s`" % alts) if alts else "—", esc(notes)))
+    w("")
+
 # ----------------------------------------------------------- sources -------
 w("---")
 w("")
@@ -211,6 +253,9 @@ SOURCES = [
  ("Cromemco Cromix Instruction Manual (023-4022)", "TU-ART switch settings and the multi-user port map: #1 A=20h B=50h, #2 A=60h B=70h, #3 A=80h", "https://archive.org/details/023-4022-cromemco-cromix-manuals"),
  ("CompuPro Interfacer 4 Technical Manual (187C)", "Eight-port block on any multiple of 8; CompuPro default 10–17h; relative port 0–7 function table", "https://archive.org/details/bitsavers_compupro18calManualMay83_3167199"),
  ("IMSAI CP/M System User’s Guide and SIO-2 manual", "SIO-2 default block 00–0F; IMSAI software uses 02/03 (TTY) and 04/05 (CRT); second board at 20–2F", "http://www.bitsavers.org/pdf/imsai/IMSAI_SIO2-2_B_Manual.pdf"),
+ ("Steve Cousins, RC2014 module spreadsheet", "RC2014 module addresses, primary and alternative, for 25 official and third-party modules", "https://docs.google.com/spreadsheets/d/1ZJ_Ju3Cyyz2whgunSGr12wxhsTDOqJJQ6BO4E0xVRKU/edit"),
+ ("Alan Cox, RC2014 `Ports` file", "An independent compilation of known default RC2014 port assignments, including boards absent from the Cousins sheet", "https://github.com/EtchedPixels/RC2014/blob/master/Ports"),
+ ("rc2014-z80 group, “Port numbers” thread", "Where both compilations are discussed and reconciled; source of the 512K paging correction", "https://groups.google.com/g/rc2014-z80/c/8Kahl19nSYw"),
  ("s100computers.com", "Board histories and addressing notes for MITS, Tarbell, Cromemco, CompuPro and Processor Technology cards", "http://www.s100computers.com/"),
  ("deramp.com archive", "North Star Horizon restoration notes (MDS controller occupies E800–EFFF); MITS and IMSAI documentation mirror", "https://deramp.com/"),
 ]
@@ -232,6 +277,7 @@ for heading, entries in SECTIONS.items():
     toc.append("")
 toc += ["**[Port map, `0x00`–`0xFF`](#port-map-0x000xff)** · "
         "**[Memory-mapped controllers](#memory-mapped-controllers)** · "
+        "**[RC2014 / RCBus](#rc2014--rcbus)** · "
         "**[Sources](#sources)**", ""]
 L[TOC_AT:TOC_AT] = toc
 
@@ -239,7 +285,11 @@ text = "\n".join(L) + "\n"
 # this file is Markdown, not the workbook - fix cross-references to sheets
 text = (text.replace("see the Memory-Mapped sheet", "see [Memory-mapped controllers](#memory-mapped-controllers)")
             .replace("see the Third-Party sheet", "see [Third-party cards](#third-party-cards)"))
-assert "sheet" not in text.replace("spreadsheet", ""), "stray sheet reference"
+# guard against cross-references to workbook sheets surviving into the Markdown.
+# "the Cousins sheet" is fine - that is a real external spreadsheet, not a tab here.
+import re as _re
+_stale = _re.search(r"see\s+(?:the\s+)?[^.\n]{0,40}\bsheet\b", text, _re.I)
+assert not _stale, "stray sheet cross-reference: %r" % (_stale.group(0),)
 
 out = str(OUT_DIR / "Altair_S100_Port_Assignments.md")
 open(out, "w").write(text)

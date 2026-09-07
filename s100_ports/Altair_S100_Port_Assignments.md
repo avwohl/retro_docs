@@ -22,6 +22,12 @@ implementations. `Medium-High` = one strong source. `Medium` = one source, or a 
 sources. `Unverified` = the board is listed for completeness but no address was confirmed; those rows are
 deliberately left blank rather than guessed at.
 
+> [!NOTE]
+> The [RC2014 section](#rc2014--rcbus) at the end is a **different bus**. RC2014 / RCBus is a modern homebrew Z80
+> backplane, 2014 onward. It shares the Z80 and the 8-bit port space with the machines above and nothing else — no
+> board, no address convention and no manufacturer carries across. Do not read an address from it onto an S-100
+> machine.
+
 **Coverage** — this covers the manufacturers whose cards you actually meet in Altair-era systems. Several hundred
 S-100 boards were made in total, and a long tail of them — mostly memory, prototyping and one-off cards — is not
 represented here.
@@ -72,7 +78,7 @@ represented here.
 - *XComp* — [Hard disk controller](#hard-disk-controller--xcomp)
 - *SD Systems* — [VersaFloppy I / II](#versafloppy-i--ii--sd-systems)
 
-**[Port map, `0x00`–`0xFF`](#port-map-0x000xff)** · **[Memory-mapped controllers](#memory-mapped-controllers)** · **[Sources](#sources)**
+**[Port map, `0x00`–`0xFF`](#port-map-0x000xff)** · **[Memory-mapped controllers](#memory-mapped-controllers)** · **[RC2014 / RCBus](#rc2014--rcbus)** · **[Sources](#sources)**
 
 ---
 
@@ -1171,6 +1177,88 @@ instead. Looking for them in a port map will find nothing.
 
 ---
 
+## RC2014 / RCBus
+
+**A different bus from everything above.** RC2014 is a modern homebrew Z80 backplane, 2014 onward. It is here
+because the same question — *what is already using this port?* — has the same shape, not because the two are in
+any way compatible.
+
+Two people compiled this independently. Both are reproduced rather than merged, because **they disagree in
+places**; where they do, the Notes column says so and the row is marked ⚠. Neither is a manufacturer source —
+both are careful community compilations of jumper-selectable defaults.
+
+### Steve Cousins' module spreadsheet
+
+Addresses are stored as cell fill colours in the original sheet: green = primary read, red = primary write, grey and pink = alternative. They are decoded here into text.
+
+| Origin | Module / Card | Author | Category | Ports | R/W | Alternatives | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Official | RC2014 Mini's Serial | Spencer Owen | Serial | `0x80-0x83` | R/W | `0x84-0xBF` |  |
+| Official | Serial I/O (68B50 UART) | Spencer Owen | Serial | `0x80-0x83` | R/W | `0x84-0xBF` |  |
+| Official | Dual Serial (SIO/2 UART) | Spencer Owen | Serial | `0x80-0x83` | R/W | `0x84-0x87` |  |
+| Official | Digital I/O v1 | Spencer Owen | Parallel | `0x00-0x03` | R/W | `0x04-0x7F` |  |
+| Official | Digital I/O v2 | Spencer Owen | Parallel | `0x00-0x03` | R/W | — |  |
+| Official | Digital Input | Spencer Owen | Parallel | `0x00-0x03` | R | `0x04-0x7F` |  |
+| Official | Digital Output | Spencer Owen | Parallel | `0x00-0x03` | W | `0x04-0x7F` |  |
+| Official | Joystick | Spencer Owen | Parallel | `0x00-0x03` | R | `0x04-0x7F` |  |
+| Official | Compact Flash | Spencer Owen | Storage | `0x10-0x17` | R/W | `0x90-0x97` |  |
+| Official | IDE (82C55 PIO) | Ed Brindley & Spencer | Storage | `0x20-0x23` | R/W | `0x10-0x13, 0x30-0x33, 0x40-0x43, 0x50-0x53, 0x60-0x63, 0x70-0x73, 0x80-0x83, 0x90-0x93, 0xA0-0xA3, 0xB0-0xB3, 0xC0-0xC3, 0xD0-0xD3, 0xE0-0xE3, 0xF0-0xF3` |  |
+| Official | Pageable ROM | Spencer Owen | Memory / paging | `0x30-0x3F` | W | `0xB0-0xBF` |  |
+| Third-party | Serial I/O (16550 UART) | Ben Chong | Serial | `0x80-0x87` | R/W | `0x88-0xFF` |  |
+| Third-party | Digital I/O / LCD (8255) | Thomas Riesen | Parallel | `0x00-0x03` | R/W | `0x04-0xFF` |  |
+| Third-party | Sound Card (AY/YM) | Ed Brindley | Sound | `0xD8-0xDB` | R | `0xD4-0xD7` |  |
+| Third-party | Sound Card (AY/YM) | Ed Brindley | Sound | `0xD0-0xD3, 0xD8-0xDB` | W | `0xD4-0xD7` |  |
+| Third-party | Floppy Disk Controller | Dr Scott M Baker | Floppy | `0xE0-0xEB, 0xF0-0xF3, 0xF8-0xFF` | R/W | — |  |
+| Third-party | VFD/LCD controller | Dr Scott M Baker | Display | `0xE0-0xE3` | R/W | `0xE4-0xEF` |  |
+| Third-party | Compact Flash | Dr Scott M Baker | Storage | `0xE0-0xE7` | R/W | `0xE8-0xEF` |  |
+| Third-party | Z80 CTC | Dr Scott M Baker | Timer | `0xF0-0xF3` | R/W | `0xF4-0xFF` |  |
+| Third-party | Z80 SIO | Dr Scott M Baker | Serial | `0xE0-0xE3` | R/W | `0xE4-0xE7` |  |
+| Third-party | Speech Synth. (SP0245A) | Dr Scott M Baker | Sound | `0x70-0x73` | R/W | `0x74-0x7F` |  |
+| Third-party | Dual DAC (AD7524) | Dr Scott M Baker | Sound | `0xE0-0xE3` | W | `0xE8-0xEB, 0xF0-0xF3, 0xF8-0xFB` |  |
+| Third-party | Front Panel (TIL311) | Dr Scott M Baker | System | `0xE4-0xE7` | R | `0xEC-0xEF, 0xF4-0xF7, 0xFC-0xFF` |  |
+| Third-party | Front Panel (TIL311) | Dr Scott M Baker | System | `0xE0-0xE3` | W | `0xE8-0xEB, 0xF0-0xF3, 0xF8-0xFB` |  |
+| Third-party | RTClock (BEQ4845) | Dr Scott M Baker | Clock | `0xC0-0xCF` | R | `0xD0-0xDF` |  |
+| Third-party | RTClock (BEQ4845) | Dr Scott M Baker | Clock | `0xC0-0xCF, 0xE0-0xE3` | W | `0xD0-0xDF, 0xE4-0xFF` |  |
+| Third-party | LUT (Multiply) Module | Phillip Stevens | Math | `0x40-0x43` | R/W | — |  |
+| Third-party | Am9511 APU Module | Phillip Stevens | Math | `0x40-0x43` | R/W | `0x20-0x23, 0x60-0x63, 0x80-0x83, 0xA0-0xA3, 0xC0-0xC3, 0xE0-0xE3` |  |
+
+### Alan Cox's `Ports` file
+
+A plain-text list of known defaults, including several boards absent from the Cousins sheet. Reproduced as written.
+
+| Origin | Module / Card | Author | Category | Ports | R/W | Alternatives | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Official | Digital I/O | — | Parallel | `0x00-0x03` | R/W | — | Agrees with Cousins. |
+| Third-party | ⚠ VFD (Scott Baker) | — | Display | `0x00-0x01` | R/W | — | Cousins puts this board at 0xE0-0xE3. The two lists disagree - verify against your own board. |
+| Official | CF Adapter | — | Storage | `0x10-0x17` | R/W | `0x90-0x97 (ghost)` | Agrees with Cousins. |
+| Third-party | ⚠ Speech Synthesizer (Scott Baker) | — | Sound | `0x20` | R/W | — | Cousins puts this board at 0x70-0x73. The two lists disagree. |
+| Official | Pageable ROM | — | Memory / paging | `0x38` | W | — | Falls inside the 0x30-0x3F block Cousins gives. |
+| Third-party | SC108 banking / paging | — | Memory / paging | `0x38` | W | — | Shares 0x38 with the pageable ROM. |
+| Third-party | Marco's Propeller Graphics Card | — | Video | `0x40-0x43` | R/W | — | Collides with the LUT and Am9511 APU modules, which Cousins also puts at 0x40-0x43. |
+| Third-party | ⚠ Floppy Controller (Scott Baker) | — | Floppy | `0x48-0x58` | R/W | — | Cousins puts this board at 0xE0-0xEB, 0xF0-0xF3 and 0xF8-0xFF. A large disagreement - verify. |
+| Third-party | SC103 Z80 PIO | — | Parallel | `0x68-0x6B` | R/W | — |  |
+| Official | 512K ROM/RAM paging registers | — | Memory / paging | `0x70-0x7F` | W | — | The forum thread corrected an earlier 0x70/0x74 reading to 0x78-0x7C; Cox records the wider 0x70-0x7F decode. |
+| Official | ACIA (partial decode) | — | Serial | `0x80-0xBF` | R/W | — | Partial decode - the 68B50 board answers across the whole range. Consistent with Cousins' 0x80-0x83 primary plus alternates up to 0xBF. |
+| Official | SIO | — | Serial | `0x80-0x83` | R/W | — | Agrees with Cousins. |
+| Third-party | SC104 SIO | — | Serial | `0x80-0x83` | R/W | — |  |
+| Third-party | SC104 SIO, second card | — | Serial | `0x84-0x87` | R/W | — |  |
+| Third-party | SIO (Scott Baker) | — | Serial | `0x80-0x83` | R/W | — | Cox notes this board may order its ports differently from the standard RC2014 SIO. |
+| Third-party | SC102 CTC, first card | — | Timer | `0x88-0x8B` | R/W | — |  |
+| Third-party | SC102 CTC, second card | — | Timer | `0x8C-0x8F` | R/W | — |  |
+| Third-party | ⚠ CTC (Scott Baker) | — | Timer | `0x90-0x93` | R/W | — | Cousins puts this board at 0xF0-0xF3. |
+| Third-party | Z280RC boot mode switch | — | System | `0xA0` | R | — |  |
+| Third-party | Z280RC RTC | — | Clock | `0xA2` | R/W | — |  |
+| Third-party | Real Time Clock (Scott Baker) | — | Clock | `0xC0` | R/W | — | Falls inside the 0xC0-0xCF block Cousins gives. |
+| Third-party | 16550A (Ancient Computing) | — | Serial | `0xC0` | R/W | — | Shares 0xC0 with two clock boards. |
+| Third-party | DS1302 RTC (Ed Brindley) | — | Clock | `0xC0` | R/W | — | Shares 0xC0. |
+| Third-party | Z280RC IDE | — | Storage | `0xC0-0xCF` | R/W | — |  |
+| Third-party | YM-AY sound (Ed Brindley) | — | Sound | `0xD0-0xD3` | W | — | Agrees with Cousins. |
+| Third-party | CF Adapter (Scott Baker) | — | Storage | `0xE0-0xE7` | R/W | — | Agrees with Cousins. |
+| Third-party | PPIDE (Ed Brindley) | — | Storage | `0xE0-0xE7` | R/W | — |  |
+| Third-party | DAC (Scott Baker) | — | Sound | — | - | — | Cox found no documented default. Cousins gives 0xE0-0xE3 for writes. |
+
+---
+
 ## Sources
 
 | Source | What it establishes |
@@ -1186,6 +1274,9 @@ instead. Looking for them in a port map will find nothing.
 | [Cromemco Cromix Instruction Manual (023-4022)](https://archive.org/details/023-4022-cromemco-cromix-manuals) | TU-ART switch settings and the multi-user port map: #1 A=20h B=50h, #2 A=60h B=70h, #3 A=80h |
 | [CompuPro Interfacer 4 Technical Manual (187C)](https://archive.org/details/bitsavers_compupro18calManualMay83_3167199) | Eight-port block on any multiple of 8; CompuPro default 10–17h; relative port 0–7 function table |
 | [IMSAI CP/M System User’s Guide and SIO-2 manual](http://www.bitsavers.org/pdf/imsai/IMSAI_SIO2-2_B_Manual.pdf) | SIO-2 default block 00–0F; IMSAI software uses 02/03 (TTY) and 04/05 (CRT); second board at 20–2F |
+| [Steve Cousins, RC2014 module spreadsheet](https://docs.google.com/spreadsheets/d/1ZJ_Ju3Cyyz2whgunSGr12wxhsTDOqJJQ6BO4E0xVRKU/edit) | RC2014 module addresses, primary and alternative, for 25 official and third-party modules |
+| [Alan Cox, RC2014 `Ports` file](https://github.com/EtchedPixels/RC2014/blob/master/Ports) | An independent compilation of known default RC2014 port assignments, including boards absent from the Cousins sheet |
+| [rc2014-z80 group, “Port numbers” thread](https://groups.google.com/g/rc2014-z80/c/8Kahl19nSYw) | Where both compilations are discussed and reconciled; source of the 512K paging correction |
 | [s100computers.com](http://www.s100computers.com/) | Board histories and addressing notes for MITS, Tarbell, Cromemco, CompuPro and Processor Technology cards |
 | [deramp.com archive](https://deramp.com/) | North Star Horizon restoration notes (MDS controller occupies E800–EFFF); MITS and IMSAI documentation mirror |
 

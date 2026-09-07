@@ -6,7 +6,7 @@ Run `python build.py` to regenerate both deliverables from ports_data.py.
 import pathlib, datetime
 OUT_DIR = pathlib.Path(__file__).resolve().parent
 
-from ports_data import MITS, THIRD, MEMMAP
+from ports_data import MITS, THIRD, MEMMAP, RC2014
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -83,7 +83,8 @@ ws.cell(row=4, column=2, value="Compiled " + datetime.date.today().isoformat()).
 r = 6
 about_row(r, "Sheets", "MITS Altair - every MITS/Altair board with a documented port.  Third-Party Cards - the major S-100 makers.  "
                        "Port Map 00-FF - a byte-by-byte index showing who claims each port and where they collide.  "
-                       "Memory-Mapped - controllers that live in memory space and use no ports at all.  Sources - what each row is based on.", height=60); r += 2
+                       "Memory-Mapped - controllers that live in memory space and use no ports at all.  "
+                       "RC2014 - a separate modern bus, see the note below.  Sources - what each row is based on.", height=66); r += 2
 
 about_row(r, "Read this first", "Almost nothing on the S-100 bus had a fixed address. Boards decoded their port range with jumpers or a DIP "
                                 "switch, so the addresses here are documented factory defaults and de-facto standards - the settings software "
@@ -107,6 +108,12 @@ about_row(r, "Confidence column", "High = stated in a manufacturer manual, or ag
                                   "Medium-High = one strong source. Medium = one source, or a documented conflict between sources. "
                                   "Unverified = the board is listed for completeness but no address was confirmed; these rows are deliberately "
                                   "left blank rather than guessed at.", height=50); r += 2
+
+about_row(r, "RC2014 is separate", "The RC2014 sheet is a DIFFERENT BUS. RC2014 / RCBus is a modern homebrew Z80 backplane from 2014 onward. "
+                                   "It shares the Z80 and the 8-bit port space with the machines above and nothing else - no board, no address "
+                                   "convention and no manufacturer carries across. It is included because the same question, 'what is already "
+                                   "using this port?', has the same shape. Do not read an address from that sheet onto an S-100 machine.",
+          fill=NOTE_BG, height=62); r += 2
 
 about_row(r, "Coverage", "This covers the manufacturers whose cards you actually meet in Altair-era systems. Several hundred S-100 boards were "
                          "made in total, and a long tail of them - mostly memory, prototyping and one-off cards - is not represented here.",
@@ -210,6 +217,38 @@ for (mfr, board, cat, rng, func, notes, src) in MEMMAP:
 widths(ws, {"A": 22, "B": 32, "C": 20, "D": 22, "E": 46, "F": 62, "G": 34})
 ws.auto_filter.ref = "A1:G%d" % ws.max_row
 
+# ------------------------------------------------------------- RC2014 ------
+ws = wb.create_sheet("RC2014 (RCBus)")
+ws.sheet_view.showGridLines = False
+ws.append(["List", "Origin", "Module / Card", "Author", "Category", "Ports",
+           "R/W", "Alternative / echo addresses", "Notes"])
+style_header(ws, 9)
+prev_list = None
+band = False
+for (lst, origin, module, author, cat, ports, dirn, alts, notes) in RC2014:
+    if lst != prev_list:
+        band = not band
+        prev_list = lst
+    ws.append([lst, origin, module, author, cat, ports or "-", dirn, alts or "-", notes])
+    ridx = ws.max_row
+    for c in range(1, 10):
+        cell = ws.cell(row=ridx, column=c)
+        cell.font = Font(size=10, color=INK)
+        cell.alignment = Alignment(vertical="top", wrap_text=(c in (3, 8, 9)))
+        cell.border = Border(bottom=RULE)
+        if band:
+            cell.fill = PatternFill("solid", fgColor=BAND)
+    ws.cell(row=ridx, column=5).fill = PatternFill("solid", fgColor=CAT_FILL.get(cat, "EDEDED"))
+    for c in (6, 7, 8):
+        ws.cell(row=ridx, column=c).font = Font(size=10, color=INK, name="Menlo")
+    # a disagreement between the two compilations is the thing worth seeing
+    if "disagree" in notes.lower() or "puts this board" in notes.lower():
+        for c in range(1, 10):
+            ws.cell(row=ridx, column=c).fill = PatternFill("solid", fgColor=WARN_BG)
+        ws.cell(row=ridx, column=9).font = Font(size=10, color="B42318")
+widths(ws, {"A": 10, "B": 13, "C": 34, "D": 20, "E": 16, "F": 22, "G": 7, "H": 30, "I": 68})
+ws.auto_filter.ref = "A1:I%d" % ws.max_row
+
 # ------------------------------------------------------------ Sources ------
 ws = wb.create_sheet("Sources")
 ws.sheet_view.showGridLines = False
@@ -227,6 +266,9 @@ SOURCES = [
  ("Cromemco Cromix Instruction Manual (023-4022)", "TU-ART switch settings and the multi-user port map: #1 A=20h B=50h, #2 A=60h B=70h, #3 A=80h", "https://archive.org/details/023-4022-cromemco-cromix-manuals"),
  ("CompuPro Interfacer 4 Technical Manual (187C)", "Eight-port block on any multiple of 8; CompuPro default 10-17h; relative port 0-7 function table", "https://archive.org/details/bitsavers_compupro18calManualMay83_3167199"),
  ("IMSAI CP/M System User's Guide and SIO-2 manual", "SIO-2 default block 00-0F; IMSAI software uses 02/03 (TTY) and 04/05 (CRT); second board at 20-2F", "http://www.bitsavers.org/pdf/imsai/IMSAI_SIO2-2_B_Manual.pdf"),
+ ("Steve Cousins, RC2014 module spreadsheet", "RC2014 module addresses - primary and alternative - for 25 official and third-party modules. Addresses are encoded as cell fill colours in the sheet", "https://docs.google.com/spreadsheets/d/1ZJ_Ju3Cyyz2whgunSGr12wxhsTDOqJJQ6BO4E0xVRKU/edit"),
+ ("Alan Cox, RC2014 'Ports' file", "An independent compilation of known default RC2014 port assignments, including boards absent from the Cousins sheet", "https://github.com/EtchedPixels/RC2014/blob/master/Ports"),
+ ("rc2014-z80 group, 'Port numbers' thread", "Where both compilations are discussed and reconciled; source of the 512K paging correction", "https://groups.google.com/g/rc2014-z80/c/8Kahl19nSYw"),
  ("s100computers.com", "Board histories and addressing notes for MITS, Tarbell, Cromemco, CompuPro and Processor Technology cards", "http://www.s100computers.com/"),
  ("deramp.com archive", "North Star Horizon restoration notes (MDS controller occupies E800-EFFF); MITS and IMSAI documentation mirror", "https://deramp.com/"),
 ]

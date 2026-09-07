@@ -189,3 +189,85 @@ MEMMAP = [
  ("Seattle Computer Products", "SCP-300F", "Support board", "0xFF800", "ROM", "20-bit address (8086 system).", S_SIMH_SRC),
  ("MITS", "88-DCDD boot loader", "Floppy controller", "0xFF00-0xFFFF", "Disk boot ROM location (loaded, not resident on the controller)", "The 88-DCDD has no boot PROM: the bootstrap is toggled in or loaded to 0xFF00.", S_HANSEL),
 ]
+
+
+# ===========================================================================
+# RC2014 / RCBus - a DIFFERENT BUS from S-100, kept deliberately separate.
+#
+# RC2014 is a modern homebrew Z80 backplane (2014 onward). It shares the Z80
+# and the 8-bit port space with the S-100 machines above and nothing else: no
+# board, no address convention and no manufacturer carries across. It is here
+# because the same question - "what is already using this port?" - has the same
+# answer shape, not because the two are compatible.
+#
+# Two people have compiled this independently, and both are reproduced rather
+# than merged, because they disagree in places. Where they differ the Notes
+# column says so. Neither is a manufacturer source; both are careful community
+# compilations of jumper-selectable defaults.
+#
+# (list, origin, module, author, category, ports, R/W, alternatives, notes)
+# ===========================================================================
+
+RC2014 = [
+ # --- Steve Cousins' RC2014 module spreadsheet -----------------------------
+ # Addresses recovered from the sheet's cell fill colours: green = primary
+ # read, red = primary write, grey / pink = alternative.
+ ('Cousins', 'Official', "RC2014 Mini's Serial", 'Spencer Owen', 'Serial', '0x80-0x83', 'R/W', '0x84-0xBF', ''),
+ ('Cousins', 'Official', 'Serial I/O (68B50 UART)', 'Spencer Owen', 'Serial', '0x80-0x83', 'R/W', '0x84-0xBF', ''),
+ ('Cousins', 'Official', 'Dual Serial (SIO/2 UART)', 'Spencer Owen', 'Serial', '0x80-0x83', 'R/W', '0x84-0x87', ''),
+ ('Cousins', 'Official', 'Digital I/O v1', 'Spencer Owen', 'Parallel', '0x00-0x03', 'R/W', '0x04-0x7F', ''),
+ ('Cousins', 'Official', 'Digital I/O v2', 'Spencer Owen', 'Parallel', '0x00-0x03', 'R/W', '', ''),
+ ('Cousins', 'Official', 'Digital Input', 'Spencer Owen', 'Parallel', '0x00-0x03', 'R', '0x04-0x7F', ''),
+ ('Cousins', 'Official', 'Digital Output', 'Spencer Owen', 'Parallel', '0x00-0x03', 'W', '0x04-0x7F', ''),
+ ('Cousins', 'Official', 'Joystick', 'Spencer Owen', 'Parallel', '0x00-0x03', 'R', '0x04-0x7F', ''),
+ ('Cousins', 'Official', 'Compact Flash', 'Spencer Owen', 'Storage', '0x10-0x17', 'R/W', '0x90-0x97', ''),
+ ('Cousins', 'Official', 'IDE (82C55 PIO)', 'Ed Brindley & Spencer', 'Storage', '0x20-0x23', 'R/W', '0x10-0x13, 0x30-0x33, 0x40-0x43, 0x50-0x53, 0x60-0x63, 0x70-0x73, 0x80-0x83, 0x90-0x93, 0xA0-0xA3, 0xB0-0xB3, 0xC0-0xC3, 0xD0-0xD3, 0xE0-0xE3, 0xF0-0xF3', ''),
+ ('Cousins', 'Official', 'Pageable ROM', 'Spencer Owen', 'Memory / paging', '0x30-0x3F', 'W', '0xB0-0xBF', ''),
+ ('Cousins', 'Third-party', 'Serial I/O (16550 UART)', 'Ben Chong', 'Serial', '0x80-0x87', 'R/W', '0x88-0xFF', ''),
+ ('Cousins', 'Third-party', 'Digital I/O / LCD (8255)', 'Thomas Riesen', 'Parallel', '0x00-0x03', 'R/W', '0x04-0xFF', ''),
+ ('Cousins', 'Third-party', 'Sound Card (AY/YM)', 'Ed Brindley', 'Sound', '0xD8-0xDB', 'R', '0xD4-0xD7', ''),
+ ('Cousins', 'Third-party', 'Sound Card (AY/YM)', 'Ed Brindley', 'Sound', '0xD0-0xD3, 0xD8-0xDB', 'W', '0xD4-0xD7', ''),
+ ('Cousins', 'Third-party', 'Floppy Disk Controller', 'Dr Scott M Baker', 'Floppy', '0xE0-0xEB, 0xF0-0xF3, 0xF8-0xFF', 'R/W', '', ''),
+ ('Cousins', 'Third-party', 'VFD/LCD controller', 'Dr Scott M Baker', 'Display', '0xE0-0xE3', 'R/W', '0xE4-0xEF', ''),
+ ('Cousins', 'Third-party', 'Compact Flash', 'Dr Scott M Baker', 'Storage', '0xE0-0xE7', 'R/W', '0xE8-0xEF', ''),
+ ('Cousins', 'Third-party', 'Z80 CTC', 'Dr Scott M Baker', 'Timer', '0xF0-0xF3', 'R/W', '0xF4-0xFF', ''),
+ ('Cousins', 'Third-party', 'Z80 SIO', 'Dr Scott M Baker', 'Serial', '0xE0-0xE3', 'R/W', '0xE4-0xE7', ''),
+ ('Cousins', 'Third-party', 'Speech Synth. (SP0245A)', 'Dr Scott M Baker', 'Sound', '0x70-0x73', 'R/W', '0x74-0x7F', ''),
+ ('Cousins', 'Third-party', 'Dual DAC (AD7524)', 'Dr Scott M Baker', 'Sound', '0xE0-0xE3', 'W', '0xE8-0xEB, 0xF0-0xF3, 0xF8-0xFB', ''),
+ ('Cousins', 'Third-party', 'Front Panel (TIL311)', 'Dr Scott M Baker', 'System', '0xE4-0xE7', 'R', '0xEC-0xEF, 0xF4-0xF7, 0xFC-0xFF', ''),
+ ('Cousins', 'Third-party', 'Front Panel (TIL311)', 'Dr Scott M Baker', 'System', '0xE0-0xE3', 'W', '0xE8-0xEB, 0xF0-0xF3, 0xF8-0xFB', ''),
+ ('Cousins', 'Third-party', 'RTClock (BEQ4845)', 'Dr Scott M Baker', 'Clock', '0xC0-0xCF', 'R', '0xD0-0xDF', ''),
+ ('Cousins', 'Third-party', 'RTClock (BEQ4845)', 'Dr Scott M Baker', 'Clock', '0xC0-0xCF, 0xE0-0xE3', 'W', '0xD0-0xDF, 0xE4-0xFF', ''),
+ ('Cousins', 'Third-party', 'LUT (Multiply) Module', 'Phillip Stevens', 'Math', '0x40-0x43', 'R/W', '', ''),
+ ('Cousins', 'Third-party', 'Am9511 APU Module', 'Phillip Stevens', 'Math', '0x40-0x43', 'R/W', '0x20-0x23, 0x60-0x63, 0x80-0x83, 0xA0-0xA3, 0xC0-0xC3, 0xE0-0xE3', ''),
+
+ # --- Alan Cox's "Ports" file, reproduced as written ------------------------
+ ("Cox", "Official", "Digital I/O", "", "Parallel", "0x00-0x03", "R/W", "", "Agrees with Cousins."),
+ ("Cox", "Third-party", "VFD (Scott Baker)", "", "Display", "0x00-0x01", "R/W", "", "Cousins puts this board at 0xE0-0xE3. The two lists disagree - verify against your own board."),
+ ("Cox", "Official", "CF Adapter", "", "Storage", "0x10-0x17", "R/W", "0x90-0x97 (ghost)", "Agrees with Cousins."),
+ ("Cox", "Third-party", "Speech Synthesizer (Scott Baker)", "", "Sound", "0x20", "R/W", "", "Cousins puts this board at 0x70-0x73. The two lists disagree."),
+ ("Cox", "Official", "Pageable ROM", "", "Memory / paging", "0x38", "W", "", "Falls inside the 0x30-0x3F block Cousins gives."),
+ ("Cox", "Third-party", "SC108 banking / paging", "", "Memory / paging", "0x38", "W", "", "Shares 0x38 with the pageable ROM."),
+ ("Cox", "Third-party", "Marco's Propeller Graphics Card", "", "Video", "0x40-0x43", "R/W", "", "Collides with the LUT and Am9511 APU modules, which Cousins also puts at 0x40-0x43."),
+ ("Cox", "Third-party", "Floppy Controller (Scott Baker)", "", "Floppy", "0x48-0x58", "R/W", "", "Cousins puts this board at 0xE0-0xEB, 0xF0-0xF3 and 0xF8-0xFF. A large disagreement - verify."),
+ ("Cox", "Third-party", "SC103 Z80 PIO", "", "Parallel", "0x68-0x6B", "R/W", "", ""),
+ ("Cox", "Official", "512K ROM/RAM paging registers", "", "Memory / paging", "0x70-0x7F", "W", "", "The forum thread corrected an earlier 0x70/0x74 reading to 0x78-0x7C; Cox records the wider 0x70-0x7F decode."),
+ ("Cox", "Official", "ACIA (partial decode)", "", "Serial", "0x80-0xBF", "R/W", "", "Partial decode - the 68B50 board answers across the whole range. Consistent with Cousins' 0x80-0x83 primary plus alternates up to 0xBF."),
+ ("Cox", "Official", "SIO", "", "Serial", "0x80-0x83", "R/W", "", "Agrees with Cousins."),
+ ("Cox", "Third-party", "SC104 SIO", "", "Serial", "0x80-0x83", "R/W", "", ""),
+ ("Cox", "Third-party", "SC104 SIO, second card", "", "Serial", "0x84-0x87", "R/W", "", ""),
+ ("Cox", "Third-party", "SIO (Scott Baker)", "", "Serial", "0x80-0x83", "R/W", "", "Cox notes this board may order its ports differently from the standard RC2014 SIO."),
+ ("Cox", "Third-party", "SC102 CTC, first card", "", "Timer", "0x88-0x8B", "R/W", "", ""),
+ ("Cox", "Third-party", "SC102 CTC, second card", "", "Timer", "0x8C-0x8F", "R/W", "", ""),
+ ("Cox", "Third-party", "CTC (Scott Baker)", "", "Timer", "0x90-0x93", "R/W", "", "Cousins puts this board at 0xF0-0xF3."),
+ ("Cox", "Third-party", "Z280RC boot mode switch", "", "System", "0xA0", "R", "", ""),
+ ("Cox", "Third-party", "Z280RC RTC", "", "Clock", "0xA2", "R/W", "", ""),
+ ("Cox", "Third-party", "Real Time Clock (Scott Baker)", "", "Clock", "0xC0", "R/W", "", "Falls inside the 0xC0-0xCF block Cousins gives."),
+ ("Cox", "Third-party", "16550A (Ancient Computing)", "", "Serial", "0xC0", "R/W", "", "Shares 0xC0 with two clock boards."),
+ ("Cox", "Third-party", "DS1302 RTC (Ed Brindley)", "", "Clock", "0xC0", "R/W", "", "Shares 0xC0."),
+ ("Cox", "Third-party", "Z280RC IDE", "", "Storage", "0xC0-0xCF", "R/W", "", ""),
+ ("Cox", "Third-party", "YM-AY sound (Ed Brindley)", "", "Sound", "0xD0-0xD3", "W", "", "Agrees with Cousins."),
+ ("Cox", "Third-party", "CF Adapter (Scott Baker)", "", "Storage", "0xE0-0xE7", "R/W", "", "Agrees with Cousins."),
+ ("Cox", "Third-party", "PPIDE (Ed Brindley)", "", "Storage", "0xE0-0xE7", "R/W", "", ""),
+ ("Cox", "Third-party", "DAC (Scott Baker)", "", "Sound", "", "-", "", "Cox found no documented default. Cousins gives 0xE0-0xE3 for writes."),
+]
